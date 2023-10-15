@@ -9,11 +9,16 @@ public class DialogManager : MonoBehaviour
     [System.Serializable]
     public class Dialog
     {
-        public Text CharacterName;
-        public Text Sentence;
-        public Texture2D Sprite;
+        public string CharacterName;
+        public bool NameAtLeft;
+        public string Sentence;
+        public Sprite Sprite;
         public float SpeedLetters;
     }
+
+    public Text fieldName;
+    public Text fieldSentence;
+    public Sprite fieldSprite;
 
     public List<Dialog> DialogList;
 }
