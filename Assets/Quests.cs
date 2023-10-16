@@ -25,16 +25,7 @@ public class Quests : MonoBehaviour
             {
                 questNumber++;//прибавляем номер квеста, т.е. произошло взаимодействие
                 Destroy(other.gameObject); //а сам предмет уничтожается, словно NPC забрал объект
-            }
-
-            switch (idPickedUp)
-            {
-                case 0:
-                //FindObjectOfType<DialogueManager>().StartDialogue(dialogue1);
-                break;
-            
-                default:
-                break;
+                //DialogManager.StartDialogue(0);
             }
         }
     }

@@ -1,24 +1,101 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class DialogManager : MonoBehaviour
 {    
+    static DialogManager that;
+
+    [System.Serializable]
+    public class Sentence
+    {
+        public string CharacterName;
+        public string Letters;
+        public Image Sprite;
+        public float SpeedLetters;
+    }
+    
     [System.Serializable]
     public class Dialog
     {
-        public string CharacterName;
-        public bool NameAtLeft;
-        public string Sentence;
-        public Sprite Sprite;
-        public float SpeedLetters;
+        public int id;
+        public bool isRead;
+        public List<Sentence> SentencesList;
     }
 
-    public Text fieldName;
-    public Text fieldSentence;
-    public Sprite fieldSprite;
+    //[HideInInspector]
+    public int count;
+    //[HideInInspector]
+    public int currentIndex;
+    [HideInInspector]
+    public List<Sentence> CurrentSentences;
 
-    public List<Dialog> DialogList;
+    public Animator startAnim; 
+    public Animator boxAnim;
+    public GameObject fieldDialogBox, fieldNameBox, fieldSpriteBox; //для перемещения имени и спрайта
+    public Text fieldName, fieldSentence;
+    public Image fieldSprite;
+
+    public List<Dialog> DialogsQueue;
+
+    private void Awake() {
+        that = this;
+    }
+    IEnumerator TypeSentenceAndSetName(string name, string sentence, float speedLetters)
+    {
+        fieldName.text = name;// т.е. сокращение от fieldName.GetComponent<Text>().text
+
+        if(name == "Blait") 
+        {
+            fieldNameBox.GetComponent<RectTransform>().anchoredPosition = new Vector3 (-513, 130, 0);
+            //fieldSpriteBox.GetComponent<RectTransform>().anchoredPosition = new Vector3 (-513, 130, 0);//ПОЗИЦИИ СПРАЙТА ИЗМЕНИТЬ
+        }
+        else 
+        {
+            fieldNameBox.GetComponent<RectTransform>().anchoredPosition = new Vector3 (513, 130, 0);
+            // fieldSpriteBox.GetComponent<RectTransform>().anchoredPosition = new Vector3 (513, 130, 0);//ПОЗИЦИИ СПРАЙТА ИЗМЕНИТЬ
+        }
+
+        fieldSentence.text = ""; //наш диалог между ""
+        foreach(char letter in sentence.ToCharArray()) //для каждой буквы будем прибавлять след. букву
+        {
+            fieldSentence.text += letter;
+            yield return new WaitForSeconds(Time.deltaTime * speedLetters);
+        }
+
+        currentIndex++;
+    }
+
+    public static void EndDialogue()
+    {
+        //that.fieldDialogBox.transform.position = new Vector3 (-100,-100,0);
+        that.boxAnim.SetBool("boxOpen", false);
+    }
+
+    public void StartDialogue(int idDialog)
+    {
+       //Debug.Log(fieldDialogBox.name);
+        //that.fieldDialogBox.transform.position = new Vector3 (0,0,0);
+        that.boxAnim.SetBool("boxOpen", true);
+        that.startAnim.SetBool("startOpen", false);
+
+        Dialog currentDialog = that.DialogsQueue.Find(x => x.id == idDialog);
+        that.CurrentSentences = currentDialog.SentencesList;
+
+        that.count = currentDialog.SentencesList.Count;
+        that.currentIndex = 0;
+        
+        that.StartCoroutine(that.TypeSentenceAndSetName(that.CurrentSentences[0].CharacterName, that.CurrentSentences[0].Letters, that.CurrentSentences[0].SpeedLetters));
+    }
+
+    public void DisplayNextSentence()
+    {
+        if(that.currentIndex < that.count)
+        {
+            that.StartCoroutine(that.TypeSentenceAndSetName(that.CurrentSentences[that.currentIndex].CharacterName, that.CurrentSentences[that.currentIndex].Letters, that.CurrentSentences[that.currentIndex].SpeedLetters));
+        }
+        else EndDialogue();
+    }
 }

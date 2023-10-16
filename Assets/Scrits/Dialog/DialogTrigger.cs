@@ -2,12 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//появления диалога тогда, когда персонаж находится рядом с NPC
-
-public class DialogueAnimator : MonoBehaviour
+public class DialogTrigger : MonoBehaviour
 {
-    public Animator startAnim;
-    public DialogueManager dm;
+   public Animator startAnim;
     public Queue<string> dialogue1 = new Queue<string>();
 
     public void OnTriggerEnter2D(Collider2D other)
@@ -20,6 +17,6 @@ public class DialogueAnimator : MonoBehaviour
      public void OnTriggerExit2D(Collider2D other)
     {
         startAnim.SetBool("startOpen", false);
-        dm.EndDialogue();
+        //DialogManager.EndDialogue();
     }
 }
