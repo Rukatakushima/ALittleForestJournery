@@ -291,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 51940267}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.2763, y: 1.3183975, z: 0.07331353}
+  m_LocalPosition: {x: 16.280636, y: 1.3183975, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1360,7 +1360,7 @@ Transform:
   m_GameObject: {fileID: 481661197}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.11963, y: 1.7840905, z: 0.07331353}
+  m_LocalPosition: {x: 14.120714, y: 1.7840905, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1458,7 +1458,7 @@ Transform:
   m_GameObject: {fileID: 483889923}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.001387, y: 2.81, z: 0.07331353}
+  m_LocalPosition: {x: 15.999761, y: 2.81, z: 0.07331353}
   m_LocalScale: {x: 1.1791298, y: 1.2285434, z: 1.0789}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1890,7 +1890,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8159823, y: 1.0860896, z: -9.87191}
+  m_LocalPosition: {x: -2.8105621, y: 1.0860898, z: -9.87191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2042,13 +2042,21 @@ MonoBehaviour:
     isRead: 0
     SentencesList:
     - CharacterName: Blait
-      Letters: dddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+      Letters: ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
       Sprite: {fileID: 156775085}
       SpeedLetters: 7
     - CharacterName: Tox
-      Letters: qqqdddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+      Letters: ddddddddddddddddddddddddddddddddddddddddddddd
       Sprite: {fileID: 156775085}
       SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Blait
+      Letters: qqqdddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 3
   - id: 0
     isRead: 0
     SentencesList:
@@ -2239,7 +2247,7 @@ Transform:
   m_GameObject: {fileID: 752505452}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.992044, y: 2.3540905, z: 0.07331353}
+  m_LocalPosition: {x: 14.992858, y: 2.3540905, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2923,7 +2931,7 @@ Transform:
   m_GameObject: {fileID: 967478254}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.6786175, y: 1.7367417, z: 0.07331353}
+  m_LocalPosition: {x: 14.6802435, y: 1.7367417, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4681,7 +4689,7 @@ Transform:
   m_GameObject: {fileID: 1394747230}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.57889, y: 0.5862951, z: 0.07331353}
+  m_LocalPosition: {x: 16.581059, y: 0.5862951, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

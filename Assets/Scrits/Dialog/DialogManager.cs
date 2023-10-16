@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,9 +24,9 @@ public class DialogManager : MonoBehaviour
         public List<Sentence> SentencesList;
     }
 
-    //[HideInInspector]
+    [HideInInspector]
     public int count;
-    //[HideInInspector]
+    [HideInInspector]
     public int currentIndex;
     [HideInInspector]
     public List<Sentence> CurrentSentences;
@@ -58,26 +57,22 @@ public class DialogManager : MonoBehaviour
             // fieldSpriteBox.GetComponent<RectTransform>().anchoredPosition = new Vector3 (513, 130, 0);//ПОЗИЦИИ СПРАЙТА ИЗМЕНИТЬ
         }
 
+
         fieldSentence.text = ""; //наш диалог между ""
         foreach(char letter in sentence.ToCharArray()) //для каждой буквы будем прибавлять след. букву
         {
             fieldSentence.text += letter;
             yield return new WaitForSeconds(Time.deltaTime * speedLetters);
         }
-
-        currentIndex++;
     }
 
     public static void EndDialogue()
     {
-        //that.fieldDialogBox.transform.position = new Vector3 (-100,-100,0);
         that.boxAnim.SetBool("boxOpen", false);
     }
 
     public void StartDialogue(int idDialog)
     {
-       //Debug.Log(fieldDialogBox.name);
-        //that.fieldDialogBox.transform.position = new Vector3 (0,0,0);
         that.boxAnim.SetBool("boxOpen", true);
         that.startAnim.SetBool("startOpen", false);
 
@@ -92,10 +87,13 @@ public class DialogManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
-        if(that.currentIndex < that.count)
+        currentIndex++;
+        StopAllCoroutines();
+        if(that.currentIndex < that.count) // && that.CurrentSentences[that.currentIndex].Letters == that.CurrentSentences[that.currentIndex].Letters.Length - ??????
         {
             that.StartCoroutine(that.TypeSentenceAndSetName(that.CurrentSentences[that.currentIndex].CharacterName, that.CurrentSentences[that.currentIndex].Letters, that.CurrentSentences[that.currentIndex].SpeedLetters));
         }
+        
         else EndDialogue();
     }
 }
