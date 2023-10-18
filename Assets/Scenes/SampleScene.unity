@@ -291,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 51940267}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.532043, y: 1.3183975, z: 0.07331353}
+  m_LocalPosition: {x: 13.535592, y: 1.3183975, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1452,7 +1452,7 @@ Transform:
   m_GameObject: {fileID: 481661197}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.60907, y: 1.7840905, z: 0.07331353}
+  m_LocalPosition: {x: 13.609956, y: 1.7840905, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1550,7 +1550,7 @@ Transform:
   m_GameObject: {fileID: 483889923}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17, y: 2.81, z: 0.07331353}
+  m_LocalPosition: {x: 16.998669, y: 2.81, z: 0.07331353}
   m_LocalScale: {x: 1.1791298, y: 1.2285434, z: 1.0789}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1983,7 +1983,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8141494, y: 1.0860896, z: -9.87191}
+  m_LocalPosition: {x: -2.8163648, y: 1.0860894, z: -9.87191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2134,44 +2134,169 @@ MonoBehaviour:
   - id: 0
     isRead: 0
     SentencesList:
+    - CharacterName: Tox
+      Letters: Hi
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
     - CharacterName: Blait
-      Letters: ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+      Letters: Hello
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: Can you bting me some items?
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: Anything that you'll find here
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Blait
+      Letters: Fine...
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 15
+  - id: 1
+    isRead: 0
+    SentencesList:
+    - CharacterName: Tox
+      Letters: What's it?
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: A hat?
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 3
+    - CharacterName: Tox
+      Letters: I love hats!
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 3
+    - CharacterName: Tox
+      Letters: I mean, thanks... I'll keerp it. That'd suit me!
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Blait
+      Letters: Glad for you.
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 13
+  - id: 2
+    isRead: 0
+    SentencesList:
+    - CharacterName: Blait
+      Letters: Hey, I found that camera here..
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: Oh, yeah, I see.
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 5
+    - CharacterName: Tox
+      Letters: Let's check out the pictures!
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 5
+    - CharacterName: Blait
+      Letters: We can't.
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: Phh, noone would know!
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 7
+    - CharacterName: Blait
+      Letters: The camera is broken.
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: Anyway, let me keep it. Maube, we could do something with it later.
       Sprite: {fileID: 156775085}
       SpeedLetters: 7
     - CharacterName: Tox
-      Letters: ddddddddddddddddddddddddddddddddddddddddddddd
+      Letters: Ooooh,,, That's it......
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 16
+  - id: 3
+    isRead: 0
+    SentencesList:
+    - CharacterName: Tox
+      Letters: Some news?
       Sprite: {fileID: 156775085}
       SpeedLetters: 10
     - CharacterName: Tox
-      Letters: vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+      Letters: Hehe, got it?
       Sprite: {fileID: 156775085}
       SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: You bring me some news!!!
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 5
     - CharacterName: Blait
-      Letters: qqqdddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+      Letters: There's some strange-
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: It's none of our business.
       Sprite: {fileID: 156775085}
       SpeedLetters: 3
-  - id: 0
+    - CharacterName: Blait
+      Letters: So now it's none of our business, huh?
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: I mean...
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 7
+    - CharacterName: Tox
+      Letters: Reading paper is boring, you know. Let's just look at the pictures!
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+  - id: 4
     isRead: 0
     SentencesList:
     - CharacterName: Blait
-      Letters: ddd
+      Letters: Do you want to look at this picture?
       Sprite: {fileID: 156775085}
-      SpeedLetters: 2
+      SpeedLetters: 10
+    - CharacterName: Blait
+      Letters: Looks like it's your. Who is that gitl with you? You sister?
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
     - CharacterName: Tox
-      Letters: qqq
+      Letters: My mom!
       Sprite: {fileID: 156775085}
-      SpeedLetters: 4
-  - id: 0
+      SpeedLetters: 5
+    - CharacterName: Blait
+      Letters: Wow, she looks young.
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Blait
+      Letters: The camera is broken.
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+  - id: 5
     isRead: 0
     SentencesList:
-    - CharacterName: Blait
-      Letters: ddd
-      Sprite: {fileID: 156775085}
-      SpeedLetters: 2
     - CharacterName: Tox
-      Letters: qqq
+      Letters: That's enoght!
       Sprite: {fileID: 156775085}
-      SpeedLetters: 4
+      SpeedLetters: 5
+    - CharacterName: Tox
+      Letters: I think we have enough items.
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Blait
+      Letters: And...?
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 10
+    - CharacterName: Tox
+      Letters: What? You.. Want a reward?
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 6
+    - CharacterName: Tox
+      Letters: Well.. Let's just go somewhere and...um..
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 7
+    - CharacterName: Tox
+      Letters: Have fun and another journery!
+      Sprite: {fileID: 156775085}
+      SpeedLetters: 6
 --- !u!1 &715192307
 GameObject:
   m_ObjectHideFlags: 0
@@ -2340,7 +2465,7 @@ Transform:
   m_GameObject: {fileID: 752505452}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.586121, y: 2.3540905, z: 0.07331353}
+  m_LocalPosition: {x: 15.586786, y: 2.3540905, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3100,7 +3225,7 @@ Transform:
   m_GameObject: {fileID: 967478254}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.564105, y: 1.7367417, z: 0.07331353}
+  m_LocalPosition: {x: 13.565436, y: 1.7367417, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3754,6 +3879,7 @@ GameObject:
   - component: {fileID: 1129158280}
   - component: {fileID: 1129158279}
   - component: {fileID: 1129158283}
+  - component: {fileID: 1129158284}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -3849,6 +3975,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startAnim: {fileID: 2075232834}
+--- !u!114 &1129158284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129158277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b6f0c5f35ceff6429d066efc59caeb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idPickedUp: 0
+  dialogManager: {fileID: 683301939}
+  startAnim: {fileID: 2075232834}
+  questNumber: 0
 --- !u!1 &1129388227
 GameObject:
   m_ObjectHideFlags: 0
@@ -4961,7 +5103,7 @@ Transform:
   m_GameObject: {fileID: 1394747230}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14, y: 0.5862951, z: 0.07331353}
+  m_LocalPosition: {x: 14.001767, y: 0.5862951, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

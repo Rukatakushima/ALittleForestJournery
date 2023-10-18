@@ -83,13 +83,15 @@ public class DialogManager : MonoBehaviour
         that.currentIndex = 0;
         
         that.StartCoroutine(that.TypeSentenceAndSetName(that.CurrentSentences[0].CharacterName, that.CurrentSentences[0].Letters, that.CurrentSentences[0].SpeedLetters));
+
+        //currentDialog.isRead = "true";
     }
 
     public void DisplayNextSentence()
     {
         currentIndex++;
         StopAllCoroutines();
-        if(that.currentIndex < that.count) // && that.CurrentSentences[that.currentIndex].Letters == that.CurrentSentences[that.currentIndex].Letters.Length - ??????
+        if(that.currentIndex < that.count)
         {
             that.StartCoroutine(that.TypeSentenceAndSetName(that.CurrentSentences[that.currentIndex].CharacterName, that.CurrentSentences[that.currentIndex].Letters, that.CurrentSentences[that.currentIndex].SpeedLetters));
         }
