@@ -291,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 51940267}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.535592, y: 1.3183975, z: 0.07331353}
+  m_LocalPosition: {x: 13.533419, y: 1.3183975, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1452,7 +1452,7 @@ Transform:
   m_GameObject: {fileID: 481661197}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.609956, y: 1.7840905, z: 0.07331353}
+  m_LocalPosition: {x: 13.609407, y: 1.7840905, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1550,7 +1550,7 @@ Transform:
   m_GameObject: {fileID: 483889923}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.998669, y: 2.81, z: 0.07331353}
+  m_LocalPosition: {x: 16.999481, y: 2.81, z: 0.07331353}
   m_LocalScale: {x: 1.1791298, y: 1.2285434, z: 1.0789}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1983,7 +1983,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8163648, y: 1.0860894, z: -9.87191}
+  m_LocalPosition: {x: -2.815496, y: 1.0860896, z: -9.87191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2135,14 +2135,6 @@ MonoBehaviour:
     isRead: 0
     SentencesList:
     - CharacterName: Tox
-      Letters: Hi
-      Sprite: {fileID: 156775085}
-      SpeedLetters: 10
-    - CharacterName: Blait
-      Letters: Hello
-      Sprite: {fileID: 156775085}
-      SpeedLetters: 10
-    - CharacterName: Tox
       Letters: Can you bting me some items?
       Sprite: {fileID: 156775085}
       SpeedLetters: 10
@@ -2224,25 +2216,9 @@ MonoBehaviour:
       Sprite: {fileID: 156775085}
       SpeedLetters: 10
     - CharacterName: Tox
-      Letters: You bring me some news!!!
+      Letters: Cause here is a newspaper
       Sprite: {fileID: 156775085}
       SpeedLetters: 5
-    - CharacterName: Blait
-      Letters: There's some strange-
-      Sprite: {fileID: 156775085}
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: It's none of our business.
-      Sprite: {fileID: 156775085}
-      SpeedLetters: 3
-    - CharacterName: Blait
-      Letters: So now it's none of our business, huh?
-      Sprite: {fileID: 156775085}
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: I mean...
-      Sprite: {fileID: 156775085}
-      SpeedLetters: 7
     - CharacterName: Tox
       Letters: Reading paper is boring, you know. Let's just look at the pictures!
       Sprite: {fileID: 156775085}
@@ -2465,7 +2441,7 @@ Transform:
   m_GameObject: {fileID: 752505452}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.586786, y: 2.3540905, z: 0.07331353}
+  m_LocalPosition: {x: 15.58638, y: 2.3540905, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3225,7 +3201,7 @@ Transform:
   m_GameObject: {fileID: 967478254}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.565436, y: 1.7367417, z: 0.07331353}
+  m_LocalPosition: {x: 13.564619, y: 1.7367417, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3880,6 +3856,7 @@ GameObject:
   - component: {fileID: 1129158279}
   - component: {fileID: 1129158283}
   - component: {fileID: 1129158284}
+  - component: {fileID: 1129158285}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -3952,7 +3929,7 @@ Transform:
   m_GameObject: {fileID: 1129158277}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.71, y: -3.21, z: 3.5216355}
+  m_LocalPosition: {x: 3, y: -2.57, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3991,6 +3968,26 @@ MonoBehaviour:
   dialogManager: {fileID: 683301939}
   startAnim: {fileID: 2075232834}
   questNumber: 0
+--- !u!114 &1129158285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129158277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1205c04cb4d5e834ea761831860ce324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1.3
+  positions:
+  - {x: -4, y: -2.57, z: 3}
+  - {x: 8.86, y: -3.67, z: 3}
+  - {x: 0.2, y: -2.92, z: 3}
+  - {x: -0.9, y: -3.35, z: 3}
+  - {x: 13.7, y: -3.27, z: 3}
+  - {x: 19, y: -2.57, z: 3}
 --- !u!1 &1129388227
 GameObject:
   m_ObjectHideFlags: 0
@@ -5103,7 +5100,7 @@ Transform:
   m_GameObject: {fileID: 1394747230}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.001767, y: 0.5862951, z: 0.07331353}
+  m_LocalPosition: {x: 14.000685, y: 0.5862951, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6519,11 +6516,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7680747871773280273, guid: 836ced933fbb6a9459b9ab90c3004031, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.23
+      value: 22.94
       objectReference: {fileID: 0}
     - target: {fileID: 7680747871773280273, guid: 836ced933fbb6a9459b9ab90c3004031, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.58
+      value: -2.17
       objectReference: {fileID: 0}
     - target: {fileID: 7680747871773280273, guid: 836ced933fbb6a9459b9ab90c3004031, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6576,11 +6573,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7702525453435993875, guid: a49355c8d3154e2489bfaa48ff79f2ac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.29
+      value: 11.89
       objectReference: {fileID: 0}
     - target: {fileID: 7702525453435993875, guid: a49355c8d3154e2489bfaa48ff79f2ac, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.71
+      value: -2.54
       objectReference: {fileID: 0}
     - target: {fileID: 7702525453435993875, guid: a49355c8d3154e2489bfaa48ff79f2ac, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6629,7 +6626,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1091214794346478819, guid: f2b4f2b1cdeac1042b0b0628683096c5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.78
+      value: -8.94
       objectReference: {fileID: 0}
     - target: {fileID: 1091214794346478819, guid: f2b4f2b1cdeac1042b0b0628683096c5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6690,11 +6687,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2015034982506141670, guid: 97aa326c9570c8745aed2b093d402ec8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.8887825
+      value: 18.38
       objectReference: {fileID: 0}
     - target: {fileID: 2015034982506141670, guid: 97aa326c9570c8745aed2b093d402ec8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.7800906
+      value: -0.29
       objectReference: {fileID: 0}
     - target: {fileID: 2015034982506141670, guid: 97aa326c9570c8745aed2b093d402ec8, type: 3}
       propertyPath: m_LocalPosition.z
