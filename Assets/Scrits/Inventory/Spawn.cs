@@ -14,7 +14,7 @@ public class Spawn : MonoBehaviour
 
     public void SpawnDroppedItem()
     {
-        Vector2 playerPos = new Vector2(player.position.x + 1, player.position.y - 1); //смещение появляющегося объекта
+        Vector2 playerPos = new Vector2(player.position.x + 1, player.position.y); //смещение появляющегося объекта
         Instantiate(item, playerPos, Quaternion.identity);//какой предмет, где, вращение объекта 
     }
 }
