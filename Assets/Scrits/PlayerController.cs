@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 4;
     public float jumpForce;
     public float moveInput;
-    public Joystick joystick; // joystick
+    //public Joystick joystick; // joystick
     private Rigidbody2D rb;
     private bool facingLeft = true; //игрок смотрит влево
     private bool isGrounded;
@@ -24,8 +24,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        moveInput = joystick.Horizontal; // joystick
-        //moveInput = Input.GetAxis("Horizontal");
+        //moveInput = joystick.Horizontal; // joystick
+        moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
         if(facingLeft == false && moveInput < 0) //если игрок смотрит не влево (вправо) и клавиша нажата
         {
@@ -50,9 +50,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {    
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-        float verticalMove = joystick.Vertical; // joystick
-        if(isGrounded == true && (verticalMove >= .5f)) // joystick
-        //if(isGrounded == true && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))) //если игрок на земле и нажата клавиша "пробел"
+        //float verticalMove = joystick.Vertical; // joystick
+        //if(isGrounded == true && (verticalMove >= .5f)) // joystick
+        if(isGrounded == true && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))) //если игрок на земле и нажата клавиша "пробел"
         {
             rb.velocity = Vector2.up * jumpForce; //то прыгаем
             anim.SetTrigger("takeOf");
