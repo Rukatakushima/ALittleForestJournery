@@ -4,39 +4,103 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    public string CharacterName;
-    /*
-    public List<BodyPart> CharacterBody;
     
+    public string[] partNames = new string[]{"Body", "Head", "Hair", "Arm", "Leg"};
+    public int[] ordersInLayer = new int[] {-5, -4, -3, -6};
+    public Vector3 bodyPosition = new Vector3(0, 0, 0);
+    public Vector3 headPosition = new Vector3(-0.015f, 0.44f, 0);
+    public Vector3 hairPosition = new Vector3(0.06f, 0.185f, 0);
+    public Vector3 armLeftPosition = new Vector3(0.19f, -0.07f, 0);
+    public Vector3 armRightPosition = new Vector3(-0.18f, -0.07f, 0);
+    public Vector3 legLeftPosition = new Vector3(0.03f, -0.42f, 0);
+    public Vector3 legRightPosition = new Vector3(-0.11f, -0.42f, 0);
+    public List<BodyPart> CharacterBody;
     [System.Serializable]
     public class BodyPart
     {
-        public string part;
-        public Sprite sprite;
-        public bool isChangable;
-        public bool isChildOfPreviousPart;
+        public string partName;
+        public int orderInLayer;
+        public Vector3 position;
+        public bool reflectXByScale, isChildOfPreviousPart, isChildOfBody, isChangable;
     }
-*/
     void Start()
     {
+        LoadBaseOfCharacter();
         LoadCharacter();
     }
-
     void Update()
     {
         
     }
+    public void LoadBaseOfCharacter()
+    {
+        // Body:
+        CharacterBody.Add(new BodyPart() 
+        {
+            partName = partNames[0],
+            orderInLayer = ordersInLayer[0],
+            position = bodyPosition,
+        });
+        // Head:
+        CharacterBody.Add(new BodyPart() 
+        {
+            partName = partNames[1],
+            orderInLayer = ordersInLayer[1],
+            position = headPosition,
+            isChildOfPreviousPart = true,
+        });
+        // Hair:
+        CharacterBody.Add(new BodyPart() 
+        {
+            partName = partNames[2],
+            orderInLayer = ordersInLayer[2],
+            position = hairPosition,
+            isChildOfPreviousPart = true,
+        });
+        // ArmLeft:
+        CharacterBody.Add(new BodyPart() 
+        {
+            partName = partNames[3],
+            orderInLayer = ordersInLayer[3],
+            position = armLeftPosition,
+            isChildOfBody = true,
+        });
+        // ArmRight:
+        CharacterBody.Add(new BodyPart() 
+        {
+            partName = partNames[3],
+            orderInLayer = ordersInLayer[3],
+            position = armRightPosition,
+            reflectXByScale = true,
+            isChildOfBody = true,
+        });
+        // LegLeft:
+        CharacterBody.Add(new BodyPart() 
+        {
+            partName = partNames[4],
+            orderInLayer = ordersInLayer[3],
+            position = legLeftPosition,
+        });
+        // LegRight:
+        CharacterBody.Add(new BodyPart() 
+        {
+            partName = partNames[4],
+            orderInLayer = ordersInLayer[3],
+            position = legRightPosition,
+        });
+    }
 
     public void LoadCharacter()
-    {
+    {        
+        /*
         // Создание объектов для частей тела
         GameObject body = new GameObject("Body");
         GameObject head = new GameObject("Head");
         GameObject hair = new GameObject("Hair");
-        GameObject armLeft = new GameObject("ArmLeft");
-        GameObject armRight = new GameObject("ArmRight");
-        GameObject legLeft = new GameObject("LegLeft");
-        GameObject legRight = new GameObject("LegRight");
+        GameObject armLeft = new GameObject("Arm");
+        GameObject armRight = new GameObject("Arm");
+        GameObject legLeft = new GameObject("Leg");
+        GameObject legRight = new GameObject("Leg");
 
         // Расположение объектов в иерархии
         body.transform.SetParent(transform); 
@@ -46,15 +110,8 @@ public class CharacterManager : MonoBehaviour
         armRight.transform.SetParent(body.transform); 
         legLeft.transform.SetParent(transform); 
         legRight.transform.SetParent(transform); 
-        
-        // Добавление SpriteRenderer - > Назначение спрайта -> Загрузка спрайта из папки Resources
-        body.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(CharacterName+"/body");
-        head.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(CharacterName+"/head");
-        hair.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(CharacterName+"/hair");
-        armLeft.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(CharacterName+"/arm");
-        armRight.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(CharacterName+"/arm");
-        legLeft.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(CharacterName+"/leg");
-        legRight.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(CharacterName+"/leg");
+
+        AddSpriteRender(transform);
 
         // Настройка порядка частей тела
         body.GetComponent<SpriteRenderer>().sortingOrder = -5; 
@@ -74,12 +131,59 @@ public class CharacterManager : MonoBehaviour
         armRight.transform.localScale = new Vector3(-1f, 1f, 0);
         legLeft.transform.localPosition = new Vector3(0.03f, -0.42f, 0);
         legRight.transform.localPosition = new Vector3(-0.11f, -0.42f, 0);
-
-        // // Добавление SpriteRenderer объектам
-        // SpriteRenderer spriteRenderer = body.AddComponent<SpriteRenderer>();
-        // // Загрузка спрайт из папки Resources
-        // Sprite sprite = Resources.Load<Sprite>(CharacterName+"/body");
-        // // Назначение спрайтов
-        // spriteRenderer.sprite = sprite;
+        */
+        
+        /*
+        for (int i = 0; i < CharacterBody.Count; i++)
+        {
+            GameObject part = new GameObject(CharacterBody[i].partName);
+            if (CharacterBody[i].isChildOfPreviousPart)
+            {
+                part.transform.SetParent(CharacterBody[i-1].transform);
+            }
+            else
+            {
+                part.transform.SetParent(transform); 
+            }
+            part.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(gameObject.name+"/"+part.name);
+            part.GetComponent<SpriteRenderer>().sortingOrder = CharacterBody[i].orderInLayer;
+            part.transform.localPosition = CharacterBody[i].position;
+            if (CharacterBody[i].reflectXByScale) part.transform.localScale = new Vector3(-1f, 1f, 0);
+        }*/
+        // Создание объектов из списка CharacterBody типа BodyPart(класс)
+        GameObject previousPart = null;
+        GameObject body = null;
+        foreach (BodyPart bodyPart in CharacterBody)
+        {
+            GameObject part = new GameObject(bodyPart.partName);
+            if (bodyPart.isChildOfPreviousPart && previousPart != null)
+            {
+                part.transform.SetParent(previousPart.transform);
+            }
+            else if (bodyPart.isChildOfBody)
+            {
+                part.transform.SetParent(body.transform);
+            }
+            else
+            {
+                part.transform.SetParent(transform); 
+            }
+            part.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(gameObject.name+"/"+part.name);
+            part.GetComponent<SpriteRenderer>().sortingOrder = bodyPart.orderInLayer;
+            part.transform.localPosition = bodyPart.position;
+            if (bodyPart.reflectXByScale) part.transform.localScale = new Vector3(-1f, 1f, 0);
+            previousPart = part;
+            if (bodyPart.partName == "Body") body = part;
+        }
     }
+/*
+    public void AddSpriteRender(Transform parent)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            // Добавление SpriteRenderer -> Загрузка спрайта из папки Resources
+            parent.GetChild(i).gameObject.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(gameObject.name+"/"+parent.GetChild(i).gameObject.name);
+            AddSpriteRender(parent.GetChild(i));
+        }
+    }*/
 }

@@ -292,7 +292,7 @@ Transform:
   m_GameObject: {fileID: 51940267}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.273144, y: 1.3183975, z: 0.07331353}
+  m_LocalPosition: {x: 31.93878, y: 1.3183975, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1586,7 +1586,7 @@ Transform:
   m_GameObject: {fileID: 481661197}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.474615, y: 1.7840905, z: 0.07331353}
+  m_LocalPosition: {x: 17.641033, y: 1.7840905, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1684,7 +1684,7 @@ Transform:
   m_GameObject: {fileID: 483889923}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.748063, y: 2.81, z: 0.07331353}
+  m_LocalPosition: {x: 10.498436, y: 2.81, z: 0.07331353}
   m_LocalScale: {x: 1.1791298, y: 1.2285434, z: 1.0789}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2115,7 +2115,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.817018, y: 1.0860894, z: -9.87191}
+  m_LocalPosition: {x: -2.810248, y: 1.0860896, z: -9.87191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2656,7 +2656,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0270c37fea96d43babf2912cb51c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterName: Tox
+  partNames:
+  - Body
+  - Head
+  - Hair
+  - Arm
+  - Leg
+  ordersInLayer: fbfffffffcfffffffdfffffffaffffff
+  bodyPosition: {x: 0, y: 0, z: 0}
+  headPosition: {x: -0.015, y: 0.44, z: 0}
+  hairPosition: {x: 0.06, y: 0.185, z: 0}
+  armLeftPosition: {x: 0.19, y: -0.07, z: 0}
+  armRightPosition: {x: -0.18, y: -0.07, z: 0}
+  legLeftPosition: {x: 0.03, y: -0.42, z: 0}
+  legRightPosition: {x: -0.11, y: -0.42, z: 0}
+  CharacterBody:
+  - partName: body
+    orderInLayer: -3
+    position: {x: 0, y: 0, z: 0}
+    reflectXByScale: 0
+    isChildOfPreviousPart: 0
+    isChildOfBody: 0
+    isChangable: 0
+  - partName: arm
+    orderInLayer: -4
+    position: {x: -0.18, y: -0.07, z: 0}
+    reflectXByScale: 1
+    isChildOfPreviousPart: 1
+    isChildOfBody: 0
+    isChangable: 0
 --- !u!4 &722636797
 Transform:
   m_ObjectHideFlags: 0
@@ -2751,7 +2779,7 @@ Transform:
   m_GameObject: {fileID: 752505452}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.872524, y: 2.3540905, z: 0.07331353}
+  m_LocalPosition: {x: 19.497328, y: 2.3540905, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3512,7 +3540,7 @@ Transform:
   m_GameObject: {fileID: 967478254}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.953905, y: 1.7367417, z: 0.07331353}
+  m_LocalPosition: {x: 20.203514, y: 1.7367417, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5192,7 +5220,7 @@ Transform:
   m_GameObject: {fileID: 1394747230}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.914066, y: 0.5862951, z: 0.07331353}
+  m_LocalPosition: {x: 23.246902, y: 0.5862951, z: 0.07331353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
