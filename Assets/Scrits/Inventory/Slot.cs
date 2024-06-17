@@ -63,14 +63,4 @@ public class Slot : MonoBehaviour
             i--;
         }
     }
-
-    /*public void EquipItem()
-    { 
-        if(inventory.isFull[i] == true)
-        {
-            Instantiate(item, inventory.slots[i].transform); // объект появился в слоте
-            GameObject.Destroy(item.gameObject);
-        }
-    }*/
-
 }

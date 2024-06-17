@@ -7,18 +7,13 @@ public class PlayerController : MonoBehaviour
     public float speed = 4;
     public float jumpForce;
     public float moveInput;
-
-    public Joystick joystick;
-
+    public Joystick joystick; // joystick
     private Rigidbody2D rb;
-
     private bool facingLeft = true; //игрок смотрит влево
-
     private bool isGrounded;
     public Transform feetPos;
     public float checkRadius;
     public LayerMask whatIsGround;
-
     private Animator anim;
 
     private void Start()
@@ -29,8 +24,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //moveInput = joystick.Horizontal;
-        moveInput = Input.GetAxis("Horizontal");
+        moveInput = joystick.Horizontal; // joystick
+        //moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
         if(facingLeft == false && moveInput < 0) //если игрок смотрит не влево (вправо) и клавиша нажата
         {
@@ -53,10 +48,11 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Update()
-    {
+    {    
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-//if(isGrounded == true && Input.GetKeyDown(KeyCode.Space))
-        if(isGrounded == true && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))) //если игрок на земле и нажата клавиша "пробел"
+        float verticalMove = joystick.Vertical; // joystick
+        if(isGrounded == true && (verticalMove >= .5f)) // joystick
+        //if(isGrounded == true && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))) //если игрок на земле и нажата клавиша "пробел"
         {
             rb.velocity = Vector2.up * jumpForce; //то прыгаем
             anim.SetTrigger("takeOf");
@@ -78,14 +74,7 @@ public class PlayerController : MonoBehaviour
         Vector3 Scaler = transform.localScale; //берем оригинальное положение игрока
         Scaler.x *= -1; //умножаем оригинальное положение игрока на -1 (переворачиваем)
         transform.localScale = Scaler; //применяем
-/*
-        if (moveInput > 0)
-        {
-            transform.eulerAngles = new Vector3(0, 100, 0);
-        }
-        else if (moveInput < 0)
-        {
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        }*/
+        
+        Debug.Log("Hi");
     }
 }
