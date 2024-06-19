@@ -74,7 +74,5 @@ public class PlayerController : MonoBehaviour
         Vector3 Scaler = transform.localScale; //берем оригинальное положение игрока
         Scaler.x *= -1; //умножаем оригинальное положение игрока на -1 (переворачиваем)
         transform.localScale = Scaler; //применяем
-        
-        Debug.Log("Hi");
     }
 }
