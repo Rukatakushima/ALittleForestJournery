@@ -40,10 +40,11 @@ public class DialogManager : MonoBehaviour
     private void Awake() {
         that = this;
     }
+    
     IEnumerator TypeSentenceAndSetName(string name, string sentence, float speedLetters)
     {
         fieldName.text = name;// т.е. сокращение от fieldName.GetComponent<Text>().text
-
+/* 
         if(name == "Blait") 
         {
             fieldNameBox.GetComponent<RectTransform>().anchoredPosition = new Vector3 (-513, 130, 0);
@@ -52,7 +53,7 @@ public class DialogManager : MonoBehaviour
         {
             fieldNameBox.GetComponent<RectTransform>().anchoredPosition = new Vector3 (513, 130, 0);
         }
-
+*/
 
         fieldSentence.text = ""; //наш диалог между ""
         foreach(char letter in sentence.ToCharArray()) //для каждой буквы будем прибавлять след. букву
