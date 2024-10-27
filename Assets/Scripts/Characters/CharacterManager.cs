@@ -59,11 +59,11 @@ public class CharacterManager : MonoBehaviour
         
     }
 #endif
-    void Awake()
-    {
-        InitializationBaseOfCharacter();
-        LoadCharacter();
-    }
+    // void Awake()
+    // {
+    //     InitializationBaseOfCharacter();
+    //     LoadCharacter();
+    // }
     void Update() { }
     public void InitializationBaseOfCharacter()
     {
