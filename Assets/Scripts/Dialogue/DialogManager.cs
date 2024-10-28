@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
-{    
+{
     static DialogManager that;
 
     [System.Serializable]
@@ -14,7 +14,7 @@ public class DialogManager : MonoBehaviour
         public string Letters;
         public float SpeedLetters;
     }
-    
+
     [System.Serializable]
     public class Dialog
     {
@@ -29,34 +29,37 @@ public class DialogManager : MonoBehaviour
     public int currentIndex;
     [HideInInspector]
     public List<Sentence> CurrentSentences;
-
-    public Animator startAnim; 
+    public Animator startAnim;
     public Animator boxAnim;
     public GameObject fieldDialogBox, fieldNameBox; //для перемещения имени и спрайта
     public Text fieldName, fieldSentence;
-
     public List<Dialog> DialogsQueue;
 
-    private void Awake() {
+    private void Awake()
+    {
         that = this;
     }
-    
+
     IEnumerator TypeSentenceAndSetName(string name, string sentence, float speedLetters)
     {
         fieldName.text = name;// т.е. сокращение от fieldName.GetComponent<Text>().text
-/* 
-        if(name == "Blait") 
+        RectTransform dialogBoxRect = fieldDialogBox.GetComponent<RectTransform>();
+
+        if (GameObject.Find(name))
         {
-            fieldNameBox.GetComponent<RectTransform>().anchoredPosition = new Vector3 (-513, 130, 0);
+            ////////////////////// ИЗМЕНЕНИЕ ПОЗИЦИИ ДИАЛОГА
+            ////сейчас Pos Y устанавливается на то, что мы указываем в сцене. Мб из-за аниматора (когда окно диалога появляется)
+            dialogBoxRect.anchoredPosition = new Vector2(110, 110);
+            //Vector2 anchoredPosition;
+            //RectTransformUtility.ScreenPointToLocalPointInRectangle(dialogBoxRect.parent.GetComponent<RectTransform>(), RectTransformUtility.WorldToScreenPoint(Camera.main, GameObject.Find(name).transform.position), null, out anchoredPosition);
         }
-        else 
+        else
         {
-            fieldNameBox.GetComponent<RectTransform>().anchoredPosition = new Vector3 (513, 130, 0);
+            dialogBoxRect.anchoredPosition = new Vector2(0, 130); // По умолчанию
         }
-*/
 
         fieldSentence.text = ""; //наш диалог между ""
-        foreach(char letter in sentence.ToCharArray()) //для каждой буквы будем прибавлять след. букву
+        foreach (char letter in sentence.ToCharArray()) //для каждой буквы будем прибавлять след. букву
         {
             fieldSentence.text += letter;
             yield return new WaitForSeconds(Time.deltaTime * speedLetters);
@@ -78,7 +81,7 @@ public class DialogManager : MonoBehaviour
 
         that.count = currentDialog.SentencesList.Count;
         that.currentIndex = 0;
-        
+
         that.StartCoroutine(that.TypeSentenceAndSetName(that.CurrentSentences[0].CharacterName, that.CurrentSentences[0].Letters, that.CurrentSentences[0].SpeedLetters));
 
         //currentDialog.isRead = "true";
@@ -88,11 +91,11 @@ public class DialogManager : MonoBehaviour
     {
         currentIndex++;
         StopAllCoroutines();
-        if(that.currentIndex < that.count)
+        if (that.currentIndex < that.count)
         {
             that.StartCoroutine(that.TypeSentenceAndSetName(that.CurrentSentences[that.currentIndex].CharacterName, that.CurrentSentences[that.currentIndex].Letters, that.CurrentSentences[that.currentIndex].SpeedLetters));
         }
-        
+
         else EndDialogue();
     }
 }
