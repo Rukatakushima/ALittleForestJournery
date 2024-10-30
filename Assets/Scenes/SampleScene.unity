@@ -291,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 51940267}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.844955, y: 1.36, z: 0}
+  m_LocalPosition: {x: 13.85, y: 1.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -771,7 +771,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.000015258789, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 256.68103, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &384207851
@@ -1499,7 +1499,7 @@ Transform:
   m_GameObject: {fileID: 481661197}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.848739, y: 1.76, z: 0}
+  m_LocalPosition: {x: 13.85, y: 1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1597,7 +1597,7 @@ Transform:
   m_GameObject: {fileID: 483889923}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.321892, y: 3.06, z: 0}
+  m_LocalPosition: {x: 17.27, y: 3.06, z: 0}
   m_LocalScale: {x: 1.1791298, y: 1.2285434, z: 1.0789}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1631,7 +1631,7 @@ GameObject:
   - component: {fileID: 497865378}
   - component: {fileID: 497865379}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Blait
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1815,7 +1815,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 73.2, y: -8.9}
+  m_AnchoredPosition: {x: 73.20001, y: -8.900024}
   m_SizeDelta: {x: 214.8994, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &510074727
@@ -2040,7 +2040,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.817649, y: 1.0860898, z: -9.87191}
+  m_LocalPosition: {x: -2.8155642, y: 1.0860894, z: -9.87191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2429,6 +2429,7 @@ MonoBehaviour:
     - CharacterName: Tox
       Letters: Have fun and another journery!
       SpeedLetters: 6
+  canvas: {fileID: 904450326}
 --- !u!1 &715192307
 GameObject:
   m_ObjectHideFlags: 0
@@ -2598,7 +2599,7 @@ Transform:
   m_GameObject: {fileID: 752505452}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.849054, y: 2.43, z: 0}
+  m_LocalPosition: {x: 13.85, y: 2.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3157,7 +3158,7 @@ Canvas:
   m_GameObject: {fileID: 904450323}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -3358,7 +3359,7 @@ Transform:
   m_GameObject: {fileID: 967478254}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.848108, y: 1.76, z: 0}
+  m_LocalPosition: {x: 13.85, y: 1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4872,9 +4873,9 @@ RectTransform:
   - {fileID: 384207849}
   m_Father: {fileID: 904450327}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 525}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1340803412
@@ -5080,7 +5081,7 @@ Transform:
   m_GameObject: {fileID: 1394747230}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.847478, y: 0.5862951, z: 0}
+  m_LocalPosition: {x: 13.85, y: 0.5862951, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

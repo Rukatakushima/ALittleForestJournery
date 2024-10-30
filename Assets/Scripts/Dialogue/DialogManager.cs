@@ -34,29 +34,25 @@ public class DialogManager : MonoBehaviour
     public GameObject fieldDialogBox, fieldNameBox; //для перемещения имени и спрайта
     public Text fieldName, fieldSentence;
     public List<Dialog> DialogsQueue;
+    public Canvas canvas;
 
     private void Awake()
     {
         that = this;
     }
 
+    // private void Update() 
+    // {
+    //ИЗ TypeSentenceAndSetName, чтобы окно следовало за объектом
+    //     MoveDialogBox(name);
+    // }
+
     IEnumerator TypeSentenceAndSetName(string name, string sentence, float speedLetters)
     {
         fieldName.text = name;// т.е. сокращение от fieldName.GetComponent<Text>().text
         RectTransform dialogBoxRect = fieldDialogBox.GetComponent<RectTransform>();
 
-        if (GameObject.Find(name))
-        {
-            ////////////////////// ИЗМЕНЕНИЕ ПОЗИЦИИ ДИАЛОГА
-            ////сейчас Pos Y устанавливается на то, что мы указываем в сцене. Мб из-за аниматора (когда окно диалога появляется)
-            dialogBoxRect.anchoredPosition = new Vector2(110, 110);
-            //Vector2 anchoredPosition;
-            //RectTransformUtility.ScreenPointToLocalPointInRectangle(dialogBoxRect.parent.GetComponent<RectTransform>(), RectTransformUtility.WorldToScreenPoint(Camera.main, GameObject.Find(name).transform.position), null, out anchoredPosition);
-        }
-        else
-        {
-            dialogBoxRect.anchoredPosition = new Vector2(0, 130); // По умолчанию
-        }
+        MoveDialogBox(name);
 
         fieldSentence.text = ""; //наш диалог между ""
         foreach (char letter in sentence.ToCharArray()) //для каждой буквы будем прибавлять след. букву
@@ -66,8 +62,44 @@ public class DialogManager : MonoBehaviour
         }
     }
 
+    private void MoveDialogBox(string characterName)
+    {
+        bool shouldEnableAnimator = that.boxAnim.enabled;
+        that.boxAnim.enabled = false;
+        if (GameObject.Find(characterName) is GameObject targetObject)
+        {
+            // Vector2 vector2 = RectTransformUtility.WorldToScreenPoint(Camera.main, targetObject.transform.position) + new Vector2(-400,0);
+            // fieldDialogBox.GetComponent<RectTransform>().anchoredPosition = vector2;
+
+            fieldDialogBox.GetComponent<RectTransform>().anchoredPosition = RectTransformUtility.WorldToScreenPoint(Camera.main, targetObject.transform.position);
+
+            /*
+            // Получаем RectTransform объекта, который мы хотим позиционировать
+            RectTransform fieldDialogBoxRect = fieldDialogBox.GetComponent<RectTransform>();
+
+            // Получаем экранные координаты целевого объекта 
+            Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, targetObject.transform.position);
+
+            // Переводим экранные координаты в локальные координаты RectTransform 
+            Vector2 anchoredPosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(fieldDialogBoxRect.parent as RectTransform, screenPoint, Camera.main, out anchoredPosition);
+
+            // Устанавливаем значения для RectTransform
+            fieldDialogBoxRect.anchoredPosition = anchoredPosition;
+*/
+        }
+        else
+        {
+            fieldDialogBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 1.5f);
+        }
+        if (shouldEnableAnimator)
+        {
+            that.boxAnim.enabled = true;
+        }
+    }
     public static void EndDialogue()
     {
+        that.boxAnim.enabled = true;
         that.boxAnim.SetBool("boxOpen", false);
     }
 
@@ -75,6 +107,8 @@ public class DialogManager : MonoBehaviour
     {
         that.boxAnim.SetBool("boxOpen", true);
         that.startAnim.SetBool("startOpen", false);
+
+        that.boxAnim.enabled = false;
 
         Dialog currentDialog = that.DialogsQueue.Find(x => x.id == idDialog);
         that.CurrentSentences = currentDialog.SentencesList;
