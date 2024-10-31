@@ -33,8 +33,11 @@ public class DialogManager : MonoBehaviour
     public Animator boxAnim;
     public GameObject fieldDialogBox, fieldNameBox; //для перемещения имени и спрайта
     public Text fieldName, fieldSentence;
+    // для теста перемещения диалога
+    public Transform characterTransform;
+    // public Camera camera;
+    ///
     public List<Dialog> DialogsQueue;
-    public Canvas canvas;
 
     private void Awake()
     {
@@ -66,27 +69,11 @@ public class DialogManager : MonoBehaviour
     {
         bool shouldEnableAnimator = that.boxAnim.enabled;
         that.boxAnim.enabled = false;
-        if (GameObject.Find(characterName) is GameObject targetObject)
+        //if (GameObject.Find(characterName) is GameObject targetObject)
+        if (characterName == characterTransform.gameObject.name)
         {
-            // Vector2 vector2 = RectTransformUtility.WorldToScreenPoint(Camera.main, targetObject.transform.position) + new Vector2(-400,0);
-            // fieldDialogBox.GetComponent<RectTransform>().anchoredPosition = vector2;
-
-            fieldDialogBox.GetComponent<RectTransform>().anchoredPosition = RectTransformUtility.WorldToScreenPoint(Camera.main, targetObject.transform.position);
-
-            /*
-            // Получаем RectTransform объекта, который мы хотим позиционировать
-            RectTransform fieldDialogBoxRect = fieldDialogBox.GetComponent<RectTransform>();
-
-            // Получаем экранные координаты целевого объекта 
-            Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, targetObject.transform.position);
-
-            // Переводим экранные координаты в локальные координаты RectTransform 
-            Vector2 anchoredPosition;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(fieldDialogBoxRect.parent as RectTransform, screenPoint, Camera.main, out anchoredPosition);
-
-            // Устанавливаем значения для RectTransform
-            fieldDialogBoxRect.anchoredPosition = anchoredPosition;
-*/
+            Camera camera = Camera.main;
+            fieldDialogBox.transform.position = camera.WorldToScreenPoint(characterTransform.position) + new Vector3(0, 115f);
         }
         else
         {
