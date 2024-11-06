@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+// ЗДЕСЬ БУДУТ ВСЕ ФУНКЦИИ ДЛЯ ДИАЛОГОВ: ВЫЗОВ, ЗАКРЫТИЕ, НАПИСАНИЕ, ПЕРЕМЕЩЕНИЕ, ИЗМЕНЕНИЯ И ТД
 public class DialogManager : MonoBehaviour
 {
-    static DialogManager that;
+    public static DialogManager that;
+    #region Parameters
 
     [System.Serializable]
     public class Sentence
@@ -32,70 +33,33 @@ public class DialogManager : MonoBehaviour
     public Animator startAnim;
     public Animator boxAnim;
     public GameObject fieldDialogBox, fieldNameBox; //для перемещения имени и спрайта
-    public Text fieldName, fieldSentence;
-    // для теста перемещения диалога
+    public Text fieldName, fieldSentence; // для теста перемещения диалога
     public Transform characterTransform;
-    // public Camera camera;
-    ///
+    public Transform mainCharacterTransform;
     public List<Dialog> DialogsQueue;
 
+    #endregion Parameters
     private void Awake()
     {
         that = this;
     }
-
-    // private void Update() 
-    // {
-    //ИЗ TypeSentenceAndSetName, чтобы окно следовало за объектом
-    //     MoveDialogBox(name);
-    // }
-
-    IEnumerator TypeSentenceAndSetName(string name, string sentence, float speedLetters)
+    /*
+    #region Quests
+    public bool[] questStates;// Список булевых переменных для проверки квестов
+    public bool CheckQuestState(int questId)
     {
-        fieldName.text = name;// т.е. сокращение от fieldName.GetComponent<Text>().text
-        RectTransform dialogBoxRect = fieldDialogBox.GetComponent<RectTransform>();
-
-        MoveDialogBox(name);
-
-        fieldSentence.text = ""; //наш диалог между ""
-        foreach (char letter in sentence.ToCharArray()) //для каждой буквы будем прибавлять след. букву
-        {
-            fieldSentence.text += letter;
-            yield return new WaitForSeconds(Time.deltaTime * speedLetters);
-        }
+        return questStates[questId];
     }
-
-    private void MoveDialogBox(string characterName)
+    public void SetQuestState(int questId, bool state)
     {
-        bool shouldEnableAnimator = that.boxAnim.enabled;
-        that.boxAnim.enabled = false;
-        //if (GameObject.Find(characterName) is GameObject targetObject)
-        if (characterName == characterTransform.gameObject.name)
-        {
-            Camera camera = Camera.main;
-            fieldDialogBox.transform.position = camera.WorldToScreenPoint(characterTransform.position) + new Vector3(0, 115f);
-        }
-        else
-        {
-            fieldDialogBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 1.5f);
-        }
-        if (shouldEnableAnimator)
-        {
-            that.boxAnim.enabled = true;
-        }
+        questStates[questId] = state;
     }
-    public static void EndDialogue()
-    {
-        that.boxAnim.enabled = true;
-        that.boxAnim.SetBool("boxOpen", false);
-    }
-
+    #endregion
+    */
     public void StartDialogue(int idDialog)
     {
         that.boxAnim.SetBool("boxOpen", true);
         that.startAnim.SetBool("startOpen", false);
-
-        that.boxAnim.enabled = false;
 
         Dialog currentDialog = that.DialogsQueue.Find(x => x.id == idDialog);
         that.CurrentSentences = currentDialog.SentencesList;
@@ -107,7 +71,41 @@ public class DialogManager : MonoBehaviour
 
         //currentDialog.isRead = "true";
     }
+    IEnumerator TypeSentenceAndSetName(string name, string sentence, float speedLetters)
+    {
+        fieldName.text = name;
 
+        that.boxAnim.enabled = false;
+        MoveDialogBox(name);
+
+        fieldSentence.text = ""; //наш диалог между ""
+        foreach (char letter in sentence.ToCharArray()) //для каждой буквы будем прибавлять след. букву
+        {
+            fieldSentence.text += letter;
+            yield return new WaitForSeconds(Time.deltaTime * speedLetters);
+        }
+    }
+    private void MoveDialogBox(string characterName)
+    {
+        Transform targetTransform = null;
+        if (characterName == characterTransform.gameObject.name)
+        {
+            targetTransform = characterTransform;
+        }
+        else if (characterName == mainCharacterTransform.gameObject.name)
+        {
+            targetTransform = mainCharacterTransform;
+        }
+        if (characterName == targetTransform.gameObject.name)
+        {
+            Camera camera = Camera.main;
+            fieldDialogBox.transform.position = camera.WorldToScreenPoint(targetTransform.position) + new Vector3(0, 115f);
+        }
+        else
+        {
+            fieldDialogBox.transform.position = new Vector2(0, 1.5f);
+        }
+    }
     public void DisplayNextSentence()
     {
         currentIndex++;
@@ -118,5 +116,10 @@ public class DialogManager : MonoBehaviour
         }
 
         else EndDialogue();
+    }
+    public static void EndDialogue()
+    {
+        that.boxAnim.enabled = true;
+        that.boxAnim.SetBool("boxOpen", false);
     }
 }
