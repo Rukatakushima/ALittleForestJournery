@@ -2317,6 +2317,7 @@ MonoBehaviour:
   fieldNameBox: {fileID: 510074725}
   fieldName: {fileID: 1777375248}
   fieldSentence: {fileID: 1416090228}
+  characterTransform: {fileID: 1129158281}
   DialogsQueue:
   - id: 0
     isRead: 0
@@ -2429,7 +2430,6 @@ MonoBehaviour:
     - CharacterName: Tox
       Letters: Have fun and another journery!
       SpeedLetters: 6
-  canvas: {fileID: 904450326}
 --- !u!1 &715192307
 GameObject:
   m_ObjectHideFlags: 0
