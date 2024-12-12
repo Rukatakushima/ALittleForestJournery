@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 7b5fb2198bc5e184bbe1a68b493bb03a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _pieceRenderer: {fileID: 7478364067053654497, guid: bd82acd756408e94c94de7b588bf8fbf, type: 3}
+  - _pieceCollider: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
