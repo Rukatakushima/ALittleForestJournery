@@ -13,7 +13,7 @@ namespace Connect.Core
         public static ConnectGameplayManager Instance;
         [HideInInspector] public bool hasGameFinished;
         [SerializeField] private GameObject _winText;
-        [SerializeField] private SpriteRenderer _clickHighlight;
+        //[SerializeField] private SpriteRenderer _clickHighlight;
 
         private void Awake()
         {
@@ -21,29 +21,38 @@ namespace Connect.Core
 
             hasGameFinished = false;
             _winText.SetActive(false);
-            /*
-                    #region BOARD_SPAWN
 
-                        SpawnBoard();
-                                #endregion
-
-
-
-            */
+            SpawnBoard();
         }
         #endregion
 
         #region BOARD_SPAWN
 
-        [SerializeField] private SpriteRenderer _boardPrefab, _bgCellPregab;
+        [SerializeField] private SpriteRenderer _boardPrefab, _bgCellPrefab;
         private void SpawnBoard()
         {
-            int currentLevelSize = ConnectGameManager.Instance.CurrentStage + 4;
-            var board = Instantiate(_boardPrefab,
-            new Vector3(currentLevelSize / 2f, currentLevelSize / 2f, 0f),
-            Quaternion.identity);
+            int currentLevelSize = 4;//ConnectGameManager.Instance.CurrentStage + 4;
 
-            board.size = new Vector2(currentLevelSize + 0.08f, currentLevelSize + 0.08f);
+            //инициализация подложки: префаб, положение (делим размер на 2, чтобы разместить в середине), поворот
+            var board = Instantiate(_boardPrefab,
+                new Vector3(currentLevelSize / 2f, currentLevelSize / 2f, 0f),
+                Quaternion.identity);
+
+            // добавлеяем к размеру "обводку\рамку"
+            board.size = new Vector2(currentLevelSize + 0.1f, currentLevelSize + 0.1f);
+
+            for (int i = 0; i < currentLevelSize; i++)
+            {
+                for (int j = 0; j < currentLevelSize; j++)
+                {
+                    Instantiate(_bgCellPrefab,
+                        new Vector3(i + 0.5f, j + 0.5f, 0f),
+                        Quaternion.identity);
+                }
+            }
+
+            Camera.main.orthographicSize = currentLevelSize-1.5f;// + 2f;
+            Camera.main.transform.position = new Vector3(currentLevelSize / 2f, currentLevelSize / 2f, -10f);
         }
 
         #endregion
@@ -51,10 +60,10 @@ namespace Connect.Core
         #region NODES_SPAWN
 
         private ConnectLevelData CurrentLevelData;
-        [SerializeField] private Node _nodePrefab;
-        private List<Node> _nodes;
+        [SerializeField] private ConnectNode _nodePrefab;
+        private List<ConnectNode> _nodes;
 
-        public Dictionary<Vector2Int, Node> _nodGrid;
+        public Dictionary<Vector2Int, ConnectNode> _nodeGrid;
 
         private void SpawnNodes()
         {
