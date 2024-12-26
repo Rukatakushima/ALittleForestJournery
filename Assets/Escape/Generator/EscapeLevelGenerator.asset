@@ -20,27 +20,27 @@ MonoBehaviour:
     Size: 1
     Start: {x: 2, y: 0}
   Pieces:
-  - Id: 2
+  - Id: 0
     IsVertical: 1
     Size: 2
     Start: {x: 3, y: 4}
-  - Id: 3
+  - Id: 1
     IsVertical: 0
     Size: 2
     Start: {x: 0, y: 3}
-  - Id: 5
+  - Id: 2
     IsVertical: 1
     Size: 1
     Start: {x: 0, y: 1}
-  - Id: 6
+  - Id: 3
     IsVertical: 0
     Size: 1
     Start: {x: 1, y: 1}
-  - Id: 7
+  - Id: 4
     IsVertical: 1
     Size: 2
     Start: {x: 2, y: 3}
-  - Id: 12
+  - Id: 5
     IsVertical: 0
     Size: 2
     Start: {x: 4, y: 2}

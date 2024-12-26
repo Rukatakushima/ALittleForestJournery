@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FillLevel", menuName = "FillLevel")]
+[CreateAssetMenu(fileName = "FillLevel", menuName = "Levels/FillLevel")]
 public class Level : ScriptableObject
 {
     public int Row;

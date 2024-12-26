@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EscapeLevel", menuName = "EscapeLevel", order = 0)]
+[CreateAssetMenu(fileName = "EscapeLevel", menuName = "Levels/EscapeLevel", order = 0)]
 public class EscapeLevel : ScriptableObject 
 {
    public int Row;

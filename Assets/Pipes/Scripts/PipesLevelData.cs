@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Level", menuName = "Level")]
+[CreateAssetMenu(fileName = "PipesLevel", menuName = "Levels/PipesLevel")]
 public class PipesLevelData : ScriptableObject
 {
     public int Row;
