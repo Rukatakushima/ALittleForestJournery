@@ -1,4 +1,6 @@
 using Connect.Common;
+using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,6 +10,7 @@ namespace Connect.Core
     public class ConnectGameplayManager : MonoBehaviour
     {
         #region START_METHODS
+
         #region START_VARIABLES
         public static ConnectGameplayManager Instance;
         [HideInInspector] public bool hasGameFinished;
@@ -54,7 +57,7 @@ namespace Connect.Core
                 }
             }
 
-            Camera.main.orthographicSize = currentLevelSize - 1.5f;// + 2f;
+            Camera.main.orthographicSize = currentLevelSize - 1f;// + 2f;
             Camera.main.transform.position = new Vector3(currentLevelSize / 2f, currentLevelSize / 2f, -10f);
         }
 
@@ -118,10 +121,10 @@ namespace Connect.Core
 
         public List<Color> NodeColors;
 
-        public int GetColorId(int i,int j)
+        public int GetColorId(int i, int j)
         {
             List<Edge> edges = CurrentLevelData.Edges;
-            Vector2Int point = new Vector2Int(i,j);
+            Vector2Int point = new Vector2Int(i, j);
 
             for (int colorId = 0; colorId < edges.Count; colorId++)
             {
@@ -149,6 +152,32 @@ namespace Connect.Core
         #endregion
 
         #region WIN_CONDITIONS
+
+        private void CheckWin()
+        {
+            bool IsWinning = true;
+            foreach (var item in _nodes)
+            {
+                item.SolveHighlight();
+            }
+
+            foreach (var item in _nodes)
+            {
+                IsWinning &= item.IsWin;
+                if (!IsWinning)
+                {
+                    return;
+                }
+            }
+
+            hasGameFinished = true;
+            StartCoroutine(GameFinished());
+        }
+        private IEnumerator GameFinished()
+        {
+            yield return new WaitForSeconds(1f);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        }
         #endregion
 
         /*
