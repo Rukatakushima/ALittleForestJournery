@@ -37,7 +37,7 @@ namespace Connect.Core
         [SerializeField] private SpriteRenderer _boardPrefab, _bgCellPrefab;
         private void SpawnBoard()
         {
-            int currentLevelSize = 4;//ConnectGameManager.Instance.CurrentStage + 4;
+            int currentLevelSize =ConnectGameManager.Instance.CurrentStage + 4;
 
             //инициализация подложки: префаб, положение (делим размер на 2, чтобы разместить в середине), поворот
             var board = Instantiate(_boardPrefab,
@@ -76,7 +76,7 @@ namespace Connect.Core
             _nodes = new List<ConnectNode>();
             _nodeGrid = new Dictionary<Vector2Int, ConnectNode>();
 
-            int currentLevelSize = 4;//ConnectGameManager.Instance.CurrentStage + 4;
+            int currentLevelSize = ConnectGameManager.Instance.CurrentStage + 4;
             ConnectNode spawnedNode;
             Vector3 spawnPos;
 

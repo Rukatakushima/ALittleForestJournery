@@ -12,5 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: ConnectDefaultLevel
   m_EditorClassIdentifier: NewAssembly:Connect.Common:ConnectLevelData
-  ConnectLevelName: 
-  Edges: []
+  ConnectLevelName: DefaultLevel
+  Edges:
+  - Points:
+    - {x: 1, y: 0}
+    - {x: 0, y: 4}
+  - Points:
+    - {x: 1, y: 0}
+    - {x: 0, y: 4}
+  - Points:
+    - {x: 2, y: 0}
+    - {x: 2, y: 3}
+  - Points:
+    - {x: 3, y: 0}
+    - {x: 4, y: 3}
+  - Points:
+    - {x: 3, y: 1}
+    - {x: 4, y: 4}

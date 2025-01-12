@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: ConnectLevels
   m_EditorClassIdentifier: NewAssembly:Connect.Common:ConnectLevelList
-  Levels: []
+  Levels:
+  - {fileID: 11400000, guid: 42cdfc7ab8da45541831955517340fe0, type: 2}
