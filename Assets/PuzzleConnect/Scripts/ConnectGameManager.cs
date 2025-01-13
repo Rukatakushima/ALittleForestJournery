@@ -1,6 +1,5 @@
 using Connect.Common;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace Connect.Core
@@ -88,7 +87,7 @@ namespace Connect.Core
                 }
             }
 
-            string levelName = "ConnectLevel" + CurrentStage.ToString() + CurrentLevel.ToString();
+            string levelName = "Level" + CurrentStage.ToString() + CurrentLevel.ToString();
             PlayerPrefs.SetInt(levelName, 1);
         }
 
@@ -134,5 +133,5 @@ namespace Connect.Core
         }
 
         #endregion
-    }
+    } 
 }

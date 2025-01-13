@@ -2,6 +2,7 @@ using Connect.Common;
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 
@@ -37,7 +38,7 @@ namespace Connect.Core
         [SerializeField] private SpriteRenderer _boardPrefab, _bgCellPrefab;
         private void SpawnBoard()
         {
-            int currentLevelSize =ConnectGameManager.Instance.CurrentStage + 4;
+            int currentLevelSize = ConnectGameManager.Instance.CurrentStage + 4;
 
             //инициализация подложки: префаб, положение (делим размер на 2, чтобы разместить в середине), поворот
             var board = Instantiate(_boardPrefab,
@@ -149,6 +150,56 @@ namespace Connect.Core
         #endregion
 
         #region UPDATE_METHODS
+
+        private ConnectNode startNode;
+
+        private void Update()
+        {
+            if (hasGameFinished) return;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                startNode = null;
+                return;
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
+                RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+                if (startNode == null)
+                {
+                    if (hit && hit.collider.gameObject.TryGetComponent(out ConnectNode tNode)
+                    && tNode.isClickable)
+                    {
+                        startNode = tNode;
+                    }
+                    return;
+                }
+
+                if (hit && hit.collider.gameObject.TryGetComponent(out ConnectNode tempNode) && startNode != tempNode)
+                {
+                    if (startNode.colorId != tempNode.colorId && tempNode.IsEndNode)
+                    {
+                        return;
+                    }
+
+                    startNode.UpdateInput(tempNode);
+                    CheckWin();
+                    startNode = null;
+                }
+
+                return;
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                startNode = null;
+            }
+
+        }
         #endregion
 
         #region WIN_CONDITIONS
@@ -156,10 +207,10 @@ namespace Connect.Core
         private void CheckWin()
         {
             bool IsWinning = true;
-            foreach (var item in _nodes)
-            {
-                item.SolveHighlight();
-            }
+            // foreach (var item in _nodes)
+            // {
+            //     item.SolveHighlight();
+            // }
 
             foreach (var item in _nodes)
             {
