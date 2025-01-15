@@ -146,7 +146,58 @@ namespace Connect.Core
                 DeleteStartingNode(ConnectedNodes[0]);
             }
 
+            //одсоединяемся к EndNode, у которого уже есть edge
+            //удаляем его edge
+            if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.IsEndNode)
+            {
+                DeleteConnectedNode(connectedNode);
+            }
+
             AddEdge(connectedNode);
+
+            //чтобы edges одного не отрезали друг друга при пересечении от стартоых node
+            //Dont allow Boxes
+            if (colorId != connectedNode.colorId)
+            {
+                return;
+            }
+            List<ConnectNode> checkingNodes = new List<ConnectNode>() { this };
+            List<ConnectNode> resultNodes = new List<ConnectNode>() { this };
+
+            while (checkingNodes.Count > 0)
+            {
+                foreach (var item in checkingNodes[0].ConnectedNodes)
+                {
+                    if (!resultNodes.Contains(item))
+                    {
+                        resultNodes.Add(item);
+                        checkingNodes.Add(item);
+                    }
+                }
+                checkingNodes.Remove(checkingNodes[0]);
+            }
+
+            foreach (var item in resultNodes)
+            {
+                if (!item.IsEndNode && item.IsDegreeThree(resultNodes))
+                {
+                    ConnectNode tempNode = item.ConnectedNodes[0];
+                    item.ConnectedNodes.Remove(tempNode);
+                    tempNode.ConnectedNodes.Remove(item);
+                    item.RemoveEdge(tempNode);
+                    tempNode.DeleteNode();
+
+                    if (item.ConnectedNodes.Count == 0) return;
+
+                    tempNode = item.ConnectedNodes[0];
+                    item.ConnectedNodes.Remove(tempNode);
+                    tempNode.ConnectedNodes.Remove(item);
+                    item.RemoveEdge(tempNode);
+                    tempNode.DeleteNode();
+
+                    return;
+                }
+            }
         }
 
         private void DeleteStartingNode(ConnectNode connectedNode)
@@ -232,6 +283,52 @@ namespace Connect.Core
             }
 
             return false;
+        }
+
+         private List<Vector2Int> directionCheck = new List<Vector2Int>()
+        {
+            Vector2Int.up,Vector2Int.left,Vector2Int.down,Vector2Int.right
+        };
+        
+        public bool IsDegreeThree(List<ConnectNode> resultNodes)
+        {
+            bool isdegreethree = false;
+
+            int numOfNeighbours = 0;
+
+            for (int i = 0; i < directionCheck.Count; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    Vector2Int checkingPos = Pos2D + directionCheck[(i + j) % directionCheck.Count];
+
+                    if (ConnectGameplayManager.Instance._nodeGrid.TryGetValue(checkingPos, out ConnectNode result))
+                    {
+                        if (resultNodes.Contains(result))
+                        {
+                            numOfNeighbours++;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (numOfNeighbours == 3)
+                {
+                    break;
+                }
+
+                numOfNeighbours = 0;
+            }
+
+            if (numOfNeighbours >= 3)
+            {
+                isdegreethree = true;
+            }
+
+            return isdegreethree;
         }
     }
 }
