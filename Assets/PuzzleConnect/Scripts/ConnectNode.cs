@@ -65,6 +65,7 @@ namespace Connect.Core
             ConnectGameplayManager.Instance.NodeColors[colorId];
         }
 
+        //установка edge
         public void SetEdge(Vector2Int offset, ConnectNode node)
         {
             if (offset == Vector2Int.up)
@@ -119,32 +120,54 @@ namespace Connect.Core
                     tempNode = ConnectedNodes[1];
 
                 }
-                ConnectedNodes.Remove(tempNode);
-                tempNode.ConnectedNodes.Remove(this);
-                RemoveEdge(tempNode);
-                tempNode.DeleteNode();
+                DeleteStartingNode(tempNode);
+                // ConnectedNodes.Remove(tempNode);
+                // tempNode.ConnectedNodes.Remove(this);
+                // RemoveEdge(tempNode);
+                // tempNode.DeleteNode();
             }
 
             // end node имеет 2 edges
             if (connectedNode.ConnectedNodes.Count == 2)
             {
-                ConnectNode tempNode = connectedNode.ConnectedNodes[0];
-                connectedNode.ConnectedNodes.Remove(tempNode);
-                tempNode.ConnectedNodes.Remove(connectedNode);
-                connectedNode.RemoveEdge(tempNode);
-                tempNode.DeleteNode();
+                DeleteConnectedNode(connectedNode);
+                //DeleteConnectedNode(connectedNode);
+            }
 
-                tempNode = connectedNode.ConnectedNodes[0];
-                connectedNode.ConnectedNodes.Remove(tempNode);
-                tempNode.ConnectedNodes.Remove(connectedNode);
-                connectedNode.RemoveEdge(tempNode);
-                tempNode.DeleteNode();
+            // другой start node (другого цвета) и connected node имеет 1 edge => убирается node (окрашенный в изначальный цвет edge) 
+            if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.colorId != colorId)
+            {
+                DeleteConnectedNode(connectedNode);
+            }
 
+            //end node с уже существующим 1 edge
+            if (ConnectedNodes.Count == 1 && IsEndNode)
+            {
+                DeleteStartingNode(ConnectedNodes[0]);
             }
 
             AddEdge(connectedNode);
         }
 
+        private void DeleteStartingNode(ConnectNode connectedNode)
+        {
+            ConnectNode tempNode = connectedNode;
+            ConnectedNodes.Remove(tempNode);
+            tempNode.ConnectedNodes.Remove(this);
+            RemoveEdge(tempNode);
+            tempNode.DeleteNode();
+
+        }
+
+        private void DeleteConnectedNode(ConnectNode connectedNode)
+        {
+            ConnectNode tempNode = connectedNode.ConnectedNodes[0];
+            connectedNode.ConnectedNodes.Remove(tempNode);
+            tempNode.ConnectedNodes.Remove(connectedNode);
+            connectedNode.RemoveEdge(tempNode);
+            tempNode.DeleteNode();
+
+        }
         private void AddEdge(ConnectNode connectedNode)
         {
             connectedNode.colorId = colorId;
@@ -185,7 +208,6 @@ namespace Connect.Core
                 }
                 startNode = tempNode;
             }
-
         }
 
         public bool IsConnectedToEndNode(List<ConnectNode> checkedNode = null)
@@ -211,10 +233,5 @@ namespace Connect.Core
 
             return false;
         }
-
-        public void SolveHighlight()
-        {
-        }
-
     }
 }

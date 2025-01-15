@@ -90,7 +90,7 @@ namespace Connect.Core
                     spawnedNode.Init();
 
                     int colorIdForSpawnedNode = GetColorId(i, j);
-
+                    //окрас point в цвет, который будем соединять
                     if (colorIdForSpawnedNode != -1)
                     {
                         spawnedNode.SetColorForPoint(colorIdForSpawnedNode);
@@ -103,6 +103,7 @@ namespace Connect.Core
                 }
             }
 
+            //установка сетки: сетка = nodes, у каждого node есть список offsetPos, т.е. 4 edge (верх, них, лево, право)
             List<Vector2Int> offsetPos = new List<Vector2Int>()
             { Vector2Int.up, Vector2Int.down,Vector2Int.left, Vector2Int.right};
 
@@ -129,11 +130,7 @@ namespace Connect.Core
 
             for (int colorId = 0; colorId < edges.Count; colorId++)
             {
-                if (edges[colorId].StartPoint == point ||
-                    edges[colorId].EndPoint == point)
-                {
-                    return colorId;
-                }
+                if (edges[colorId].StartPoint == point || edges[colorId].EndPoint == point) return colorId; 
             }
 
             return -1;
