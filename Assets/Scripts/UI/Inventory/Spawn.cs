@@ -1,15 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawn : MonoBehaviour
 {
     public GameObject item;
-    private Transform player;   
+    [SerializeField] private Transform player;
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
     }
 
     public void SpawnDroppedItem()

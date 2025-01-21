@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 4;
-    public float jumpForce, checkRadius;
+    [SerializeField] public float speed = 4;
+    [SerializeField] public float jumpForce, checkRadius;
+    [SerializeField] private Transform feetPos;
+    [SerializeField] private LayerMask whatIsGround;
+
     private Rigidbody2D rb;
+    private Animator anim;
     private bool facingLeft = true;
     private bool isGrounded;
-    public Transform feetPos;
-    public LayerMask whatIsGround;
-    private Animator anim;
 
     private void Start()
     {
@@ -19,6 +20,18 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Move();
+        UpdateAnimation();
+    }
+
+    private void Update()
+    {
+        CheckGrounded();
+        Jump();
+    }
+
+    private void Move()
+    {
         float moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
 
@@ -26,28 +39,33 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
-
-        anim.SetBool("isRunning", moveInput != 0);
     }
 
-    private void Update()
+    private void UpdateAnimation()
+    {
+        anim.SetBool("isRunning", Mathf.Abs(rb.velocity.x) > 0);
+        anim.SetBool("isJumping", !isGrounded);
+    }
+
+    private void CheckGrounded()
     {
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-        
-        if (isGrounded == true && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)))
+    }
+
+    private void Jump()
+    {
+        if (isGrounded && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)))
         {
             rb.velocity = Vector2.up * jumpForce;
             anim.SetTrigger("takeOf");
         }
-
-        anim.SetBool("isJumping", !isGrounded);
     }
 
-    void Flip()
+    private void Flip()
     {
         facingLeft = !facingLeft;
-        Vector3 Scaler = transform.localScale;
-        Scaler.x *= -1;
-        transform.localScale = Scaler;
+        Vector3 scaler = transform.localScale;
+        scaler.x *= -1;
+        transform.localScale = scaler;
     }
 }

@@ -10,7 +10,7 @@ public class NPCMovement : MonoBehaviour
 
     private Animator animationNPC;
     private GameObject player;
-    [SerializeField] private List<Vector3> positions = new List<Vector3>();
+    [SerializeField] private List<Vector2> positions = new List<Vector2>();
     private int currentIndex = 0;
 
     private void Start()
@@ -21,7 +21,10 @@ public class NPCMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!stopMove) Move();
+        if (!stopMove)
+        {
+            Move();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -44,12 +47,14 @@ public class NPCMovement : MonoBehaviour
 
     private void Move()
     {
-        if (positions.Count == 0) return;
+        if (positions.Count == 0 || currentIndex >= positions.Count)
+        {
+            return;
+        }
 
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, positions[currentIndex], speed * Time.deltaTime);
-        animationNPC.SetBool("isWalking", true);
+        transform.position = Vector2.MoveTowards(transform.position, positions[currentIndex], speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.localPosition, positions[currentIndex]) < 0.1f)
+        if (Vector2.Distance(transform.position, positions[currentIndex]) < 0.1f)
         {
             UpdatePositionIndex();
         }
@@ -81,11 +86,11 @@ public class NPCMovement : MonoBehaviour
 
     private void UpdateFacingDirection()
     {
-        if (transform.localPosition.x > positions[currentIndex].x && !facingLeft)
+        if (transform.position.x > positions[currentIndex].x && !facingLeft)
         {
             Flip();
         }
-        else if (transform.localPosition.x < positions[currentIndex].x && facingLeft)
+        else if (transform.position.x < positions[currentIndex].x && facingLeft)
         {
             Flip();
         }
