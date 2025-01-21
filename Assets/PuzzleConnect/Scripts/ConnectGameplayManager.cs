@@ -169,7 +169,7 @@ namespace Connect.Core
                 if (startNode == null)
                 {
                     if (hit && hit.collider.gameObject.TryGetComponent(out ConnectNode tNode)
-                    && tNode.isClickable)
+                    && tNode.IsClickable)
                     {
                         startNode = tNode;
                     }

@@ -14,7 +14,6 @@ public class DialogManager : MonoBehaviour
         public string Letters;
         public float SpeedLetters;
     }
-
     [System.Serializable]
     public class Dialog
     {
@@ -22,7 +21,6 @@ public class DialogManager : MonoBehaviour
         public bool isRead;
         public List<Sentence> SentencesList;
     }
-
     [HideInInspector]
     public int count;
     [HideInInspector]
@@ -33,10 +31,7 @@ public class DialogManager : MonoBehaviour
     public Animator boxAnim;
     public GameObject fieldDialogBox, fieldNameBox; //для перемещения имени и спрайта
     public Text fieldName, fieldSentence;
-    // для теста перемещения диалога
     public Transform characterTransform;
-    // public Camera camera;
-    ///
     public List<Dialog> DialogsQueue;
 
     private void Awake()
@@ -44,21 +39,15 @@ public class DialogManager : MonoBehaviour
         that = this;
     }
 
-    // private void Update() 
-    // {
-    //ИЗ TypeSentenceAndSetName, чтобы окно следовало за объектом
-    //     MoveDialogBox(name);
-    // }
-
     IEnumerator TypeSentenceAndSetName(string name, string sentence, float speedLetters)
     {
-        fieldName.text = name;// т.е. сокращение от fieldName.GetComponent<Text>().text
+        fieldName.text = name;// = fieldName.GetComponent<Text>().text
         RectTransform dialogBoxRect = fieldDialogBox.GetComponent<RectTransform>();
 
         MoveDialogBox(name);
 
-        fieldSentence.text = ""; //наш диалог между ""
-        foreach (char letter in sentence.ToCharArray()) //для каждой буквы будем прибавлять след. букву
+        fieldSentence.text = "";
+        foreach (char letter in sentence.ToCharArray())
         {
             fieldSentence.text += letter;
             yield return new WaitForSeconds(Time.deltaTime * speedLetters);
@@ -69,7 +58,6 @@ public class DialogManager : MonoBehaviour
     {
         bool shouldEnableAnimator = that.boxAnim.enabled;
         that.boxAnim.enabled = false;
-        //if (GameObject.Find(characterName) is GameObject targetObject)
         if (characterName == characterTransform.gameObject.name)
         {
             Camera camera = Camera.main;
@@ -116,7 +104,6 @@ public class DialogManager : MonoBehaviour
         {
             that.StartCoroutine(that.TypeSentenceAndSetName(that.CurrentSentences[that.currentIndex].CharacterName, that.CurrentSentences[that.currentIndex].Letters, that.CurrentSentences[that.currentIndex].SpeedLetters));
         }
-
         else EndDialogue();
     }
 }

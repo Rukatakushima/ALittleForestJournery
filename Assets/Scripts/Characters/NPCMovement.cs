@@ -1,20 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NPCMovement : MonoBehaviour
 {
     public float speed;
-    private bool facingLeft = true; // смотрит влево
-    bool canMoveForward;
-    bool stopMove;
-    Animator animationNPC;
+    private bool facingLeft = true;
+    private bool canMoveForward = true;
+    private bool stopMove;
+
+    private Animator animationNPC;
     private GameObject player;
+    [SerializeField] private List<Vector3> positions = new List<Vector3>();
+    private int currentIndex = 0;
 
-    [SerializeField]
-    private List <Vector3> positions = new List<Vector3>();
-
-    private int i = 0;
     private void Start()
     {
         animationNPC = GetComponent<Animator>();
@@ -26,67 +24,78 @@ public class NPCMovement : MonoBehaviour
         if (!stopMove) Move();
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
-        // if  (other.gameObject.CompareTag("Player"))
-        // {
+        if (other.CompareTag("Player"))
+        {
             stopMove = true;
             animationNPC.SetBool("isWalking", false);
-        // }
+        }
     }
 
-    public void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        stopMove = false;
-        animationNPC.SetBool("isWalking", true);
+        if (other.CompareTag("Player"))
+        {
+            stopMove = false;
+            animationNPC.SetBool("isWalking", true);
+        }
     }
 
-    void Move()
+    private void Move()
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, positions[i], speed*Time.deltaTime);
+        if (positions.Count == 0) return;
+
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, positions[currentIndex], speed * Time.deltaTime);
         animationNPC.SetBool("isWalking", true);
 
-        if( transform.localPosition.x - positions[i].x > 0 && !facingLeft) 
+        if (Vector3.Distance(transform.localPosition, positions[currentIndex]) < 0.1f)
         {
-            Flip();
-            facingLeft = true;
+            UpdatePositionIndex();
         }
 
-        else if( transform.localPosition.x - positions[i].x < 0 && facingLeft) 
-        {
-            Flip();
-            facingLeft = false;
-        }
+        UpdateFacingDirection();
+    }
 
-        if (transform.localPosition == positions[i]&&canMoveForward)
+    private void UpdatePositionIndex()
+    {
+        if (canMoveForward)
         {
-            i++;
-
-            if (i == positions.Count) //если прошли все позиции, то идем в обратном порядке
+            currentIndex++;
+            if (currentIndex >= positions.Count)
             {
-                i--;
+                currentIndex = positions.Count - 1;
                 canMoveForward = false;
             }
         }
-
-        else if (transform.localPosition == positions[i]&&!canMoveForward) 
+        else
         {
-            i--;
-            if (i == -1) 
+            currentIndex--;
+            if (currentIndex < 0)
             {
-                i = 0;
+                currentIndex = 0;
                 canMoveForward = true;
             }
         }
     }
 
-    void Flip() //переворот
+    private void UpdateFacingDirection()
     {
-        facingLeft = !facingLeft;
-        Vector3 Scaler = transform.localScale; //берем оригинальное положение игрока
-        Scaler.x *= -1; //умножаем оригинальное положение игрока на -1 (переворачиваем)
-        transform.localScale = Scaler; //применяем
+        if (transform.localPosition.x > positions[currentIndex].x && !facingLeft)
+        {
+            Flip();
+        }
+        else if (transform.localPosition.x < positions[currentIndex].x && facingLeft)
+        {
+            Flip();
+        }
     }
 
+    private void Flip()
+    {
+        facingLeft = !facingLeft;
+        Vector3 scaler = transform.localScale;
+        scaler.x *= -1;
+        transform.localScale = scaler;
+    }
 }

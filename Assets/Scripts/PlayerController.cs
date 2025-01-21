@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 4;
-    public float jumpForce;
-    public float moveInput;
-    //public Joystick joystick; // joystick
+    public float jumpForce, checkRadius;
     private Rigidbody2D rb;
-    private bool facingLeft = true; //игрок смотрит влево
+    private bool facingLeft = true;
     private bool isGrounded;
     public Transform feetPos;
-    public float checkRadius;
     public LayerMask whatIsGround;
     private Animator anim;
 
@@ -24,55 +19,35 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //moveInput = joystick.Horizontal; // joystick
-        moveInput = Input.GetAxis("Horizontal");
+        float moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
-        if(facingLeft == false && moveInput < 0) //если игрок смотрит не влево (вправо) и клавиша нажата
+
+        if ((facingLeft && moveInput > 0) || (!facingLeft && moveInput < 0))
         {
             Flip();
         }
-        else if(facingLeft == true && moveInput > 0)
-        {
-            Flip();
-        }
-        if(moveInput == 0)
-        {
-            anim.SetBool("isRunning", false);
-        }
-        else
-        {
-            anim.SetBool("isRunning", true);
 
-        }
-
+        anim.SetBool("isRunning", moveInput != 0);
     }
 
     private void Update()
-    {    
+    {
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-        //float verticalMove = joystick.Vertical; // joystick
-        //if(isGrounded == true && (verticalMove >= .5f)) // joystick
-        if(isGrounded == true && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))) //если игрок на земле и нажата клавиша "пробел"
+        
+        if (isGrounded == true && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)))
         {
-            rb.velocity = Vector2.up * jumpForce; //то прыгаем
+            rb.velocity = Vector2.up * jumpForce;
             anim.SetTrigger("takeOf");
         }
 
-        if(isGrounded == true) //если мы на земле, то не прыгаем, в ином случае - прыгаем
-        {
-            anim.SetBool("isJumping", false);
-        }
-        else
-        {
-            anim.SetBool("isJumping", true);
-        }
+        anim.SetBool("isJumping", !isGrounded);
     }
 
-    void Flip() //переворот
+    void Flip()
     {
-        facingLeft = !facingLeft; //поворачивается
-        Vector3 Scaler = transform.localScale; //берем оригинальное положение игрока
-        Scaler.x *= -1; //умножаем оригинальное положение игрока на -1 (переворачиваем)
-        transform.localScale = Scaler; //применяем
+        facingLeft = !facingLeft;
+        Vector3 Scaler = transform.localScale;
+        Scaler.x *= -1;
+        transform.localScale = Scaler;
     }
 }

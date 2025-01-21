@@ -1,31 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ParallaxCamera : MonoBehaviour 
+public class ParallaxCamera : MonoBehaviour
 {
-    public delegate void ParallaxCameraDelegate(float deltaMovement);
-    public ParallaxCameraDelegate onCameraTranslate;
+	public delegate void ParallaxCameraDelegate(float deltaMovement);
+	public ParallaxCameraDelegate onCameraTranslate;
 
-    private float oldPosition;
+	private float oldPosition;
 
-    void Start()
-    {
-	    oldPosition = transform.position.x;
-    }
+	void Start()
+	{
+		oldPosition = transform.position.x;
+	}
 
-    void Update()
-    {
-	    if (transform.position.x != oldPosition)
-	    {
-		    if (onCameraTranslate != null)
-		    {
-			    float delta = oldPosition - transform.position.x;
-			    onCameraTranslate(delta);
-		    }
+	void Update()
+	{
+		if (transform.position.x != oldPosition)
+		{
+			if (onCameraTranslate != null)
+			{
+				float delta = oldPosition - transform.position.x;
+				onCameraTranslate(delta);
+			}
 
-		    oldPosition = transform.position.x;
-	    }
-    }
+			oldPosition = transform.position.x;
+		}
+	}
 }
