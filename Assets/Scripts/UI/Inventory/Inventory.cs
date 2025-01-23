@@ -18,11 +18,13 @@ public class Inventory : MonoBehaviour
         {
             inventoryOn = true;
             inventory.SetActive(true);
+            Debug.Log("Chest inventory.SetActive(true);");
         }
         else if(inventoryOn == true)
         {
             inventoryOn = false;
             inventory.SetActive(false);
+            Debug.Log("Chest inventory.SetActive(false);");
         }
     }
 }

@@ -4,10 +4,9 @@ using UnityEngine;
 public class NPCMovement : MonoBehaviour
 {
     public float speed;
-    private bool facingLeft = true;
-    private bool canMoveForward = true;
-    private bool stopMove;
-
+    private bool FacingLeft = true;
+    private bool CanMoveForward = true;
+    private bool isMoving = true;
     private Animator animationNPC;
     private GameObject player;
     [SerializeField] private List<Vector2> positions = new List<Vector2>();
@@ -21,7 +20,7 @@ public class NPCMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!stopMove)
+        if (isMoving)
         {
             Move();
         }
@@ -31,8 +30,8 @@ public class NPCMovement : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            stopMove = true;
-            animationNPC.SetBool("isWalking", false);
+            isMoving = false;
+            SetWalkingAnimation(false);
         }
     }
 
@@ -40,8 +39,8 @@ public class NPCMovement : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            stopMove = false;
-            animationNPC.SetBool("isWalking", true);
+            isMoving = true;
+            SetWalkingAnimation(true);
         }
     }
 
@@ -53,8 +52,9 @@ public class NPCMovement : MonoBehaviour
         }
 
         transform.position = Vector2.MoveTowards(transform.position, positions[currentIndex], speed * Time.deltaTime);
+        SetWalkingAnimation(true);
 
-        if (Vector2.Distance(transform.position, positions[currentIndex]) < 0.1f)
+        if (Vector2.Distance((Vector2)transform.position, positions[currentIndex]) < 0.1f)
         {
             UpdatePositionIndex();
         }
@@ -64,13 +64,13 @@ public class NPCMovement : MonoBehaviour
 
     private void UpdatePositionIndex()
     {
-        if (canMoveForward)
+        if (CanMoveForward)
         {
             currentIndex++;
             if (currentIndex >= positions.Count)
             {
                 currentIndex = positions.Count - 1;
-                canMoveForward = false;
+                CanMoveForward = false;
             }
         }
         else
@@ -79,18 +79,14 @@ public class NPCMovement : MonoBehaviour
             if (currentIndex < 0)
             {
                 currentIndex = 0;
-                canMoveForward = true;
+                CanMoveForward = true;
             }
         }
     }
 
     private void UpdateFacingDirection()
     {
-        if (transform.position.x > positions[currentIndex].x && !facingLeft)
-        {
-            Flip();
-        }
-        else if (transform.position.x < positions[currentIndex].x && facingLeft)
+        if ((transform.position.x > positions[currentIndex].x && !FacingLeft) || (transform.position.x < positions[currentIndex].x && FacingLeft))
         {
             Flip();
         }
@@ -98,9 +94,14 @@ public class NPCMovement : MonoBehaviour
 
     private void Flip()
     {
-        facingLeft = !facingLeft;
+        FacingLeft = !FacingLeft;
         Vector3 scaler = transform.localScale;
         scaler.x *= -1;
         transform.localScale = scaler;
+    }
+
+    private void SetWalkingAnimation(bool isWalking)
+    {
+        animationNPC.SetBool("isWalking", isWalking);
     }
 }

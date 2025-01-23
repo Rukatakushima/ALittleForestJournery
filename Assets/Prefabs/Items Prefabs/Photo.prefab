@@ -161,5 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3163cec94a636643893e83136559d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotButton: {fileID: 6006622152042632437, guid: 9802c3857345f344195930fcf6adabfb, type: 3}
+  itemPrefab: {fileID: 1723256184255697047}
+  itemInInventory: {fileID: 3705307176670804652, guid: 322197da98b96df4dbf5fcdcd4467d4e, type: 3}
   id: 3

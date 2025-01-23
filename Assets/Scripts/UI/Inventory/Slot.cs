@@ -14,48 +14,39 @@ public class Slot : MonoBehaviour
 
     private void Update()
     {
-        if(transform.childCount <= 0) //childCount - объекты внутри нашего слота
+        if (transform.childCount <= 0)
         {
-            inventory.isFull[i] = false;//если их нет, то слот пустой
-        }
-
-        if (inventory.isFull[3] == true) 
-        {
-            player.GetComponent<PlayerController>().speed = 6;
-            player.GetComponent<PlayerController>().jumpForce = 6;
-        }
-        else 
-        {
-            player.GetComponent<PlayerController>().speed = 3;
-            player.GetComponent<PlayerController>().jumpForce = 4;
+            inventory.isFull[i] = false;
         }
     }
 
     public void DropItem()
     {
-        foreach(Transform child in transform)
+        foreach (Transform child in transform)
         {
-            child.GetComponent<Spawn>().SpawnDroppedItem();//возват объекта на локацию
+            int id = child.GetComponent<ItemID>().id;
+            ItemsManager.Instance.SpawnOnScene(id);
+            // child.GetComponent<Spawn>().SpawnDroppedItem();
             GameObject.Destroy(child.gameObject);
         }
     }
 
     public void PlaceInNextSlot()
     {
-        if(inventory.isFull[i] == true)
+        if (inventory.isFull[i] == true)
         {
             i++;
             if (inventory.isFull[i] == false)
             {
-                foreach(Transform child in transform)
+                foreach (Transform child in transform)
                 {
-                        Instantiate(child, inventory.slots[i].transform); // объект появился в слоте
-                        GameObject.Destroy(child.gameObject);
-                        inventory.isFull[i] = true;
-                        i--;
-                        inventory.isFull[i] = false;
-                        i++;
-                        break;
+                    Instantiate(child, inventory.slots[i].transform); // объект появился в слоте
+                    GameObject.Destroy(child.gameObject);
+                    inventory.isFull[i] = true;
+                    i--;
+                    inventory.isFull[i] = false;
+                    i++;
+                    break;
                 }
             }
             i--;
