@@ -12,19 +12,9 @@ public class Inventory : MonoBehaviour
         inventoryOn = false;
     }
 
-    public void Chest()
+    public void ToggleChest()
     {
-        if(inventoryOn == false)
-        {
-            inventoryOn = true;
-            inventory.SetActive(true);
-            Debug.Log("Chest inventory.SetActive(true);");
-        }
-        else if(inventoryOn == true)
-        {
-            inventoryOn = false;
-            inventory.SetActive(false);
-            Debug.Log("Chest inventory.SetActive(false);");
-        }
+        inventoryOn = !inventoryOn;
+        inventory.SetActive(inventoryOn);
     }
 }

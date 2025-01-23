@@ -2956,7 +2956,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 497865379}
         m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
-        m_MethodName: Chest
+        m_MethodName: ToggleChest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
