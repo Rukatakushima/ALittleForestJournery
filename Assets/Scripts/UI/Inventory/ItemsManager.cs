@@ -49,8 +49,8 @@ public class ItemsManager : MonoBehaviour
 #endif
     private void PopulateItemPrefabs()
     {
-        Pickup[] pickups = FindObjectsOfType<Pickup>();
-        foreach (Pickup pickup in pickups)
+        ItemOnScene[] pickups = FindObjectsOfType<ItemOnScene>();
+        foreach (ItemOnScene pickup in pickups)
         {
             GameObject prefab = prefabFromInstance(pickup.gameObject);
             if (prefab != null && !itemsOnScenePrefabs.Contains(prefab))
@@ -69,7 +69,7 @@ public class ItemsManager : MonoBehaviour
     {
         foreach (GameObject itemPrefab in itemsOnScenePrefabs)
         {
-            Pickup pickup = itemPrefab.GetComponent<Pickup>();
+            ItemOnScene pickup = itemPrefab.GetComponent<ItemOnScene>();
             if (pickup != null && pickup.id == itemId)
             {
                 return itemPrefab;
@@ -97,7 +97,7 @@ public class ItemsManager : MonoBehaviour
             {
                 inventory.isFull[i] = true;
                 GameObject spawnedItemInInventory = Instantiate(itemInInventory, inventory.slots[i].transform);
-                spawnedItemInInventory.GetComponent<ItemID>().id = itemId;
+                spawnedItemInInventory.GetComponent<ItemInInventory>().id = itemId;
                 spawnedItemInInventory.name = itemOnScene.name;
                 // itemsInInventory.Add(spawnedItemInInventory);
                 Destroy(itemOnScene);

@@ -11,7 +11,7 @@ public class Quests : MonoBehaviour
     {
         if (other.CompareTag("Player")) return; // Если это игрок, выходим из метода
 
-        Pickup pickup = other.GetComponent<Pickup>();
+        ItemOnScene pickup = other.GetComponent<ItemOnScene>();
         if (pickup != null)
         {
             idPickedUp = pickup.id;

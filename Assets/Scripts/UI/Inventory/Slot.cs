@@ -24,7 +24,7 @@ public class Slot : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            int id = child.GetComponent<ItemID>().id;
+            int id = child.GetComponent<ItemInInventory>().id;
             ItemsManager.Instance.SpawnOnScene(id);
             // child.GetComponent<Spawn>().SpawnDroppedItem();
             GameObject.Destroy(child.gameObject);

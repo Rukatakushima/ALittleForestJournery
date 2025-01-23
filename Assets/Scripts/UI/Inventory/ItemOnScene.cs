@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Pickup : MonoBehaviour
+public class ItemOnScene : MonoBehaviour
 {
     private Inventory inventory;
     public GameObject itemInInventory;
