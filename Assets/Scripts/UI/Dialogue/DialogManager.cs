@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DialogManager : MonoBehaviour
 {
     private static DialogManager instance;
-
+    
     [System.Serializable]
     public class Sentence
     {
@@ -34,6 +34,17 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private Text fieldSentence;
     [SerializeField] private Transform characterTransform;
     [SerializeField] private List<Dialog> DialogsQueue;
+    public static DialogManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                Debug.Log("DialogManager is null! Make sure it is in the scene.");
+            }
+            return instance;
+        }
+    }
 
     private void Awake()
     {
@@ -48,17 +59,6 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    public static DialogManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                Debug.LogError("DialogManager is null! Make sure it is in the scene.");
-            }
-            return instance;
-        }
-    }
 
     public void SetStartDialogueButtonAnimation(bool isOpen)
     {
@@ -67,28 +67,33 @@ public class DialogManager : MonoBehaviour
             startDialogueButtonAnim.SetBool("startDialougueButtonOpen", isOpen);
         }
     }
-
-    public void StartDialogue(int idDialog)
+    public void SetStartDialogueAnimation(bool isOpen)
     {
         if (dialogueBoxAnim != null)
         {
-            dialogueBoxAnim.SetBool("dialogueBoxOpen", true);
-            SetStartDialogueButtonAnimation(false);
-            dialogueBoxAnim.enabled = false;
+            dialogueBoxAnim.SetBool("dialogueBoxOpen", isOpen);
+        }
+    }
 
-            Dialog currentDialog = DialogsQueue.Find(x => x.id == idDialog);
-            if (currentDialog != null)
-            {
-                CurrentSentences = currentDialog.SentencesList;
-                count = CurrentSentences.Count;
-                currentIndex = 0;
+    public void StartDialogue(int idDialog)
+    {
+        SetStartDialogueButtonAnimation(false);
+        SetStartDialogueAnimation(true);
+        dialogueBoxAnim.enabled = false;
 
-                StartCoroutine(TypeSentenceAndSetName(CurrentSentences[0]));
-            }
-            else
-            {
-                Debug.LogWarning($"Dialog with ID {idDialog} not found.");
-            }
+        Dialog currentDialog = DialogsQueue.Find(x => x.id == idDialog);
+        if (currentDialog != null)
+        {
+            CurrentSentences = currentDialog.SentencesList;
+            count = CurrentSentences.Count;
+            currentIndex = 0;
+
+            StartCoroutine(TypeSentenceAndSetName(CurrentSentences[0]));
+        }
+        else
+        {
+            Debug.LogWarning($"Dialog with ID {idDialog} not found.");
+            // DIALOG NOT FOUND HELP FUNCTION
         }
     }
 
@@ -97,7 +102,7 @@ public class DialogManager : MonoBehaviour
         fieldName.text = sentence.CharacterName;
         fieldSentence.text = "";
 
-        MoveDialogBox(sentence.CharacterName);
+        SetDialogueBoxPosition(sentence.CharacterName);
 
         foreach (char letter in sentence.Letters.ToCharArray())
         {
@@ -106,14 +111,18 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    private void MoveDialogBox(string characterName)
+    private void SetDialogueBoxPosition(string characterName)
     {
         RectTransform dialogBoxRect = dialogBoxGameObject.GetComponent<RectTransform>();
 
-        if (characterName == characterTransform.gameObject.name)
+        if (characterName == characterTransform.name)
         {
             Camera camera = Camera.main;
             dialogBoxGameObject.transform.position = camera.WorldToScreenPoint(characterTransform.position) + new Vector3(0, 115f);
+            // if ()
+            // {
+// // установить диалог. окно рядом с границей экрана, чтобы полностью помещалось, а не уходило за экран
+            // }
         }
         else
         {

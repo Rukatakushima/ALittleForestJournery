@@ -13,8 +13,8 @@ public class ItemsManager : MonoBehaviour
     private Inventory inventory;
     public List<GameObject> itemsOnScenePrefabs;
     // public List<GameObject> itemsInInventory;
-    public double maxSpriteSize = 0.7;
-    public double minSpriteSize = 0.4;
+    public double maxSpriteSize = 0.68;
+    // public double minSpriteSize = 0.4;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -65,14 +65,14 @@ public class ItemsManager : MonoBehaviour
     }
     #endregion
 
-    public GameObject GetItemById(int itemId)
+    public ItemOnScene GetItemById(int itemId)
     {
         foreach (GameObject itemPrefab in itemsOnScenePrefabs)
         {
             ItemOnScene pickup = itemPrefab.GetComponent<ItemOnScene>();
             if (pickup != null && pickup.id == itemId)
             {
-                return itemPrefab;
+                return pickup;
             }
         }
 
@@ -81,7 +81,7 @@ public class ItemsManager : MonoBehaviour
 
     public void SpawnOnScene(int itemId)
     {
-        GameObject item = GetItemById(itemId);
+        ItemOnScene item = GetItemById(itemId);
         Vector2 playerPos = new Vector2(player.position.x + 1, player.position.y);
         Instantiate(item, playerPos, Quaternion.identity);
 
@@ -108,8 +108,8 @@ public class ItemsManager : MonoBehaviour
 
     public void SetItemSpriteInInventory(GameObject itemInInventory, int itemId)
     {
-        GameObject itemFromList = GetItemById(itemId);
-        Sprite itemSprite = itemFromList.GetComponent<SpriteRenderer>().sprite;
+        // GameObject itemFromList = GetItemById(itemId);
+        Sprite itemSprite = GetItemById(itemId).GetComponent<SpriteRenderer>().sprite;
         itemInInventory.GetComponent<Image>().sprite = itemSprite;
         SetItemSizeInInventory(itemInInventory, itemSprite.bounds.size);
     }
@@ -120,10 +120,10 @@ public class ItemsManager : MonoBehaviour
         {
             spriteSize = spriteSize * (float)maxSpriteSize;
         }
-        else if (spriteSize.x < minSpriteSize || spriteSize.y < minSpriteSize)
-        {
-            spriteSize = spriteSize / (float)maxSpriteSize;
-        }
+        // else if (spriteSize.x < minSpriteSize || spriteSize.y < minSpriteSize)
+        // {
+        //     spriteSize = spriteSize / (float)maxSpriteSize;
+        // }
         itemInInventory.GetComponent<RectTransform>().localScale = spriteSize;
     }
 }
