@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ObjectsPool;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,18 @@ public class ItemsManager : MonoBehaviour
     // public List<GameObject> itemsInInventory;
     public double maxSpriteSize = 0.68;
     // public double minSpriteSize = 0.4;
+
+    // //установка в Awake
+    // private GameObject itemsObjectPrefab;
+    // public void GetAction(GameObject gameObject) => gameObject.SetActive(true);
+    // public void ReturnAction(GameObject gameObject) => gameObject.SetActive(false);
+    // public GameObject Preload() => Instantiate(itemsObjectPrefab);
+    // private PoolBase<GameObject> itemPool;
+    // [SerializeField] private const int itemPreloadCount = 5;
+
+    // Инициализация
+    // private GameObjectPool itemsObjectsPool;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -25,6 +38,14 @@ public class ItemsManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // itemPool = new PoolBase<GameObject>(Preload, GetAction, ReturnAction, itemPreloadCount);
+        // itemsObjectsPool = new GameObjectPool(itemsObjectPrefab, itemPreloadCount);
+
+        // GameObject itemObject = itemsObjectsPool.GetFromPool();// Вызов
+        // itemsObjectsPool.ReturnAllToPool();// Отзыв
+        
+        // Sprite itemSprite = itemObject.GetComponent<SpriteRenderer>().sprite;
     }
 
     void Start()
@@ -65,6 +86,16 @@ public class ItemsManager : MonoBehaviour
     }
     #endregion
 
+    public void SpawnOnScene(int itemId)
+    {
+        ItemOnScene item = GetItemById(itemId);
+        Vector2 playerPos = new Vector2(player.position.x + 1, player.position.y);
+        // item.GetFromPool();
+        Instantiate(item, playerPos, Quaternion.identity);
+
+        // itemsInInventory.Remove(item);
+    }
+
     public ItemOnScene GetItemById(int itemId)
     {
         foreach (GameObject itemPrefab in itemsOnScenePrefabs)
@@ -77,15 +108,6 @@ public class ItemsManager : MonoBehaviour
         }
 
         return null;
-    }
-
-    public void SpawnOnScene(int itemId)
-    {
-        ItemOnScene item = GetItemById(itemId);
-        Vector2 playerPos = new Vector2(player.position.x + 1, player.position.y);
-        Instantiate(item, playerPos, Quaternion.identity);
-
-        // itemsInInventory.Remove(item);
     }
 
     public void SpawnInInventory(GameObject itemInInventory, GameObject itemOnScene, int itemId)

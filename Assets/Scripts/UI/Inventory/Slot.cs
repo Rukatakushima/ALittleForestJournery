@@ -6,6 +6,11 @@ public class Slot : MonoBehaviour
     public int i;
     public GameObject player;
 
+    private void Awake()
+    {
+
+    }
+
     private void Start()
     {
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
