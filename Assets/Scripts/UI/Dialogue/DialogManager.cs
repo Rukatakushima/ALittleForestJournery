@@ -79,7 +79,7 @@ public class DialogManager : MonoBehaviour
     {
         SetStartDialogueButtonAnimation(false);
         SetStartDialogueAnimation(true);
-        // dialogueBoxAnim.enabled = false;
+        dialogueBoxAnim.enabled = false;
 
         Dialog currentDialog = DialogsQueue.Find(x => x.id == idDialog);
         if (currentDialog != null)
