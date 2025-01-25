@@ -6,6 +6,14 @@ using UnityEngine.UI;
 public class DialogManager : MonoBehaviour
 {
     private static DialogManager instance;
+
+    [System.Serializable]
+    public class Dialog
+    {
+        public int id;
+        public bool isRead;
+        public List<Sentence> SentencesList;
+    }
     
     [System.Serializable]
     public class Sentence
@@ -15,25 +23,18 @@ public class DialogManager : MonoBehaviour
         public float SpeedLetters;
     }
 
-    [System.Serializable]
-    public class Dialog
-    {
-        public int id;
-        public bool isRead;
-        public List<Sentence> SentencesList;
-    }
-
     [HideInInspector] public int count;
     [HideInInspector] public int currentIndex;
     [HideInInspector] public List<Sentence> CurrentSentences;
 
     [SerializeField] private Animator startDialogueButtonAnim;
     [SerializeField] private Animator dialogueBoxAnim;
-    [SerializeField] private GameObject dialogBoxGameObject; // Переименовано для ясности
+    [SerializeField] private GameObject dialogBoxGameObject;
     [SerializeField] private Text fieldName;
     [SerializeField] private Text fieldSentence;
     [SerializeField] private Transform characterTransform;
     [SerializeField] private List<Dialog> DialogsQueue;
+    
     public static DialogManager Instance
     {
         get
@@ -79,7 +80,7 @@ public class DialogManager : MonoBehaviour
     {
         SetStartDialogueButtonAnimation(false);
         SetStartDialogueAnimation(true);
-        dialogueBoxAnim.enabled = false;
+        // dialogueBoxAnim.enabled = false;
 
         Dialog currentDialog = DialogsQueue.Find(x => x.id == idDialog);
         if (currentDialog != null)
