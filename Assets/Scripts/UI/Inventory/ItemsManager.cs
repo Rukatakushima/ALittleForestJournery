@@ -10,11 +10,13 @@ public class ItemsManager : MonoBehaviour
     public static ItemsManager Instance { get; private set; }
 
     public bool createListOfItemsInInspector = false;
+
     [SerializeField] private Transform player;
     private Inventory inventory;
     public List<GameObject> itemsOnScenePrefabs;
     // public List<GameObject> itemsInInventory;
     public double maxSpriteSize = 0.68;
+    /*
     // public double minSpriteSize = 0.4;
 
     // //установка в Awake
@@ -27,7 +29,7 @@ public class ItemsManager : MonoBehaviour
 
     // Инициализация
     // private GameObjectPool itemsObjectsPool;
-
+*/
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -38,14 +40,15 @@ public class ItemsManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
+/*
         // itemPool = new PoolBase<GameObject>(Preload, GetAction, ReturnAction, itemPreloadCount);
         // itemsObjectsPool = new GameObjectPool(itemsObjectPrefab, itemPreloadCount);
 
         // GameObject itemObject = itemsObjectsPool.GetFromPool();// Вызов
         // itemsObjectsPool.ReturnAllToPool();// Отзыв
-        
+
         // Sprite itemSprite = itemObject.GetComponent<SpriteRenderer>().sprite;
+        */
     }
 
     void Start()
@@ -110,19 +113,24 @@ public class ItemsManager : MonoBehaviour
         return null;
     }
 
-    public void SpawnInInventory(GameObject itemInInventory, GameObject itemOnScene, int itemId)
+    public void SpawnInInventory(GameObjectPool itemInInventoryObjectPool, GameObject itemOnScene, int itemId)
     {
-        SetItemSpriteInInventory(itemInInventory, itemId);
         for (int i = 0; i < inventory.slots.Length; i++)
         {
             if (!inventory.isFull[i])
             {
                 inventory.isFull[i] = true;
-                GameObject spawnedItemInInventory = Instantiate(itemInInventory, inventory.slots[i].transform);
+
+                // GameObject spawnedItemInInventory = Instantiate(itemInInventoryObjectPool, inventory.slots[i].transform);
+                GameObject spawnedItemInInventory = itemInInventoryObjectPool.GetFromPool();
+                SetItemSpriteInInventory(spawnedItemInInventory, itemId);
+                spawnedItemInInventory.transform.SetParent(inventory.slots[i].transform, false);
+
                 spawnedItemInInventory.GetComponent<ItemInInventory>().id = itemId;
                 spawnedItemInInventory.name = itemOnScene.name;
                 // itemsInInventory.Add(spawnedItemInInventory);
                 Destroy(itemOnScene);
+                // itemOnScene.GetComponent<PoolBase>().ReturnToPool(itemOnScene);
                 break;
             }
         }

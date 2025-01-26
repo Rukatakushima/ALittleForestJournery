@@ -6,11 +6,6 @@ public class Slot : MonoBehaviour
     public int i;
     public GameObject player;
 
-    private void Awake()
-    {
-
-    }
-
     private void Start()
     {
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
@@ -33,6 +28,7 @@ public class Slot : MonoBehaviour
             ItemsManager.Instance.SpawnOnScene(id);
             // child.GetComponent<Spawn>().SpawnDroppedItem();
             GameObject.Destroy(child.gameObject);
+            // child.gameObject.ReturnToPool(child.gameObject);
         }
     }
 

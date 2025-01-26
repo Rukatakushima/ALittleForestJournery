@@ -9,8 +9,8 @@ namespace ObjectsPool
         private readonly Func<T> PreloadFunc;
         private readonly Action<T> GetAction;
         private readonly Action<T> ReturnAction;
-        private Queue<T> pool = new Queue<T>();
-        private List<T> active = new List<T>();
+        private Queue<T> pool = new();
+        private List<T> active = new();
 
         public PoolBase(Func<T> preloadFunc, Action<T> getAction, Action<T> returnAction, int preloadCount)
         {

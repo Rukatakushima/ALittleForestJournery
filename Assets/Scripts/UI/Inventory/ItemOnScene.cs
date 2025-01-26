@@ -1,21 +1,31 @@
 using UnityEngine;
+using ObjectsPool;
 
 public class ItemOnScene : MonoBehaviour
 {
-    private Inventory inventory;
-    public GameObject itemInInventory;
-    public int id;
+    [SerializeField] public GameObject itemInInventoryPrefab;
+    [SerializeField] public int id;
 
-    private void Start()
+    private GameObjectPool itemsInInventoryObjectPool;
+    [SerializeField] private const int itemPreloadCount = 1;
+
+
+    private GameObjectPool itemsOnSceneObjectPool;
+    [SerializeField] private const int itemOnScenePreloadCount = 0;
+
+    private void Awake()
     {
-        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
+       itemsInInventoryObjectPool = new GameObjectPool(itemInInventoryPrefab, itemPreloadCount);
+
+        itemsOnSceneObjectPool = new GameObjectPool(this.gameObject, itemOnScenePreloadCount);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            ItemsManager.Instance.SpawnInInventory(itemInInventory, this.gameObject, id);
+            // GameObject itemObject = itemsInInventoryObjectPool.GetFromPool();// Вызов
+            ItemsManager.Instance.SpawnInInventory(itemsInInventoryObjectPool, this.gameObject, id);
         }
     }
 }

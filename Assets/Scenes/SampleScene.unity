@@ -291,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 51940267}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 1.36, z: 0}
+  m_LocalPosition: {x: 13, y: 1.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1509,7 +1509,7 @@ Transform:
   m_GameObject: {fileID: 481661197}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 1.76, z: 0}
+  m_LocalPosition: {x: 13, y: 1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1607,7 +1607,7 @@ Transform:
   m_GameObject: {fileID: 483889923}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.3, y: 2.88, z: 0}
+  m_LocalPosition: {x: 17, y: 2.88, z: 0}
   m_LocalScale: {x: 1.1791298, y: 1.2285434, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1718,7 +1718,7 @@ Transform:
   m_GameObject: {fileID: 497865373}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.837, y: 0, z: 0}
+  m_LocalPosition: {x: 7.48, y: 0, z: 0}
   m_LocalScale: {x: 1.3, y: 1.3, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2020,11 +2020,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 40
   orthographic: 1
-  orthographic size: 4.52
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2049,7 +2049,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.719142, y: 1.0860898, z: -10}
+  m_LocalPosition: {x: 7.48, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2607,7 +2607,7 @@ Transform:
   m_GameObject: {fileID: 752505452}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 2.43, z: 0}
+  m_LocalPosition: {x: 13, y: 2.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3371,7 +3371,7 @@ Transform:
   m_GameObject: {fileID: 967478254}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 1.76, z: 0}
+  m_LocalPosition: {x: 13, y: 1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3456,7 +3456,7 @@ Transform:
   m_GameObject: {fileID: 995246947}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.837, y: 2.11, z: -10}
+  m_LocalPosition: {x: 7.48, y: 2.11, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3773,7 +3773,7 @@ Transform:
   m_GameObject: {fileID: 1103250497}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 1.76, z: 0}
+  m_LocalPosition: {x: 13, y: 1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3904,6 +3904,7 @@ MonoBehaviour:
   idPickedUp: 0
   startDialogueButtonAnim: {fileID: 2075232834}
   questNumber: 0
+  dialogueIds: 01000000020000000300000004000000
 --- !u!114 &1129158285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5097,7 +5098,7 @@ Transform:
   m_GameObject: {fileID: 1394747230}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 0.5862951, z: 0}
+  m_LocalPosition: {x: 13, y: 0.5862951, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5736,7 +5737,7 @@ Transform:
   m_GameObject: {fileID: 1532298977}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 1.76, z: 0}
+  m_LocalPosition: {x: 13, y: 1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
