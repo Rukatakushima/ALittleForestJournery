@@ -24,11 +24,14 @@ public class Slot : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
+            Debug.Log("DropItem");
             int id = child.GetComponent<ItemInInventory>().id;
             ItemsManager.Instance.SpawnOnScene(id);
+
             // child.GetComponent<Spawn>().SpawnDroppedItem();
-            GameObject.Destroy(child.gameObject);
-            // child.gameObject.ReturnToPool(child.gameObject);
+            // GameObject.Destroy(child.gameObject);
+            // child.SetParent(null);
+            // child.gameObject.SetActive(false);
         }
     }
 
@@ -41,8 +44,13 @@ public class Slot : MonoBehaviour
             {
                 foreach (Transform child in transform)
                 {
-                    Instantiate(child, inventory.slots[i].transform); // объект появился в слоте
-                    GameObject.Destroy(child.gameObject);
+                    // Instantiate(child, inventory.slots[i].transform); // объект появился в слоте
+                    // child.gameObject.SetActive(true);
+                    child.SetParent(inventory.slots[i].transform);
+                    child.position = inventory.slots[i].transform.position;
+                    // child.gameObject.SetActive(false);
+                    // GameObject.Destroy(child.gameObject);
+
                     inventory.isFull[i] = true;
                     i--;
                     inventory.isFull[i] = false;

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using ObjectsPool;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,10 +23,15 @@ public class ItemsManager : MonoBehaviour
         ItemOnScene[] pickups = FindObjectsOfType<ItemOnScene>();
         foreach (ItemOnScene pickup in pickups)
         {
-            GameObject prefab = prefabFromInstance(pickup.gameObject);
+            // GameObject prefab = prefabFromInstance(pickup.gameObject);
+            GameObject prefab = pickup.gameObject;
             if (prefab != null && !itemsOnScenePrefabs.Contains(prefab))
             {
                 itemsOnScenePrefabs.Add(prefab);
+                if (prefab.transform.parent != this)
+                {
+                    prefab.transform.SetParent(this.transform);
+                }
             }
         }
     }
@@ -37,32 +41,12 @@ public class ItemsManager : MonoBehaviour
     }
     #endregion
 
-
     [SerializeField] private Transform player;
     private Inventory inventory;
-
     public List<GameObject> itemsOnScenePrefabs;
-
-    public List<GameObject> itemsInInventory;
-    private GameObjectPool itemInInventoryObjectPool;
-    [SerializeField] private const int itemInInventoryPreloadCount = 1;
 
     public double maxSpriteSize = 0.68;
 
-    /*
-    // public double minSpriteSize = 0.4;
-
-    // //установка в Awake
-    // private GameObject itemsObjectPrefab;
-    // public void GetAction(GameObject gameObject) => gameObject.SetActive(true);
-    // public void ReturnAction(GameObject gameObject) => gameObject.SetActive(false);
-    // public GameObject Preload() => Instantiate(itemsObjectPrefab);
-    // private PoolBase<GameObject> itemPool;
-    // [SerializeField] private const int itemPreloadCount = 5;
-
-    // Инициализация
-    // private GameObjectPool itemsObjectsPool;
-*/
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -73,19 +57,6 @@ public class ItemsManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        /*
-                // itemPool = new PoolBase<GameObject>(Preload, GetAction, ReturnAction, itemPreloadCount);
-                // itemsObjectsPool = new GameObjectPool(itemsObjectPrefab, itemPreloadCount);
-
-                // GameObject itemObject = itemsObjectsPool.GetFromPool();// Вызов
-                // itemsObjectsPool.ReturnAllToPool();// Отзыв
-
-                // Sprite itemSprite = itemObject.GetComponent<SpriteRenderer>().sprite;
-                */
-        for (int i = 0; i < itemsInInventory.Count; i++)
-        {
-            itemInInventoryObjectPool = new GameObjectPool(itemsInInventory[i], itemInInventoryPreloadCount);
-        }
     }
 
     void Start()
@@ -100,20 +71,19 @@ public class ItemsManager : MonoBehaviour
 
     public void SpawnOnScene(int itemId)
     {
-        ItemOnScene item = GetItemByIdOnScene(itemId);
         Vector2 playerPos = new Vector2(player.position.x + 1, player.position.y);
-        // item.GetFromPool();
-        Instantiate(item, playerPos, Quaternion.identity);
-
-        // itemsInInventory.Remove(item);
+        GameObject item = GetItemByIdOnScene(itemId);
+        item.SetActive(true);
+        item.transform.position = playerPos;
+        item.GetComponent<ItemOnScene>().spawnedItemInInventoryGameObject.SetActive(false);
     }
 
-    public ItemOnScene GetItemByIdOnScene(int itemId)
+    public GameObject GetItemByIdOnScene(int itemId)
     {
         foreach (GameObject itemPrefab in itemsOnScenePrefabs)
         {
-            ItemOnScene pickup = itemPrefab.GetComponent<ItemOnScene>();
-            if (pickup != null && pickup.id == itemId)
+            GameObject pickup = itemPrefab.GetComponent<ItemOnScene>().gameObject;
+            if (pickup != null && pickup.GetComponent<ItemOnScene>().id == itemId)
             {
                 return pickup;
             }
@@ -122,7 +92,7 @@ public class ItemsManager : MonoBehaviour
         return null;
     }
 
-    public void SpawnInInventory(GameObjectPool itemInInventoryObjectPool, GameObject itemOnScene, int itemId)
+    public void SpawnInInventory(GameObject itemInInventory, GameObject itemOnScene, int itemId)
     {
         for (int i = 0; i < inventory.slots.Length; i++)
         {
@@ -130,15 +100,18 @@ public class ItemsManager : MonoBehaviour
             {
                 inventory.isFull[i] = true;
 
-                // GameObject spawnedItemInInventory = Instantiate(itemInInventoryObjectPool, inventory.slots[i].transform);
-                GameObject spawnedItemInInventory = itemInInventoryObjectPool.GetFromPool();
-                SetItemSpriteInInventory(spawnedItemInInventory, itemId);
-                spawnedItemInInventory.transform.SetParent(inventory.slots[i].transform, false);
+                // GameObject spawnedItemInInventory = Instantiate(itemInInventory, inventory.slots[i].transform);
+                // GameObject spawnedItemInInventory = itemInInventory.GetFromPool();
 
-                spawnedItemInInventory.GetComponent<ItemInInventory>().id = itemId;
-                spawnedItemInInventory.name = itemOnScene.name;
+                SetItemSpriteInInventory(itemInInventory, itemId);
+                itemInInventory.transform.SetParent(inventory.slots[i].transform, false);
+                itemInInventory.GetComponent<ItemInInventory>().id = itemId;
+                itemInInventory.name = itemOnScene.name;
+
                 // itemsInInventory.Add(spawnedItemInInventory);
-                Destroy(itemOnScene);
+
+                itemOnScene.SetActive(false);
+                // Destroy(itemOnScene);
                 // itemOnScene.GetComponent<PoolBase>().ReturnToPool(itemOnScene);
                 break;
             }
