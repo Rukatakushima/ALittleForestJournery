@@ -23,16 +23,15 @@ public class ItemOnScene : MonoBehaviour
         // itemsOnSceneObjectPool = new GameObjectPool(this.gameObject, itemOnScenePreloadCount);
     }
 
+    private void Start()
+    {
+        spawnedItemInInventoryGameObject = itemsInInventoryObjectPool.GetFromPool();
+    }
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            // GameObject itemObject = itemsInInventoryObjectPool.GetFromPool();// Вызов
-
-            // if (spawnedItemInInventoryGameObject == null)
-            // {
-                spawnedItemInInventoryGameObject = itemsInInventoryObjectPool.GetFromPool();
-            // }
 
             ItemsManager.Instance.SpawnInInventory(spawnedItemInInventoryGameObject, this.gameObject, id);
         }

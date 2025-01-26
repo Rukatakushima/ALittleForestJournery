@@ -71,11 +71,12 @@ public class ItemsManager : MonoBehaviour
 
     public void SpawnOnScene(int itemId)
     {
-        Vector2 playerPos = new Vector2(player.position.x + 1, player.position.y);
         GameObject item = GetItemByIdOnScene(itemId);
+        Vector2 spawnPos = new Vector2(player.position.x + item.transform.localScale.x, player.position.y);
         item.SetActive(true);
-        item.transform.position = playerPos;
+        item.transform.position = spawnPos;
         item.GetComponent<ItemOnScene>().spawnedItemInInventoryGameObject.SetActive(false);
+        item.GetComponent<ItemOnScene>().spawnedItemInInventoryGameObject.transform.SetParent(null);
     }
 
     public GameObject GetItemByIdOnScene(int itemId)
@@ -103,8 +104,10 @@ public class ItemsManager : MonoBehaviour
                 // GameObject spawnedItemInInventory = Instantiate(itemInInventory, inventory.slots[i].transform);
                 // GameObject spawnedItemInInventory = itemInInventory.GetFromPool();
 
+                itemInInventory.SetActive(true);
                 SetItemSpriteInInventory(itemInInventory, itemId);
                 itemInInventory.transform.SetParent(inventory.slots[i].transform, false);
+                itemInInventory.transform.position = inventory.slots[i].transform.position;
                 itemInInventory.GetComponent<ItemInInventory>().id = itemId;
                 itemInInventory.name = itemOnScene.name;
 
