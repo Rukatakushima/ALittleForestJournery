@@ -8,59 +8,7 @@ using UnityEngine.UI;
 public class ItemsManager : MonoBehaviour
 {
     public static ItemsManager Instance { get; private set; }
-
     public bool createListOfItemsInInspector = false;
-
-    [SerializeField] private Transform player;
-    private Inventory inventory;
-    public List<GameObject> itemsOnScenePrefabs;
-    // public List<GameObject> itemsInInventory;
-    public double maxSpriteSize = 0.68;
-    /*
-    // public double minSpriteSize = 0.4;
-
-    // //установка в Awake
-    // private GameObject itemsObjectPrefab;
-    // public void GetAction(GameObject gameObject) => gameObject.SetActive(true);
-    // public void ReturnAction(GameObject gameObject) => gameObject.SetActive(false);
-    // public GameObject Preload() => Instantiate(itemsObjectPrefab);
-    // private PoolBase<GameObject> itemPool;
-    // [SerializeField] private const int itemPreloadCount = 5;
-
-    // Инициализация
-    // private GameObjectPool itemsObjectsPool;
-*/
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-/*
-        // itemPool = new PoolBase<GameObject>(Preload, GetAction, ReturnAction, itemPreloadCount);
-        // itemsObjectsPool = new GameObjectPool(itemsObjectPrefab, itemPreloadCount);
-
-        // GameObject itemObject = itemsObjectsPool.GetFromPool();// Вызов
-        // itemsObjectsPool.ReturnAllToPool();// Отзыв
-
-        // Sprite itemSprite = itemObject.GetComponent<SpriteRenderer>().sprite;
-        */
-    }
-
-    void Start()
-    {
-        if (player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-        }
-        inventory = player.gameObject.GetComponent<Inventory>();
-        PopulateItemPrefabs();
-    }
-
     #region  SAVE_PREFABS
 #if UNITY_EDITOR
     void OnValidate()
@@ -89,9 +37,70 @@ public class ItemsManager : MonoBehaviour
     }
     #endregion
 
+
+    [SerializeField] private Transform player;
+    private Inventory inventory;
+
+    public List<GameObject> itemsOnScenePrefabs;
+
+    public List<GameObject> itemsInInventory;
+    private GameObjectPool itemInInventoryObjectPool;
+    [SerializeField] private const int itemInInventoryPreloadCount = 1;
+
+    public double maxSpriteSize = 0.68;
+
+    /*
+    // public double minSpriteSize = 0.4;
+
+    // //установка в Awake
+    // private GameObject itemsObjectPrefab;
+    // public void GetAction(GameObject gameObject) => gameObject.SetActive(true);
+    // public void ReturnAction(GameObject gameObject) => gameObject.SetActive(false);
+    // public GameObject Preload() => Instantiate(itemsObjectPrefab);
+    // private PoolBase<GameObject> itemPool;
+    // [SerializeField] private const int itemPreloadCount = 5;
+
+    // Инициализация
+    // private GameObjectPool itemsObjectsPool;
+*/
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        /*
+                // itemPool = new PoolBase<GameObject>(Preload, GetAction, ReturnAction, itemPreloadCount);
+                // itemsObjectsPool = new GameObjectPool(itemsObjectPrefab, itemPreloadCount);
+
+                // GameObject itemObject = itemsObjectsPool.GetFromPool();// Вызов
+                // itemsObjectsPool.ReturnAllToPool();// Отзыв
+
+                // Sprite itemSprite = itemObject.GetComponent<SpriteRenderer>().sprite;
+                */
+        for (int i = 0; i < itemsInInventory.Count; i++)
+        {
+            itemInInventoryObjectPool = new GameObjectPool(itemsInInventory[i], itemInInventoryPreloadCount);
+        }
+    }
+
+    void Start()
+    {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+        inventory = player.gameObject.GetComponent<Inventory>();
+        PopulateItemPrefabs();
+    }
+
     public void SpawnOnScene(int itemId)
     {
-        ItemOnScene item = GetItemById(itemId);
+        ItemOnScene item = GetItemByIdOnScene(itemId);
         Vector2 playerPos = new Vector2(player.position.x + 1, player.position.y);
         // item.GetFromPool();
         Instantiate(item, playerPos, Quaternion.identity);
@@ -99,7 +108,7 @@ public class ItemsManager : MonoBehaviour
         // itemsInInventory.Remove(item);
     }
 
-    public ItemOnScene GetItemById(int itemId)
+    public ItemOnScene GetItemByIdOnScene(int itemId)
     {
         foreach (GameObject itemPrefab in itemsOnScenePrefabs)
         {
@@ -139,7 +148,7 @@ public class ItemsManager : MonoBehaviour
     public void SetItemSpriteInInventory(GameObject itemInInventory, int itemId)
     {
         // GameObject itemFromList = GetItemById(itemId);
-        Sprite itemSprite = GetItemById(itemId).GetComponent<SpriteRenderer>().sprite;
+        Sprite itemSprite = GetItemByIdOnScene(itemId).GetComponent<SpriteRenderer>().sprite;
         itemInInventory.GetComponent<Image>().sprite = itemSprite;
         SetItemSizeInInventory(itemInInventory, itemSprite.bounds.size);
     }
