@@ -1,26 +1,46 @@
 using Connect.Common;
+<<<<<<< HEAD
 using System.Collections;
 using System.Collections.Generic;
+=======
+using JetBrains.Annotations;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
 using TMPro;
 using UnityEngine;
 
-namespace Connect
+namespace Connect.Core
 {
     public class GameplayManager : MonoBehaviour
     {
         #region START_METHODS
 
         #region START_VARIABLES
+<<<<<<< HEAD
         public static GameplayManager Instance;
 
         public bool hasGameFinished;
+=======
+        public static ConnectGameplayManager Instance;
+        [HideInInspector] public bool hasGameFinished;
+        [SerializeField] private GameObject _winText;
+        //[SerializeField] private SpriteRenderer _clickHighlight;
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
 
         private void Awake()
         {
             Instance = this;
 
             hasGameFinished = false;
+            _winText.SetActive(false);
 
+<<<<<<< HEAD
+=======
+            CurrentLevelData = ConnectGameManager.Instance.GetLevel();
+
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
             SpawnBoard();
 
             SpawnNodes();
@@ -32,10 +52,16 @@ namespace Connect
         #region BOARD_SPAWN
 
         [SerializeField] private SpriteRenderer _boardPrefab, _bgCellPrefab;
+<<<<<<< HEAD
 
         private void SpawnBoard()
         {
             int currentLevelSize = 5;
+=======
+        private void SpawnBoard()
+        {
+            int currentLevelSize = ConnectGameManager.Instance.CurrentStage + 4;
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
 
             var board = Instantiate(_boardPrefab,
                 new Vector3(currentLevelSize / 2f, currentLevelSize / 2f, 0f),
@@ -59,9 +85,15 @@ namespace Connect
 
         #region NODE_SPAWN
 
+<<<<<<< HEAD
         [SerializeField] public ConnectLevelData CurrentLevelData;
         [SerializeField] private Node _nodePrefab;
         private List<Node> _nodes;
+=======
+        private ConnectLevelData CurrentLevelData;
+        [SerializeField] private ConnectNode _nodePrefab;
+        private List<ConnectNode> _nodes;
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
 
         public Dictionary<Vector2Int, Node> _nodeGrid;
 
@@ -70,8 +102,13 @@ namespace Connect
             _nodes = new List<Node>();
             _nodeGrid = new Dictionary<Vector2Int, Node>();
 
+<<<<<<< HEAD
             int currentLevelSize = 5;
             Node spawnedNode;
+=======
+            int currentLevelSize = ConnectGameManager.Instance.CurrentStage + 4;
+            ConnectNode spawnedNode;
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
             Vector3 spawnPos;
 
             for (int i = 0; i < currentLevelSize; i++)
@@ -124,16 +161,21 @@ namespace Connect
 
             for (int colorId = 0; colorId < edges.Count; colorId++)
             {
+<<<<<<< HEAD
                 if (edges[colorId].StartPoint == point ||
                     edges[colorId].EndPoint == point)
                 {
                     return colorId;
                 }
+=======
+                if (edges[colorId].StartPoint == point || edges[colorId].EndPoint == point) return colorId; 
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
             }
 
             return -1;
         }
 
+<<<<<<< HEAD
         public Color GetHighLightColor(int colorID)
         {
             Color result = NodeColors[colorID % NodeColors.Count];
@@ -141,6 +183,14 @@ namespace Connect
             return result;
         }
 
+=======
+        public Color GetHighlightColor(int colorID)
+        {
+            Color result = NodeColors[colorID];
+            result.a = 0.4f; //Alpha component of the color (0 is transparent, 1 is opaque).
+            return result;
+        }
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
 
         #endregion
 
@@ -209,6 +259,10 @@ namespace Connect
         private void CheckWin()
         {
             bool IsWinning = true;
+            // foreach (var item in _nodes)
+            // {
+            //     item.SolveHighlight();
+            // }
 
             foreach (var item in _nodes)
             {
@@ -232,6 +286,15 @@ namespace Connect
             yield return new WaitForSeconds(1f);
             UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
+<<<<<<< HEAD
+=======
+        #endregion
+
+        /*
+                #region BUTTON_FUNCS
+                #endregion
+                */
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
 
     }
 }

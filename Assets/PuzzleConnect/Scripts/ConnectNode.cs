@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Connect
+namespace Connect.Core
 {
     public class Node : MonoBehaviour
     {
+<<<<<<< HEAD
 
         [SerializeField] private GameObject _point;
         [SerializeField] private GameObject _topEdge;
@@ -15,6 +16,11 @@ namespace Connect
 
         private Dictionary<Node, GameObject> ConnectedEdges;
 
+=======
+        [SerializeField] private GameObject _point, _topEdge, _bottomEdge, _leftEdge, _rightEdge;
+        //[SerializeField] private GameObject _highLight;
+        private Dictionary<ConnectNode, GameObject> ConnectedEdges;
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
         [HideInInspector] public int colorId;
 
         public bool IsWin
@@ -393,5 +399,231 @@ namespace Connect
 
             return isdegreethree;
         }
+<<<<<<< HEAD
     } 
+=======
+
+        public void Init()
+        {
+            _point.SetActive(false);
+            _topEdge.SetActive(false);
+            _bottomEdge.SetActive(false);
+            _leftEdge.SetActive(false);
+            _rightEdge.SetActive(false);
+            //_highLight.SetActive(false);
+            ConnectedEdges = new Dictionary<ConnectNode, GameObject>();
+            ConnectedNodes = new List<ConnectNode>();
+        }
+        public void SetColorForPoint(int colorIdForSpawnedNode)
+        {
+            this.colorId = colorIdForSpawnedNode;
+            _point.SetActive(true);
+            _point.GetComponent<SpriteRenderer>().color =
+            ConnectGameplayManager.Instance.NodeColors[colorId];
+        }
+        public void SetEdge(Vector2Int offset, ConnectNode node)
+        {
+            if (offset == Vector2Int.up)
+            {
+                ConnectedEdges[node] = _topEdge;
+                return;
+            }
+            if (offset == Vector2Int.down)
+            {
+                ConnectedEdges[node] = _bottomEdge;
+                return;
+            }
+            if (offset == Vector2Int.right)
+            {
+                ConnectedEdges[node] = _rightEdge;
+                return;
+            }
+            if (offset == Vector2Int.left)
+            {
+                ConnectedEdges[node] = _leftEdge;
+                return;
+            }
+        }
+        public void UpdateInput(ConnectNode connectedNode)
+        {
+            //Неверный ввод
+            if (!ConnectedEdges.ContainsKey(connectedNode))
+            {
+                Debug.Log("!ConnectedEdges.ContainsKey(connectedNode) = " + !ConnectedEdges.ContainsKey(connectedNode));
+                return;
+            }
+
+            //Уже сущетсвующий node: удалить edge и части
+            if (ConnectedNodes.Contains(connectedNode))
+            {
+                Debug.Log("ConnectedNodes.Contains(connectedNode)");
+
+                DeleteStartingNode(connectedNode);
+                // ConnectedNodes.Remove(connectedNode);
+                // connectedNode.ConnectedNodes.Remove(this);
+                // RemoveEdge(connectedNode);
+                //DeleteNode();
+                //connectedNode.DeleteNode();
+            }
+
+            // start node имеет 2 edges
+            if (ConnectedNodes.Count == 2)
+            {
+                Debug.Log("ConnectedNodes.Count == 2");
+
+                ConnectNode tempNode = ConnectedNodes[0];
+
+                if (tempNode.IsConnectedToEndNode())
+                {
+                    tempNode = ConnectedNodes[1];
+
+                }
+                DeleteStartingNode(tempNode);
+                // ConnectedNodes.Remove(tempNode);
+                // tempNode.ConnectedNodes.Remove(this);
+                // RemoveEdge(tempNode);
+                // tempNode.DeleteNode();
+            }
+
+            // end node имеет 2 edges
+            if (connectedNode.ConnectedNodes.Count == 2)
+            {
+                Debug.Log("connectedNode.ConnectedNodes.Count == 2");
+
+                DeleteConnectedNode(connectedNode);
+                //DeleteConnectedNode(connectedNode);
+            }
+
+            // другой start node (другого цвета) и connected node имеет 1 edge => убирается node (окрашенный в изначальный цвет edge) 
+            if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.colorId != colorId)
+            {
+                Debug.Log("connectedNode.ConnectedNodes.Count == 1 && connectedNode.colorId != colorId");
+                DeleteConnectedNode(connectedNode);
+            }
+
+            //end node с уже существующим 1 edge
+            if (ConnectedNodes.Count == 1 && IsEndNode)
+            {
+                Debug.Log("ConnectedNodes.Count == 1 && IsEndNode");
+                DeleteStartingNode(ConnectedNodes[0]);
+            }
+
+            //одсоединяемся к EndNode, у которого уже есть edge
+            //удаляем его edge
+            if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.IsEndNode)
+            {
+                Debug.Log("connectedNode.ConnectedNodes.Count == 1 && connectedNode.IsEndNode");
+                DeleteConnectedNode(connectedNode);
+            }
+
+            AddEdge(connectedNode);
+/*
+            //чтобы edges одного не отрезали друг друга при пересечении от стартоых node
+            //Dont allow Boxes
+            
+            if (colorId != connectedNode.colorId)
+            {
+                Debug.Log("colorId != connectedNode.colorId");
+                return;
+            }
+            List<ConnectNode> checkingNodes = new List<ConnectNode>() { this };
+            List<ConnectNode> resultNodes = new List<ConnectNode>() { this };
+
+            while (checkingNodes.Count > 0)
+            {
+                foreach (var item in checkingNodes[0].ConnectedNodes)
+                {
+                    if (!resultNodes.Contains(item))
+                    {
+                        resultNodes.Add(item);
+                        checkingNodes.Add(item);
+                    }
+                }
+                checkingNodes.Remove(checkingNodes[0]);
+            }
+
+            foreach (var item in resultNodes)
+            {
+                if (!item.IsEndNode && item.IsDegreeThree(resultNodes))
+                {
+                    DeleteConnectedNode(item);
+                    /*
+                    ConnectNode tempNode = item.ConnectedNodes[0];
+                    item.ConnectedNodes.Remove(tempNode);
+                    tempNode.ConnectedNodes.Remove(item);
+                    item.RemoveEdge(tempNode);
+                    tempNode.DeleteNode();///
+
+                    if (item.ConnectedNodes.Count == 0) return;
+                    DeleteConnectedNode(item);
+                    // tempNode = item.ConnectedNodes[0];
+                    // item.ConnectedNodes.Remove(tempNode);
+                    // tempNode.ConnectedNodes.Remove(item);
+                    // item.RemoveEdge(tempNode);
+                    // tempNode.DeleteNode();
+
+                    return;
+                }
+            }*/
+        }
+        private void DeleteStartingNode(ConnectNode connectedNode)
+        {
+            //ConnectNode tempNode = connectedNode;
+            ConnectedNodes.Remove(connectedNode);
+            connectedNode.ConnectedNodes.Remove(this);
+            RemoveEdge(connectedNode);
+            DeleteNode();//??
+            connectedNode.DeleteNode();
+
+        }
+        private void DeleteConnectedNode(ConnectNode connectedNode)
+        {
+            ConnectNode tempNode = connectedNode.ConnectedNodes[0];
+            connectedNode.ConnectedNodes.Remove(tempNode);
+            tempNode.ConnectedNodes.Remove(connectedNode);
+            connectedNode.RemoveEdge(tempNode);
+            tempNode.DeleteNode();
+
+        }
+        private void AddEdge(ConnectNode connectedNode)
+        {
+            connectedNode.colorId = colorId;
+            connectedNode.ConnectedNodes.Add(this);
+            ConnectedNodes.Add(connectedNode);
+            GameObject connectedEdge = ConnectedEdges[connectedNode];
+            connectedEdge.SetActive(true);
+            connectedEdge.GetComponent<SpriteRenderer>().color =
+            ConnectGameplayManager.Instance.NodeColors[colorId];
+        }
+        private void RemoveEdge(ConnectNode node)
+        {
+            GameObject edge = ConnectedEdges[node];
+            edge.SetActive(false);
+            edge = node.ConnectedEdges[this];
+            edge.SetActive(false);
+        }
+        private void DeleteNode()
+        {
+            ConnectNode startNode = this;
+
+            if (startNode.IsConnectedToEndNode())
+            {
+                return;
+            }
+
+            while (startNode != null)
+            {
+                ConnectNode tempNode = null;
+                if (startNode.ConnectedNodes.Count != 0)
+                {
+                    tempNode = startNode.ConnectedNodes[0];
+                    startNode.ConnectedNodes.Clear();
+                    tempNode.ConnectedNodes.Remove(startNode);
+                    startNode.RemoveEdge(tempNode);
+                }
+                startNode = tempNode;
+            }
+        }
+    }
+>>>>>>> parent of cfd330e (Puzzle Connect Deleted unnessasary files)
 }
