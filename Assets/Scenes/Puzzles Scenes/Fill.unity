@@ -246,6 +246,9 @@ MonoBehaviour:
   _level: {fileID: 11400000, guid: 848ee0c62948302438e2a9c9de1bf7f3, type: 2}
   _cellPrefab: {fileID: 6416468728290654270, guid: 3933166f55afa574cb128921a1385344, type: 3}
   _edgePrefab: {fileID: 8761982436765348363, guid: 2961868edb3500941979dbb1955af6bd, type: 3}
+  cameraSizeController: 2
+  cellPrefabPreloadCount: 12
+  edgePrefabPreloadCount: 10
 --- !u!4 &2122757320
 Transform:
   m_ObjectHideFlags: 0
