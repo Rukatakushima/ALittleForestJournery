@@ -1,12 +1,8 @@
-using Connect.Common;
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using TMPro;
 using UnityEngine;
 
-namespace Connect.Core
+namespace Connect
 {
     public class ConnectGameplayManager : MonoBehaviour
     {
@@ -15,20 +11,16 @@ namespace Connect.Core
         #region START_VARIABLES
         public static ConnectGameplayManager Instance;
         [HideInInspector] public bool hasGameFinished;
-        [SerializeField] private GameObject _winText;
-        //[SerializeField] private SpriteRenderer _clickHighlight;
 
         private void Awake()
         {
             Instance = this;
 
             hasGameFinished = false;
-            _winText.SetActive(false);
 
-            CurrentLevelData = ConnectGameManager.Instance.GetLevel();
+            // CurrentLevelData = DefaultLevel;
 
             SpawnBoard();
-
             SpawnNodes();
         }
         #endregion
@@ -36,9 +28,10 @@ namespace Connect.Core
         #region BOARD_SPAWN
 
         [SerializeField] private SpriteRenderer _boardPrefab, _bgCellPrefab;
+        [SerializeField] public int CurrentStage = 5;
         private void SpawnBoard()
         {
-            int currentLevelSize = ConnectGameManager.Instance.CurrentStage + 4;
+            int currentLevelSize = CurrentStage;
 
             //инициализация подложки: префаб, положение (делим размер на 2, чтобы разместить в середине), поворот
             var board = Instantiate(_boardPrefab,
@@ -66,7 +59,7 @@ namespace Connect.Core
 
         #region NODES_SPAWN
 
-        private ConnectLevelData CurrentLevelData;
+        [SerializeField] public ConnectLevelData CurrentLevelData;
         [SerializeField] private ConnectNode _nodePrefab;
         private List<ConnectNode> _nodes;
 
@@ -77,7 +70,7 @@ namespace Connect.Core
             _nodes = new List<ConnectNode>();
             _nodeGrid = new Dictionary<Vector2Int, ConnectNode>();
 
-            int currentLevelSize = ConnectGameManager.Instance.CurrentStage + 4;
+            int currentLevelSize = CurrentStage;
             ConnectNode spawnedNode;
             Vector3 spawnPos;
 
@@ -125,23 +118,23 @@ namespace Connect.Core
 
         public int GetColorId(int i, int j)
         {
-            List<Edge> edges = CurrentLevelData.Edges;
+            List<Edge> edges = CurrentLevelData.Connections;
             Vector2Int point = new Vector2Int(i, j);
 
             for (int colorId = 0; colorId < edges.Count; colorId++)
             {
-                if (edges[colorId].StartPoint == point || edges[colorId].EndPoint == point) return colorId; 
+                if (edges[colorId].StartPoint == point || edges[colorId].EndPoint == point) return colorId;
             }
 
             return -1;
         }
 
-        public Color GetHighlightColor(int colorID)
-        {
-            Color result = NodeColors[colorID];
-            result.a = 0.4f; //Alpha component of the color (0 is transparent, 1 is opaque).
-            return result;
-        }
+        // public Color GetHighlightColor(int colorID)
+        // {
+        //     Color result = NodeColors[colorID];
+        //     result.a = 0.4f; //Alpha component of the color (0 is transparent, 1 is opaque).
+        //     return result;
+        // }
 
         #endregion
         #endregion
@@ -204,10 +197,6 @@ namespace Connect.Core
         private void CheckWin()
         {
             bool IsWinning = true;
-            // foreach (var item in _nodes)
-            // {
-            //     item.SolveHighlight();
-            // }
 
             foreach (var item in _nodes)
             {
@@ -221,17 +210,12 @@ namespace Connect.Core
             hasGameFinished = true;
             StartCoroutine(GameFinished());
         }
+        
         private IEnumerator GameFinished()
         {
             yield return new WaitForSeconds(1f);
             UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
         #endregion
-
-        /*
-                #region BUTTON_FUNCS
-                #endregion
-                */
-
     }
 }

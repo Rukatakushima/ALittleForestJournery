@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Connect.Core
+namespace Connect
 {
     public class ConnectNode : MonoBehaviour
     {
         [SerializeField] private GameObject _point, _topEdge, _bottomEdge, _leftEdge, _rightEdge;
-        //[SerializeField] private GameObject _highLight;
         private Dictionary<ConnectNode, GameObject> ConnectedEdges;
         [HideInInspector] public int colorId;
         public bool IsWin
@@ -107,7 +106,6 @@ namespace Connect.Core
             _bottomEdge.SetActive(false);
             _leftEdge.SetActive(false);
             _rightEdge.SetActive(false);
-            //_highLight.SetActive(false);
             ConnectedEdges = new Dictionary<ConnectNode, GameObject>();
             ConnectedNodes = new List<ConnectNode>();
         }
@@ -146,15 +144,12 @@ namespace Connect.Core
             //Неверный ввод
             if (!ConnectedEdges.ContainsKey(connectedNode))
             {
-                Debug.Log("!ConnectedEdges.ContainsKey(connectedNode) = " + !ConnectedEdges.ContainsKey(connectedNode));
                 return;
             }
 
             //Уже сущетсвующий node: удалить edge и части
             if (ConnectedNodes.Contains(connectedNode))
             {
-                Debug.Log("ConnectedNodes.Contains(connectedNode)");
-
                 DeleteStartingNode(connectedNode);
                 // ConnectedNodes.Remove(connectedNode);
                 // connectedNode.ConnectedNodes.Remove(this);
@@ -166,8 +161,6 @@ namespace Connect.Core
             // start node имеет 2 edges
             if (ConnectedNodes.Count == 2)
             {
-                Debug.Log("ConnectedNodes.Count == 2");
-
                 ConnectNode tempNode = ConnectedNodes[0];
 
                 if (tempNode.IsConnectedToEndNode())
@@ -185,23 +178,18 @@ namespace Connect.Core
             // end node имеет 2 edges
             if (connectedNode.ConnectedNodes.Count == 2)
             {
-                Debug.Log("connectedNode.ConnectedNodes.Count == 2");
-
-                DeleteConnectedNode(connectedNode);
-                //DeleteConnectedNode(connectedNode);
+                // DeleteConnectedNode(connectedNode);
             }
 
             // другой start node (другого цвета) и connected node имеет 1 edge => убирается node (окрашенный в изначальный цвет edge) 
             if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.colorId != colorId)
             {
-                Debug.Log("connectedNode.ConnectedNodes.Count == 1 && connectedNode.colorId != colorId");
                 DeleteConnectedNode(connectedNode);
             }
 
             //end node с уже существующим 1 edge
             if (ConnectedNodes.Count == 1 && IsEndNode)
             {
-                Debug.Log("ConnectedNodes.Count == 1 && IsEndNode");
                 DeleteStartingNode(ConnectedNodes[0]);
             }
 
@@ -209,67 +197,69 @@ namespace Connect.Core
             //удаляем его edge
             if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.IsEndNode)
             {
-                Debug.Log("connectedNode.ConnectedNodes.Count == 1 && connectedNode.IsEndNode");
                 DeleteConnectedNode(connectedNode);
             }
 
             AddEdge(connectedNode);
-/*
+
+
+
             //чтобы edges одного не отрезали друг друга при пересечении от стартоых node
             //Dont allow Boxes
-            
-            if (colorId != connectedNode.colorId)
-            {
-                Debug.Log("colorId != connectedNode.colorId");
-                return;
-            }
-            List<ConnectNode> checkingNodes = new List<ConnectNode>() { this };
-            List<ConnectNode> resultNodes = new List<ConnectNode>() { this };
 
-            while (checkingNodes.Count > 0)
-            {
-                foreach (var item in checkingNodes[0].ConnectedNodes)
-                {
-                    if (!resultNodes.Contains(item))
-                    {
-                        resultNodes.Add(item);
-                        checkingNodes.Add(item);
-                    }
-                }
-                checkingNodes.Remove(checkingNodes[0]);
-            }
+            /*
 
-            foreach (var item in resultNodes)
-            {
-                if (!item.IsEndNode && item.IsDegreeThree(resultNodes))
-                {
-                    DeleteConnectedNode(item);
-                    /*
-                    ConnectNode tempNode = item.ConnectedNodes[0];
-                    item.ConnectedNodes.Remove(tempNode);
-                    tempNode.ConnectedNodes.Remove(item);
-                    item.RemoveEdge(tempNode);
-                    tempNode.DeleteNode();///
+                        if (colorId != connectedNode.colorId)
+                        {
+                            Debug.Log("colorId != connectedNode.colorId");
+                            return;
+                        }
+                        List<ConnectNode> checkingNodes = new List<ConnectNode>() { this };
+                        List<ConnectNode> resultNodes = new List<ConnectNode>() { this };
 
-                    if (item.ConnectedNodes.Count == 0) return;
-                    DeleteConnectedNode(item);
-                    // tempNode = item.ConnectedNodes[0];
-                    // item.ConnectedNodes.Remove(tempNode);
-                    // tempNode.ConnectedNodes.Remove(item);
-                    // item.RemoveEdge(tempNode);
-                    // tempNode.DeleteNode();
+                        while (checkingNodes.Count > 0)
+                        {
+                            foreach (var item in checkingNodes[0].ConnectedNodes)
+                            {
+                                if (!resultNodes.Contains(item))
+                                {
+                                    resultNodes.Add(item);
+                                    checkingNodes.Add(item);
+                                }
+                            }
+                            checkingNodes.Remove(checkingNodes[0]);
+                        }
 
-                    return;
-                }
-            }*/
+                        foreach (var item in resultNodes)
+                        {
+                            if (!item.IsEndNode && item.IsDegreeThree(resultNodes))
+                            {
+                                DeleteConnectedNode(item);
+                                /*
+                                ConnectNode tempNode = item.ConnectedNodes[0];
+                                item.ConnectedNodes.Remove(tempNode);
+                                tempNode.ConnectedNodes.Remove(item);
+                                item.RemoveEdge(tempNode);
+                                tempNode.DeleteNode();///
+
+                                if (item.ConnectedNodes.Count == 0) return;
+                                DeleteConnectedNode(item);
+                                // tempNode = item.ConnectedNodes[0];
+                                // item.ConnectedNodes.Remove(tempNode);
+                                // tempNode.ConnectedNodes.Remove(item);
+                                // item.RemoveEdge(tempNode);
+                                // tempNode.DeleteNode();
+
+                                return;
+                            }
+                        }*/
         }
         private void DeleteStartingNode(ConnectNode connectedNode)
         {
-            //ConnectNode tempNode = connectedNode;
             ConnectedNodes.Remove(connectedNode);
             connectedNode.ConnectedNodes.Remove(this);
             RemoveEdge(connectedNode);
-            DeleteNode();//??
+            DeleteNode();
             connectedNode.DeleteNode();
 
         }
