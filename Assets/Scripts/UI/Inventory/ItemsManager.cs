@@ -8,6 +8,7 @@ public class ItemsManager : MonoBehaviour
 {
     public static ItemsManager Instance { get; private set; }
     public bool createListOfItemsInInspector = false;
+    
     #region  SAVE_PREFABS
 #if UNITY_EDITOR
     void OnValidate()

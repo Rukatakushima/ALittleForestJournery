@@ -155,6 +155,7 @@ MonoBehaviour:
   _bgPrefab: {fileID: 7478364067053654497, guid: 1b1abe0eb93453245b169137062b4703, type: 3}
   _piecePrefab: {fileID: 1301280438395545718, guid: 7cfa2bb892aacdb42918fe360e2679e2, type: 3}
   _winPrefab: {fileID: 244288958732518090, guid: 506100ec6b7592b45a6c980b6dc138da, type: 3}
+  cameraSizeController: 1.5
 --- !u!4 &1557158206
 Transform:
   m_ObjectHideFlags: 0
@@ -231,7 +232,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 3.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
