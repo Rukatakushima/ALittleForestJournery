@@ -23,8 +23,17 @@ namespace Fill
 
         public float cameraSizeController = 2f;
 
-        // public GameObjectPool cellPrefabObjectPool;
-        // [SerializeField] private const int cellPrefabPreloadCount = 16;
+        public Cell PreloadCell() => Instantiate(_cellPrefab);
+        public void GetAction(Cell cell) => cell.gameObject.SetActive(true);
+        public void ReturnAction(Cell cell) => cell.gameObject.SetActive(false);
+        public PoolBase<Cell> cellPrefabObjectPool;
+        [SerializeField] private int cellPrefabPreloadCount = 16;
+
+        public Transform PreloadEdge() => Instantiate(_edgePrefab);
+        public void GetAction(Transform _edgePrefab) => _edgePrefab.gameObject.SetActive(true);
+        public void ReturnAction(Transform _edgePrefab) => _edgePrefab.gameObject.SetActive(false);
+        public PoolBase<Transform> edgePrefabObjectPool;
+        [SerializeField] private int edgePrefabPreloadCount = 8;
 
         private void Awake()
         {
@@ -33,10 +42,13 @@ namespace Fill
             filledPoints = new List<Vector2Int>();
             cells = new Cell[_level.Row, _level.Col];
             edges = new List<Transform>();
-            SpawnLevel();
 
-            // cellPrefabObjectPool = new GameObjectPool(_cellPrefab, cellPrefabPreloadCount);
+            cellPrefabObjectPool = new PoolBase<Cell>(PreloadCell, GetAction, ReturnAction, cellPrefabPreloadCount);
+            edgePrefabObjectPool = new PoolBase<Transform>(PreloadEdge, GetAction, ReturnAction, edgePrefabPreloadCount);
+
+            SpawnLevel();
         }
+
         private void SpawnLevel()
         {
             Vector3 camPos = Camera.main.transform.position;
@@ -49,7 +61,8 @@ namespace Fill
             {
                 for (int j = 0; j < _level.Col; j++)
                 {
-                    cells[i, j] = Instantiate(_cellPrefab);
+                    // cells[i, j] = Instantiate(_cellPrefab);
+                    cells[i, j] = cellPrefabObjectPool.GetFromPool();
                     cells[i, j].Init(_level.Data[i * _level.Col + j]);
                     cells[i, j].transform.position = new Vector3(j + 0.5f, i + 0.5f);
                 }
@@ -135,6 +148,7 @@ namespace Fill
             Vector2Int pos = filledPoints[index];
             return IsValidPosition(pos, startPos) && !IsFilled(endPos);
         }
+
         private bool IsValidPosition(Vector2Int pos, Vector2Int curPos)
         {
             return cells[curPos.x, curPos.y] == cells[pos.x, pos.y];
@@ -152,6 +166,7 @@ namespace Fill
         {
             return toRemoveFromPosition(0);
         }
+
         private bool toRemoveFromPosition(int index)
         {
             if (filledPoints.Count < 2) return false;
@@ -161,16 +176,20 @@ namespace Fill
             if (!IsValidPosition(pos, endPos)) return false;
             return true;
         }
+
         private void RemoveFromPosition(int index)
         {
             Transform removeEdge = edges[index];
             edges.RemoveAt(index);
-            Destroy(removeEdge.gameObject);
+            // Destroy(removeEdge.gameObject);
+            edgePrefabObjectPool.ReturnToPool(removeEdge);
             cells[startPos.x, startPos.y].Remove();
         }
+
         private void DrawEdge(bool InsertAtStart)
         {
-            Transform edge = Instantiate(_edgePrefab);
+            // Transform edge = Instantiate(_edgePrefab);
+            Transform edge = edgePrefabObjectPool.GetFromPool();
             if (InsertAtStart)
             {
                 edges.Insert(0, edge);
@@ -187,12 +206,14 @@ namespace Fill
             bool horizintal = (endPos.y - startPos.y) < 0 || (endPos.y - startPos.y) > 0;
             edge.transform.eulerAngles = new Vector3(0, 0, horizintal ? 90f : 0);
         }
+
         private void RemoveEmpty()
         {
             if (filledPoints.Count != 1) return;
             cells[filledPoints[0].x, filledPoints[0].y].Remove();
             filledPoints.RemoveAt(0);
         }
+
         private void CheckWin()
         {
             for (int i = 0; i < _level.Row; i++)
@@ -206,6 +227,7 @@ namespace Fill
             hasGameFinished = true;
             StartCoroutine(GameFinished());
         }
+
         private IEnumerator GameFinished()
         {
             yield return new WaitForSeconds(1f);
