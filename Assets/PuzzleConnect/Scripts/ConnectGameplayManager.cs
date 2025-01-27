@@ -10,7 +10,7 @@ namespace Connect
 
         #region START_VARIABLES
         public static ConnectGameplayManager Instance;
-        [HideInInspector] public bool hasGameFinished;
+        public bool hasGameFinished;
 
         private void Awake()
         {
@@ -21,9 +21,7 @@ namespace Connect
             // CurrentLevelData = DefaultLevel;
 
             SpawnBoard();
-
             SpawnNodes();
-
         }
 
         #endregion
@@ -65,7 +63,7 @@ namespace Connect
         #region NODES_SPAWN
         [SerializeField] public ConnectLevelData CurrentLevelData;
         [SerializeField] private ConnectNode _nodePrefab;
-        private List<ConnectNode> _nodes;
+        public List<ConnectNode> _nodes;//private
         public Dictionary<Vector2Int, ConnectNode> _nodeGrid;
         private void SpawnNodes()
         {
@@ -133,13 +131,6 @@ namespace Connect
             return -1;
         }
 
-        // public Color GetHighlightColor(int colorID)
-        // {
-        //     Color result = NodeColors[colorID];
-        //     result.a = 0.4f; //Alpha component of the color (0 is transparent, 1 is opaque).
-        //     return result;
-        // }
-
         #endregion
 
         #endregion
@@ -149,7 +140,11 @@ namespace Connect
         private ConnectNode startNode;
         private void Update()
         {
-            if (hasGameFinished) return;
+            if (hasGameFinished) 
+            {
+                StartCoroutine(GameFinished());
+                return;
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 startNode = null;
@@ -193,27 +188,28 @@ namespace Connect
             {
                 startNode = null;
             }
-
         }
 
         #endregion
 
         #region WIN_CONDITIONS
+        
         private void CheckWin()
         {
             bool IsWinning = true;
+
             foreach (var item in _nodes)
             {
                 IsWinning &= item.IsWin;
-                if (!IsWinning)
+                if(!IsWinning)
                 {
                     return;
                 }
             }
 
             hasGameFinished = true;
-            StartCoroutine(GameFinished());
         }
+        
         private IEnumerator GameFinished()
         {
             yield return new WaitForSeconds(1f);
