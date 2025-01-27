@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Connect
+namespace Connect.Common
 {
     [CreateAssetMenu(fileName = "ConnectLevel", menuName = "Levels/Connect/ConnectLevel")]
     public class ConnectLevelData : ScriptableObject
     {
         public string ConnectLevelName;
-        public List<Edge> Connections;
+        public List<Edge> Edges;
     }
 
     [System.Serializable]

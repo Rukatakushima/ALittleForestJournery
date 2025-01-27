@@ -1,3 +1,4 @@
+using Connect.Common;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,7 +14,6 @@ namespace Connect
         public static GameplayManager Instance;
 
         public bool hasGameFinished;
-
 
         private void Awake()
         {
@@ -53,7 +53,6 @@ namespace Connect
 
             Camera.main.orthographicSize = currentLevelSize + 2f;
             Camera.main.transform.position = new Vector3(currentLevelSize / 2f, currentLevelSize / 2f, -10f);
-
         }
 
         #endregion
@@ -120,7 +119,7 @@ namespace Connect
 
         public int GetColorId(int i, int j)
         {
-            List<Edge> edges = CurrentLevelData.Connections;
+            List<Edge> edges = CurrentLevelData.Edges;
             Vector2Int point = new Vector2Int(i, j);
 
             for (int colorId = 0; colorId < edges.Count; colorId++)
@@ -153,12 +152,11 @@ namespace Connect
 
         private void Update()
         {
-            if (hasGameFinished)
+            if (hasGameFinished) 
             {
-                GameFinished();
+                StartCoroutine(GameFinished());
                 return;
             }
-
             if (Input.GetMouseButtonDown(0))
             {
                 startNode = null;
@@ -182,7 +180,6 @@ namespace Connect
 
                     return;
                 }
-
 
                 if (hit && hit.collider.gameObject.TryGetComponent(out Node tempNode)
                     && startNode != tempNode)
@@ -209,8 +206,6 @@ namespace Connect
 
         #endregion
 
-        #region WIN_CONDITION
-
         private void CheckWin()
         {
             bool IsWinning = true;
@@ -229,19 +224,14 @@ namespace Connect
                 }
             }
 
-            // GameManager.Instance.UnlockLevel();
-
             hasGameFinished = true;
-            Debug.Log(hasGameFinished);
-            GameFinished();
+            StartCoroutine(GameFinished());
         }
-
-        #endregion
-
         private IEnumerator GameFinished()
         {
             yield return new WaitForSeconds(1f);
             UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
+
     }
 }
