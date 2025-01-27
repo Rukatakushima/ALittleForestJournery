@@ -23,6 +23,7 @@ public class ItemsManager : MonoBehaviour
         ItemOnScene[] pickups = FindObjectsOfType<ItemOnScene>();
         foreach (ItemOnScene pickup in pickups)
         {
+            // GameObject prefab = prefabFromInstance(pickup.gameObject);
             GameObject prefab = pickup.gameObject;
             if (prefab != null && !itemsOnScenePrefabs.Contains(prefab))
             {
@@ -100,6 +101,9 @@ public class ItemsManager : MonoBehaviour
             {
                 inventory.isFull[i] = true;
 
+                // GameObject spawnedItemInInventory = Instantiate(itemInInventory, inventory.slots[i].transform);
+                // GameObject spawnedItemInInventory = itemInInventory.GetFromPool();
+
                 itemInInventory.SetActive(true);
                 SetItemSpriteInInventory(itemInInventory, itemId);
                 itemInInventory.transform.SetParent(inventory.slots[i].transform, false);
@@ -107,7 +111,11 @@ public class ItemsManager : MonoBehaviour
                 itemInInventory.GetComponent<ItemInInventory>().id = itemId;
                 itemInInventory.name = itemOnScene.name;
 
+                // itemsInInventory.Add(spawnedItemInInventory);
+
                 itemOnScene.SetActive(false);
+                // Destroy(itemOnScene);
+                // itemOnScene.GetComponent<PoolBase>().ReturnToPool(itemOnScene);
                 break;
             }
         }
@@ -115,6 +123,7 @@ public class ItemsManager : MonoBehaviour
 
     public void SetItemSpriteInInventory(GameObject itemInInventory, int itemId)
     {
+        // GameObject itemFromList = GetItemById(itemId);
         Sprite itemSprite = GetItemByIdOnScene(itemId).GetComponent<SpriteRenderer>().sprite;
         itemInInventory.GetComponent<Image>().sprite = itemSprite;
         SetItemSizeInInventory(itemInInventory, itemSprite.bounds.size);
