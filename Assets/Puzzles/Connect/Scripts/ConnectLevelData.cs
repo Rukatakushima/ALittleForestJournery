@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Connect
 {
-    [CreateAssetMenu(fileName = "ConnectLevel", menuName = "Levels/Connect/ConnectLevel")]
+    [CreateAssetMenu(fileName = "ConnectLevel", menuName = "Levels/ConnectLevel")]
     public class LevelData : ScriptableObject
     {
         // public string ConnectLevelName;
