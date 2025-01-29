@@ -45,14 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockPrefab: {fileID: 4232948711527732210, guid: c0d9b6a0e583e3f438d2bb33768b64db, type: 3}
-  blockSprites:
-  - {fileID: 21300000, guid: 3eb52aa5408762b44943b92ae6a0faf2, type: 3}
-  - {fileID: 21300000, guid: 3c8e9057b791c3f4fa1b8452f8a858b0, type: 3}
-  - {fileID: 21300000, guid: 59bad99b7589d184d9e20c47cb8fd9cb, type: 3}
-  - {fileID: 21300000, guid: 7363013f99c6cad4e9e5b17d257b4938, type: 3}
-  - {fileID: 21300000, guid: d48bfa99f7ea5fc4da476ac26e55745d, type: 3}
-  - {fileID: 21300000, guid: b786efc586509504b8d79c236cbb57ea, type: 3}
-  - {fileID: 21300000, guid: ef0511fc1c6e5e948a47b5dde6fff2bf, type: 3}
-  - {fileID: 21300000, guid: cd338ac1c7e0ba740b97abd8fbd5cc81, type: 3}
+  blockColors:
+  - {r: 0.3820755, g: 0.75283015, b: 1, a: 1}
+  - {r: 0.3803922, g: 1, b: 0.38536346, a: 1}
+  - {r: 1, g: 0.5616951, b: 0.3803922, a: 1}
+  - {r: 1, g: 0.3803922, b: 0.94242495, a: 1}
+  - {r: 1, g: 0.39937094, b: 0.3803922, a: 1}
+  - {r: 0.9929071, g: 1, b: 0.6084906, a: 1}
   blockSpawnSize: 0.5
+  startPos: {x: 0, y: 0}
+  prevPos: {x: 0, y: 0}
+  curPos: {x: 0, y: 0}
   blockPrefabPreloadCount: 10

@@ -48,8 +48,8 @@ MonoBehaviour:
   isBlocked: 0
   isFilled: 0
   bgSprite: {fileID: 7216258193870676728}
-  emptySprite: {fileID: 21300000, guid: 7363013f99c6cad4e9e5b17d257b4938, type: 3}
-  blockedSprite: {fileID: 21300000, guid: 3eb52aa5408762b44943b92ae6a0faf2, type: 3}
+  emptyColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
+  blockedColor: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
   startColor: {r: 1, g: 1, b: 1, a: 1}
   correctColor: {r: 0.6254956, g: 1, b: 0.4292453, a: 1}
   incorrectColor: {r: 1, g: 0.6462264, b: 0.6462264, a: 1}
@@ -94,7 +94,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -10
-  m_Sprite: {fileID: 21300000, guid: 3eb52aa5408762b44943b92ae6a0faf2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7363013f99c6cad4e9e5b17d257b4938, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -7,7 +7,7 @@ namespace Blocks
     public class Block : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer blockPrefab;
-        [SerializeField] private List<Sprite> blockSprites;
+        [SerializeField] private List<Color> blockColors;
         [SerializeField] private float blockSpawnSize;
 
         public Vector2 startPos, prevPos, curPos;
@@ -45,7 +45,7 @@ namespace Blocks
                 SpriteRenderer spawnedBlock = blockPrefabObjectPool.GetFromPool();
                 spawnedBlock.transform.SetParent(transform);
                 spawnedBlock.name = i.ToString() + ") SpriteRenderer";
-                spawnedBlock.sprite = blockSprites[blockNum + 1];
+                spawnedBlock.color = blockColors[blockNum + 1];
                 spawnedBlock.transform.localPosition = new Vector2(blockPositions[i].y, blockPositions[i].x);
                 blockSpriteRenderers.Add(spawnedBlock);
             }
