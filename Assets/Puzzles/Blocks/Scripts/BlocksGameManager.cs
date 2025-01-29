@@ -32,17 +32,30 @@ namespace Blocks
         public PoolBase<Block> blockPrefabObjectPool;
 
         public float bgCellPositionRate = 0.5f;
-        private float cameraSizeController = 0.65f;
+        public float cameraSizeController = 0.65f;
+        public bool spawnInEditor;
+        private bool isAwaken = false;
 
         private void Awake()
         {
             Instance = this;
             hasGameFinished = false;
+            cameraSizeController = blockPrefab.transform.localScale.x / 2;
+            bgCellPositionRate = blockPrefab.transform.localScale.x / 2;
             gridBlocks = new List<Block>();
             bGCellPrefabObjectPool = new PoolBase<BGCell>(PreloadBGCell, GetAction, ReturnAction, level.Rows * level.Columns);
-            blockPrefabObjectPool = new PoolBase<Block>(PreloadBlock, GetAction, ReturnAction, 1);//level.Blocks.Count
+            blockPrefabObjectPool = new PoolBase<Block>(PreloadBlock, GetAction, ReturnAction, level.Blocks.Count);//level.Blocks.Count
             SpawnGrid();
             SpawnBlocks();
+        }
+
+        private void OnValidate()
+        {
+            if (spawnInEditor && isAwaken == false)
+            {
+                Awake();
+                isAwaken = true;
+            }
         }
 
         private void SpawnGrid()
@@ -69,7 +82,6 @@ namespace Blocks
 
             for (int i = 0; i < level.Blocks.Count; i++)
             {
-                // Block block = Instantiate(blockPrefab);
                 Block block = blockPrefabObjectPool.GetFromPool();
                 block.name = i.ToString() + ") Block";
 

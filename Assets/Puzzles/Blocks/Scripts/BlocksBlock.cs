@@ -25,10 +25,14 @@ namespace Blocks
 
         private void Awake()
         {
-
             blockPrefabObjectPool = new PoolBase<SpriteRenderer>(PreloadSpriteRenderer, GetAction, ReturnAction, blockPrefabPreloadCount);
         }
 
+        public void CreatePools()
+        {
+            blockPrefabObjectPool = new PoolBase<SpriteRenderer>(PreloadSpriteRenderer, GetAction, ReturnAction, blockPrefabPreloadCount);
+
+        }
         public void Init(List<Vector2Int> blocks, Vector2 start, int blockNum)
         {
             startPos = start;
