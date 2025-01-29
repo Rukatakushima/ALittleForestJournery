@@ -155,10 +155,9 @@ MonoBehaviour:
   bGCellPrefab: {fileID: 7532265389834519554, guid: f058e9825b1e8c24081bf1f2df55a3a8, type: 3}
   blockPrefab: {fileID: 4551132339990789417, guid: d8f4ef9b05d52e54baecb380f9b103aa, type: 3}
   blockSpawnSize: 0.5
-  blockHighlightSize: 0.8
+  blockHighLightSize: 0
   blockPutSize: 1
   hasGameFinished: 0
-  bGCellPrefabPreloadCount: 10
   bgCellPositionRate: 0.5
 --- !u!4 &1323394105
 Transform:

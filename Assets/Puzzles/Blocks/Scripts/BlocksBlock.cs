@@ -10,14 +10,14 @@ namespace Blocks
         [SerializeField] private List<Sprite> blockSprites;
         [SerializeField] private float blockSpawnSize;
 
-        private Vector2 startPos, prevPos, curPos;
+        public Vector2 startPos, prevPos, curPos;
         private List<SpriteRenderer> blockSpriteRenderers;
         private List<Vector2Int> blockPositions;
 
         private const int TOP = 1;
         private const int BUTTON = 1;
 
-        public SpriteRenderer PreloadEdge() => Instantiate(blockPrefab);
+        public SpriteRenderer PreloadSpriteRenderer() => Instantiate(blockPrefab);
         public void GetAction(SpriteRenderer blockPrefab) => blockPrefab.gameObject.SetActive(true);
         public void ReturnAction(SpriteRenderer blockPrefab) => blockPrefab.gameObject.SetActive(false);
         public PoolBase<SpriteRenderer> blockPrefabObjectPool;
@@ -26,7 +26,7 @@ namespace Blocks
         private void Awake()
         {
 
-            blockPrefabObjectPool = new PoolBase<SpriteRenderer>(PreloadEdge, GetAction, ReturnAction, blockPrefabPreloadCount);
+            blockPrefabObjectPool = new PoolBase<SpriteRenderer>(PreloadSpriteRenderer, GetAction, ReturnAction, blockPrefabPreloadCount);
         }
 
         public void Init(List<Vector2Int> blocks, Vector2 start, int blockNum)
@@ -39,14 +39,17 @@ namespace Blocks
             for (int i = 0; i < blockPositions.Count; i++)
             {
                 SpriteRenderer spawnedBlock = blockPrefabObjectPool.GetFromPool();
+                spawnedBlock.transform.SetParent(transform);
+                spawnedBlock.name = i.ToString() + ") SpriteRenderer";
                 spawnedBlock.sprite = blockSprites[blockNum + 1];
                 spawnedBlock.transform.localPosition = new Vector2(blockPositions[i].y, blockPositions[i].x);
                 blockSpriteRenderers.Add(spawnedBlock);
             }
+            transform.localScale = Vector2.one * blockSpawnSize;
             ElevateSprites(true);
         }
 
-        private void ElevateSprites(bool reverse = false)
+        public void ElevateSprites(bool reverse = false)
         {
             foreach (var blockSprite in blockSpriteRenderers)
             {
@@ -60,7 +63,7 @@ namespace Blocks
             UpdatePosition();
         }
 
-        public List<Vector2Int> BlockPosition()
+        public List<Vector2Int> BlockPositions()
         {
             List<Vector2Int> result = new();
             foreach (var pos in blockPositions)
