@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b4cfe1a1f915447b0a9828f648c406, type: 3}
+  m_Name: BlocksLevel
+  m_EditorClassIdentifier: 
+  Rows: 3
+  Columns: 3
+  BlockRows: 0
+  BlockColumns: 0
+  Data: 000000000000000000000000000000000000000000000000000000000000000000000000
+  Blocks:
+  - Id: 0
+    StartPos: {x: 1, y: 1}
+    CenterPos: {x: 0, y: 0}
+    BlockPositions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: -1, y: 0}
+  - Id: 1
+    StartPos: {x: 1, y: 0}
+    CenterPos: {x: 0, y: 0}
+    BlockPositions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: -1, y: 0}
+  - Id: 2
+    StartPos: {x: 1, y: 2}
+    CenterPos: {x: 0, y: 0}
+    BlockPositions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: -1, y: 0}

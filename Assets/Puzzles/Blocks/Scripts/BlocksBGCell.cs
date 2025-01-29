@@ -4,14 +4,30 @@ namespace Blocks
 {
     public class BGCell : MonoBehaviour
     {
-        void Start()
-        {
+        [HideInInspector] public bool isBlocked, isFilled, isCorrect;
 
+        [SerializeField] private SpriteRenderer bgSprite;
+        [SerializeField] private Sprite emptySprite, blockedSprite;
+        [SerializeField] private Color startColor, correctColor, incorrectColor;
+
+        public void Init(int blockValue)
+        {
+            isBlocked = blockValue == -1;
+            if (isBlocked)
+            {
+                isFilled = true;
+            }
+            bgSprite.sprite = isBlocked ? blockedSprite : emptySprite;
         }
 
-        void Update()
+        public void ResetHightlight()
         {
+            bgSprite.color = startColor;
+        }
 
+        public void UpdateHightlight()
+        {
+            bgSprite.color = isCorrect ? correctColor : incorrectColor;
         }
     }
 }
