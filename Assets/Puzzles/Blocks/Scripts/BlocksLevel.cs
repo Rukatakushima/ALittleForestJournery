@@ -11,7 +11,7 @@ namespace Blocks
         public int Rows, Columns, BlockRows, BlockColumns;
         public List<int> Data;
         public List<BlockPiece> Blocks;
-
+/*
         private void OnValidate()
         {
             int newSize = Rows * Columns;
@@ -27,7 +27,7 @@ namespace Blocks
                 }
             }
         }
-    }
+    */}
 
     [Serializable]
     public struct BlockPiece

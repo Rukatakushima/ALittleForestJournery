@@ -14,28 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Rows: 3
   Columns: 3
-  BlockRows: 0
-  BlockColumns: 0
+  BlockRows: 1
+  BlockColumns: 1
   Data: 000000000000000000000000000000000000000000000000000000000000000000000000
   Blocks:
   - Id: 0
-    StartPos: {x: 1, y: 1}
+    StartPos: {x: 0, y: -2}
     CenterPos: {x: 0, y: 0}
     BlockPositions:
-    - {x: 0, y: 0}
     - {x: 1, y: 0}
+    - {x: 0, y: 0}
     - {x: -1, y: 0}
   - Id: 1
-    StartPos: {x: 1, y: 0}
+    StartPos: {x: 0, y: 0}
     CenterPos: {x: 0, y: 0}
     BlockPositions:
-    - {x: 0, y: 0}
     - {x: 1, y: 0}
-    - {x: -1, y: 0}
+    - {x: 0, y: 0}
+    - {x: 1, y: 1}
+    - {x: 0, y: 1}
   - Id: 2
-    StartPos: {x: 1, y: 2}
+    StartPos: {x: 0, y: 2}
     CenterPos: {x: 0, y: 0}
     BlockPositions:
-    - {x: 0, y: 0}
     - {x: 1, y: 0}
-    - {x: -1, y: 0}
+    - {x: 1, y: 1}
