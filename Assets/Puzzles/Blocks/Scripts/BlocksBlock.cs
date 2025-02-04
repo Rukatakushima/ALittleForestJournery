@@ -21,7 +21,7 @@ namespace Blocks
         public void GetAction(SpriteRenderer blockPrefab) => blockPrefab.gameObject.SetActive(true);
         public void ReturnAction(SpriteRenderer blockPrefab) => blockPrefab.gameObject.SetActive(false);
         public PoolBase<SpriteRenderer> blockPrefabObjectPool;
-        [SerializeField] private int blockPrefabPreloadCount = 10;
+        // [SerializeField] private int blockPrefabPreloadCount = 10;
 
         private void Awake()
         {
