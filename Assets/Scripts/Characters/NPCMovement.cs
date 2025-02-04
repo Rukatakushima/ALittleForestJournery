@@ -3,26 +3,26 @@ using UnityEngine;
 
 public class NPCMovement : MonoBehaviour
 {
-    public float speed;
-    private bool FacingLeft = true;
-    private bool CanMoveForward = true;
+    public float speed = 3f;
+    private bool facingLeft = true;
+    private bool canMoveForward = true;
     private bool isMoving = true;
-    private Animator animationNPC;
-    private GameObject player;
-    [SerializeField] private List<Vector2> positions = new List<Vector2>();
-    private int currentIndex = 0;
+    private Animator animator;
+    // private GameObject player;
+    [SerializeField] private List<Vector2> wayPoints = new List<Vector2>();
+    private int currentWaypointIndex = 0;
 
     private void Start()
     {
-        animationNPC = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        animator = GetComponent<Animator>();
+        // player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void FixedUpdate()
     {
         if (isMoving)
         {
-            Move();
+            MoveTowardsCurrentWaypoint();
         }
     }
 
@@ -31,7 +31,7 @@ public class NPCMovement : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isMoving = false;
-            SetWalkingAnimation(false);
+            UpdateWalkingAnimation(isMoving);
         }
     }
 
@@ -40,68 +40,60 @@ public class NPCMovement : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isMoving = true;
-            SetWalkingAnimation(true);
+            UpdateWalkingAnimation(isMoving);
         }
     }
 
-    private void Move()
+    private void MoveTowardsCurrentWaypoint()
     {
-        if (positions.Count == 0 || currentIndex >= positions.Count)
+        if (wayPoints.Count == 0) // || currentWaypointIndex >= wayPoints.Count
         {
             return;
         }
 
-        transform.position = Vector2.MoveTowards(transform.position, positions[currentIndex], speed * Time.deltaTime);
-        SetWalkingAnimation(true);
+        Vector2 targetPosition = wayPoints[currentWaypointIndex];
 
-        if (Vector2.Distance((Vector2)transform.position, positions[currentIndex]) < 0.1f)
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        UpdateWalkingAnimation(true);
+
+        if (Vector2.Distance((Vector2)transform.position, targetPosition) < 0.1f)
         {
-            UpdatePositionIndex();
+            UpdateWaypointIndex();
         }
 
-        UpdateFacingDirection();
-    }
-
-    private void UpdatePositionIndex()
-    {
-        if (CanMoveForward)
-        {
-            currentIndex++;
-            if (currentIndex >= positions.Count)
-            {
-                currentIndex = positions.Count - 1;
-                CanMoveForward = false;
-            }
-        }
-        else
-        {
-            currentIndex--;
-            if (currentIndex < 0)
-            {
-                currentIndex = 0;
-                CanMoveForward = true;
-            }
-        }
-    }
-
-    private void UpdateFacingDirection()
-    {
-        if ((transform.position.x > positions[currentIndex].x && !FacingLeft) || (transform.position.x < positions[currentIndex].x && FacingLeft))
+        bool shouldFlip = (transform.position.x > targetPosition.x && !facingLeft) || (transform.position.x < targetPosition.x && facingLeft);
+        if (shouldFlip)
         {
             Flip();
         }
     }
 
+    private void UpdateWaypointIndex()
+    {
+        currentWaypointIndex += canMoveForward ? +1 : -1;
+
+        if (currentWaypointIndex >= wayPoints.Count)
+        {
+            currentWaypointIndex = wayPoints.Count - 1;
+            canMoveForward = false;
+        }
+        else if (currentWaypointIndex < 0)
+        {
+            currentWaypointIndex = 0;
+            canMoveForward = true;
+        }
+    }
+
     private void Flip()
     {
-        FacingLeft = !FacingLeft;
+        facingLeft = !facingLeft;
         Vector3 scaler = transform.localScale;
         scaler.x *= -1;
         transform.localScale = scaler;
     }
 
-    private void SetWalkingAnimation(bool isWalking)
+    private void UpdateWalkingAnimation(bool isWalking)
     {
-        animationNPC.SetBool("isWalking", isWalking);
+        animator.SetBool("isWalking", isWalking);
     }
 }
