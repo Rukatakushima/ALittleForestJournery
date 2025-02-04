@@ -2,48 +2,52 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] public float speed = 4;
+    // [SerializeField] public float speed = 4;
     [SerializeField] public float jumpForce, checkRadius;
     [SerializeField] private Transform feetPos;
     [SerializeField] private LayerMask whatIsGround;
 
+    private Mover mover;
     private Rigidbody2D rb;
     private Animator anim;
-    private bool facingLeft = true;
+    // private bool facingLeft = true;
     private bool isGrounded;
 
     private void Start()
     {
+        mover = GetComponent<Mover>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
     {
-        Move();
-        UpdateAnimation();
+        mover.Move(Input.GetAxis("Horizontal"));
+        // Move();
+        // UpdateAnimation();
     }
 
     private void Update()
     {
         CheckGrounded();
         Jump();
+        UpdateAnimation();
     }
 
-    private void Move()
-    {
-        float moveInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+    // private void Move()
+    // {
+    //     float moveInput = Input.GetAxis("Horizontal");
+    //     rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
 
-        if ((facingLeft && moveInput > 0) || (!facingLeft && moveInput < 0))
-        {
-            Flip();
-        }
-    }
+    //     if ((facingLeft && moveInput > 0) || (!facingLeft && moveInput < 0))
+    //     {
+    //         Flip();
+    //     }
+    // }
 
     private void UpdateAnimation()
     {
-        anim.SetBool("isRunning", Mathf.Abs(rb.velocity.x) > 0);
+        // anim.SetBool("isRunning", Mathf.Abs(rb.velocity.x) > 0);
         anim.SetBool("isJumping", !isGrounded);
     }
 
@@ -61,11 +65,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Flip()
-    {
-        facingLeft = !facingLeft;
-        Vector3 scaler = transform.localScale;
-        scaler.x *= -1;
-        transform.localScale = scaler;
-    }
+    // private void Flip()
+    // {
+    //     facingLeft = !facingLeft;
+    //     Vector3 scaler = transform.localScale;
+    //     scaler.x *= -1;
+    //     transform.localScale = scaler;
+    // }
 }
