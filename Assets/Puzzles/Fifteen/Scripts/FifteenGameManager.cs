@@ -1,74 +1,99 @@
 using UnityEngine;
 using ObjectsPool;
+using System.Collections;
 
 namespace Fifteen
 {
     public class GameManager : MonoBehaviour
     {
-        public NumberBox numberBoxPrefab;
-        public NumberBox[,] numberBoxes = new NumberBox[4, 4];
-        public Sprite[] sprites;
+        public static GameManager Instance;
 
+        public Box[,] boxes = new Box[4, 4];
+        [SerializeField] private Sprite[] sprites;
 
-        public NumberBox Preload() => Instantiate(numberBoxPrefab);
-        public void GetAction(NumberBox numberBox) => numberBox.gameObject.SetActive(true);
-        public void ReturnAction(NumberBox numberBox) => numberBox.gameObject.SetActive(false);
-        public PoolBase<NumberBox> numberBoxPrefabObjectPool;
+        [SerializeField] private Box boxPrefab;
+        private Box Preload() => Instantiate(boxPrefab);
+        private void GetAction(Box box) => box.gameObject.SetActive(true);
+        private void ReturnAction(Box box) => box.gameObject.SetActive(false);
+        private PoolBase<Box> boxPrefabObjectPool;
 
-        public float cameraSizeController = 0.1f;
-        public float cameraPositionController = 0.375f;
+        [SerializeField] private float cameraSizeController = 0.1f;
+        [SerializeField] private float cameraPositionController = 0.375f;
+
+        // public bool hasGameFinished;
 
         private void Awake()
         {
-            numberBoxPrefabObjectPool = new PoolBase<NumberBox>(Preload, GetAction, ReturnAction, numberBoxes.Length);
-            // cameraSizeController = numberBoxPrefab.transform.localScale.x;
+            Instance = this;
+            // hasGameFinished = false;
+
+            boxPrefabObjectPool = new PoolBase<Box>(Preload, GetAction, ReturnAction, boxes.Length);
+            Init();
         }
 
         private void Start()
         {
-            Init();
+            // Init();
             SetCamera();
         }
+
+        /*
+                private void OnValidate()
+                {
+                    if (initInIspector && boxPrefabObjectPool == null)
+                    {
+                        boxPrefabObjectPool = new PoolBase<NumberBox>(Preload, GetAction, ReturnAction, boxes.Length);
+                        Init();
+                    }
+                }
+        */
 
         private void Init()
         {
             int index = 0;
             for (int j = 3; j >= 0; j--)
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < boxes.GetLength(1); i++)
                 {
-                    NumberBox box = numberBoxPrefabObjectPool.GetFromPool();
-                    box.gameObject.transform.position = new Vector2(i, j);
-                    box.Init(i, j, index + 1, sprites[index], Swap);
-                    numberBoxes[i, j] = box;
-                    index++;
+                    if (boxes[i, j] == null)
+                    {
+                        Box box = boxPrefabObjectPool.GetFromPool();
+                        box.gameObject.transform.position = new Vector2(i, j);
+                        box.Init(i, j, index + 1, sprites[index], ClickToSwap);
+                        boxes[i, j] = box;
+                        index++;
+                    }
                 }
             }
         }
 
-        private void Swap(int x, int y)
+        private void ClickToSwap(int x, int y)
         {
-            int dx = getDx(x, y);
-            int dy = getDy(x, y);
+            int xDirection = getDirectionX(x, y);
+            int yDirection = getDirectionY(x, y);
+            Swap(x, y, xDirection, yDirection);
+        }
 
-            var from = numberBoxes[x, y];
-            var target = numberBoxes[x + dx, y + dy];
+        public void Swap(int x, int y, int xDirection, int yDirection)
+        {
+            var from = boxes[x, y];
+            var target = boxes[x + xDirection, y + yDirection];
 
-            numberBoxes[x, y] = target;
-            numberBoxes[x + dx, y + dy] = from;
+            boxes[x, y] = target;
+            boxes[x + xDirection, y + yDirection] = from;
 
-            from.UpdatePos(x + dx, y + dy);
+            from.UpdatePos(x + xDirection, y + yDirection);
             target.UpdatePos(x, y);
         }
 
-        private int getDx(int x, int y)
+        private int getDirectionX(int x, int y)
         {
-            if ((x < 3) && numberBoxes[x + 1, y].isEmpty())
+            if ((x < 3) && boxes[x + 1, y].isEmpty())
             {
                 return 1;
             }
 
-            if ((x > 0) && numberBoxes[x - 1, y].isEmpty())
+            if ((x > 0) && boxes[x - 1, y].isEmpty())
             {
                 return -1;
             }
@@ -76,14 +101,14 @@ namespace Fifteen
             return 0;
         }
 
-        private int getDy(int x, int y)
+        private int getDirectionY(int x, int y)
         {
-            if (y < 3 && numberBoxes[x, y + 1].isEmpty())
+            if (y < 3 && boxes[x, y + 1].isEmpty())
             {
                 return 1;
             }
 
-            if (y > 0 && numberBoxes[x, y - 1].isEmpty())
+            if (y > 0 && boxes[x, y - 1].isEmpty())
             {
                 return -1;
             }
@@ -101,6 +126,30 @@ namespace Fifteen
             camPos.x = rows * cameraPositionController;
             camPos.y = columns * cameraPositionController;
             Camera.main.transform.position = camPos;
+        }
+
+        public void CheckAllBoxesCorrectPosition()
+        {
+            for (int i = 0; i < boxes.GetLength(0); i++)
+            {
+                for (int j = 0; j < boxes.GetLength(1); j++)
+                {
+                    if (!boxes[i, j].isInCorrectPosition)
+                    {
+                        // hasGameFinished = false;
+                        return;
+                    }
+                }
+            }
+
+            // hasGameFinished = true;
+            StartCoroutine(GameFinished());
+        }
+
+        private IEnumerator GameFinished()
+        {
+            yield return new WaitForSeconds(1f);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
     }
 }

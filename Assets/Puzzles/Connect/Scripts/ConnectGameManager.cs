@@ -67,6 +67,7 @@ namespace Connect
         [SerializeField] private Node _nodePrefab;
         public List<Node> _nodes;//private
         public Dictionary<Vector2Int, Node> _nodeGrid;
+        
         private void SpawnNodes()
         {
             _nodes = new List<Node>();

@@ -68,7 +68,7 @@ namespace Fill
                 }
             }
         }
-        
+
         private void Update()
         {
             if (hasGameFinished) return;

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4566948578422290039}
   - component: {fileID: 6729374824278753814}
   m_Layer: 0
-  m_Name: NumberBox
+  m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,3 +144,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
+  duration: 0.2
