@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // [SerializeField] public float speed = 4;
     [SerializeField] public float jumpForce, checkRadius;
     [SerializeField] private Transform feetPos;
     [SerializeField] private LayerMask whatIsGround;
@@ -10,7 +9,6 @@ public class PlayerController : MonoBehaviour
     private Mover mover;
     private Rigidbody2D rb;
     private Animator anim;
-    private bool facingLeft = true;
     private bool isGrounded;
 
     private void Start()
