@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private Mover mover;
     private Rigidbody2D rb;
     private Animator anim;
-    // private bool facingLeft = true;
+    private bool facingLeft = true;
     private bool isGrounded;
 
     private void Start()

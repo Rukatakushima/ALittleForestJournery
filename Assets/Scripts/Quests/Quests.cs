@@ -6,7 +6,7 @@ public class Quests : MonoBehaviour
     [HideInInspector] public int idPickedUp;
     public Animator startDialogueButtonAnim;
     [HideInInspector] public int questNumber;
-    [SerializeField] private List<int> dialogueIds = new List<int>{ 1, 2, 3, 4, 6 };
+    [SerializeField] private List<int> dialogueIds = new List<int> { 1, 2, 3, 4, 6 };
 
     public void OnTriggerEnter2D(Collider2D other)
     {
@@ -17,7 +17,7 @@ public class Quests : MonoBehaviour
         {
             idPickedUp = pickup.id;
             questNumber++;
-            Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
 
             // Проверяем, есть ли соответствующий диалог для текущего idPickedUp
             if (idPickedUp >= 0 && idPickedUp < dialogueIds.Count)

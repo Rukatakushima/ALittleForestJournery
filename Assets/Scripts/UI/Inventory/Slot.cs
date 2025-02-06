@@ -12,20 +12,16 @@ public class Slot : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    private void Update()
-    {
-        if (transform.childCount <= 0)
-        {
-            inventory.isFull[i] = false;
-        }
-    }
-
     public void DropItem()
     {
         foreach (Transform child in transform)
         {
-            int id = child.GetComponent<ItemInInventory>().id;
-            ItemsManager.Instance.SpawnOnScene(id);
+            ItemInInventory childItem = child.GetComponent<ItemInInventory>();
+            if (childItem != null)
+            {
+                ItemsManager.Instance.SpawnOnScene(childItem.id);
+                inventory.isFull[i] = false;
+            }
         }
     }
 
@@ -38,14 +34,19 @@ public class Slot : MonoBehaviour
             {
                 foreach (Transform child in transform)
                 {
-                    child.SetParent(inventory.slots[i].transform);
-                    child.position = inventory.slots[i].transform.position;
-                    
-                    inventory.isFull[i] = true;
-                    i--;
-                    inventory.isFull[i] = false;
-                    i++;
-                    break;
+                    ItemInInventory childItem = child.GetComponent<ItemInInventory>();
+                    if (childItem != null)
+                    {
+                        child.SetParent(inventory.slots[i].transform);
+                        child.SetAsFirstSibling();
+                        child.position = inventory.slots[i].transform.position;
+
+                        inventory.isFull[i] = true;
+                        i--;
+                        inventory.isFull[i] = false;
+                        i++;
+                        break;
+                    }
                 }
             }
             i--;

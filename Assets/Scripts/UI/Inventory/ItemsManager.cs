@@ -3,12 +3,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class ItemsManager : MonoBehaviour
 {
     public static ItemsManager Instance { get; private set; }
     public bool createListOfItemsInInspector = false;
-    
+
     #region  SAVE_PREFABS
 #if UNITY_EDITOR
     void OnValidate()
@@ -108,6 +107,7 @@ public class ItemsManager : MonoBehaviour
                 itemInInventory.SetActive(true);
                 SetItemSpriteInInventory(itemInInventory, itemId);
                 itemInInventory.transform.SetParent(inventory.slots[i].transform, false);
+                itemInInventory.transform.SetAsFirstSibling();
                 itemInInventory.transform.position = inventory.slots[i].transform.position;
                 itemInInventory.GetComponent<ItemInInventory>().id = itemId;
                 itemInInventory.name = itemOnScene.name;
