@@ -9,7 +9,7 @@ namespace Blocks
     {
         public static GameManager Instance;
 
-        [SerializeField] public Level level;
+        [SerializeField] public LevelData level;
         [SerializeField] private BGCell bGCellPrefab;
         [SerializeField] private Block blockPrefab;
         [SerializeField] private float blockSpawnSize, blockHighLightSize, blockPutSize;

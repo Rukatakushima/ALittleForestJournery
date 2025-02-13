@@ -29,11 +29,6 @@ namespace Fifteen
 
             boxPrefabObjectPool = new PoolBase<Box>(Preload, GetAction, ReturnAction, boxes.Length);
             Init();
-        }
-
-        private void Start()
-        {
-            // Init();
             SetCamera();
         }
 
@@ -118,8 +113,8 @@ namespace Fifteen
 
         private void SetCamera()
         {
-            float columns = 4;
-            float rows = 4;
+            float columns = boxes.GetLength(0);
+            float rows = boxes.GetLength(1);
 
             Camera.main.orthographicSize = Mathf.Max(columns, rows) * cameraSizeController;
             Vector3 camPos = Camera.main.transform.position;

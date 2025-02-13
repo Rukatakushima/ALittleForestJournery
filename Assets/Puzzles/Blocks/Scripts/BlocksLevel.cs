@@ -6,7 +6,7 @@ namespace Blocks
 {
 
     [CreateAssetMenu(fileName = "Level", menuName = "BlocksLevel")]
-    public class Level : ScriptableObject
+    public class LevelData : ScriptableObject
     {
         public int Rows, Columns, BlockRows, BlockColumns;
         public List<int> Data;

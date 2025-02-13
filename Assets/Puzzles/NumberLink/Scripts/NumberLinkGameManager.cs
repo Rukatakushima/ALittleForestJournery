@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace EmptyFloder
+namespace NumberLink
 {
     public class GameManager : MonoBehaviour
     {

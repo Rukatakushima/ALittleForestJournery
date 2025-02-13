@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace EmptyFloder
+namespace LaserLine
 {
-    [CreateAssetMenu(fileName = "-Level", menuName = "Levels/-Level")]
+    [CreateAssetMenu(fileName = "LaserLineLevel", menuName = "Levels/LaserLineLevel")]
     public class LevelData : ScriptableObject
     {
         void Start()
