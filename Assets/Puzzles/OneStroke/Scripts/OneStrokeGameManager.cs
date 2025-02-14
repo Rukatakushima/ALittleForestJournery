@@ -18,8 +18,8 @@ namespace OneStroke
         private int currentId;
         private const int startId = -1;
 
-        [SerializeField] private float cameraSizeController = 0.5f;
-        [SerializeField] private float cameraPositionController = 2f;
+        // [SerializeField] private float cameraSizeController = 0.5f;
+        // [SerializeField] private float cameraPositionController = 2f;
 
         private bool hasGameFinished = false;
         [SerializeField] private float sceneReloadDelay = 1f;
@@ -30,6 +30,9 @@ namespace OneStroke
 
         private Edge highlightEdge;
         private Vector2 previousHit;
+
+        [SerializeField] private WinConditionChecker winConditionChecker;
+        [SerializeField] private SceneLoader sceneLoader;
 
         private void Awake()
 
@@ -44,12 +47,13 @@ namespace OneStroke
 
             cameraController = GetComponent<CameraController>();
             cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
+
+            winConditionChecker.Initialize(edges);
+            winConditionChecker.OnWin.AddListener(sceneLoader.ChangeScene);
         }
 
         private void SpawnLevel()
         {
-            // SetCamera();
-
             for (int i = 0; i < level.Points.Count; i++)
             {
                 Vector3 positionData = level.Points[i];
@@ -128,7 +132,8 @@ namespace OneStroke
                 {
                     currentId = endPoint.Id;
                     edges[new Vector2Int(startPoint.Id, endPoint.Id)].FillEdge();
-                    CheckWin();
+                    // CheckWin();
+                    hasGameFinished = winConditionChecker.isWinConditionFulfilled();
                     startPoint = endPoint;
                     UpdateHighlightPosition();
                     previousHit = hit.transform.position;
@@ -139,7 +144,8 @@ namespace OneStroke
                 highlight.gameObject.SetActive(false);
                 startPoint = null;
                 endPoint = null;
-                CheckWin();
+                // CheckWin();
+                hasGameFinished = winConditionChecker.isWinConditionFulfilled();
             }
         }
 
@@ -179,27 +185,27 @@ namespace OneStroke
             return true;
         }
 
-        private void SetCamera()
-        {
-            Vector3 cameraPosition = Camera.main.transform.position;
-            cameraPosition.x = level.Columns / cameraPositionController;
-            cameraPosition.y = level.Rows / cameraPositionController;
-            Camera.main.transform.position = cameraPosition;
+        // private void SetCamera()
+        // {
+        //     Vector3 cameraPosition = Camera.main.transform.position;
+        //     cameraPosition.x = level.Columns / cameraPositionController;
+        //     cameraPosition.y = level.Rows / cameraPositionController;
+        //     Camera.main.transform.position = cameraPosition;
 
-            Camera.main.orthographicSize = Mathf.Max(level.Columns, level.Rows) * cameraSizeController;
-        }
+        //     Camera.main.orthographicSize = Mathf.Max(level.Columns, level.Rows) * cameraSizeController;
+        // }
 
-        private void CheckWin()
-        {
-            foreach (var item in edges)
-            {
-                if (!item.Value.IsFilled)
-                {
-                    return;
-                }
-            }
-            hasGameFinished = true;
-        }
+        // private void CheckWin()
+        // {
+        //     foreach (var item in edges)
+        //     {
+        //         if (!item.Value.IsFilled)
+        //         {
+        //             return;
+        //         }
+        //     }
+        //     hasGameFinished = true;
+        // }
 
         private IEnumerator GameFinished()
         {

@@ -3,12 +3,17 @@ using UnityEngine;
 
 public class SceneLoader : MonoBehaviour
 {
-    [SerializeField] protected float sceneReloadDelay = 1f;
+    [SerializeField] protected float sceneLoadDelay = 1f;
     [SerializeField] protected int loadingSceneNumber = 0;
 
-    public IEnumerator LoadScene()
+    public void ChangeScene()
     {
-        yield return new WaitForSeconds(sceneReloadDelay);
+        StartCoroutine(LoadScene());
+    }
+
+    private IEnumerator LoadScene()
+    {
+        yield return new WaitForSeconds(sceneLoadDelay);
         UnityEngine.SceneManagement.SceneManager.LoadScene(loadingSceneNumber);
     }
 }

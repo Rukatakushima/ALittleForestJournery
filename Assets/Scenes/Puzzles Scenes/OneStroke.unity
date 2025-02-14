@@ -274,8 +274,10 @@ GameObject:
   - component: {fileID: 1082899050}
   - component: {fileID: 1082899051}
   - component: {fileID: 1082899052}
+  - component: {fileID: 1082899054}
+  - component: {fileID: 1082899053}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -315,6 +317,8 @@ MonoBehaviour:
   cameraSizeController: 0.5
   cameraPositionController: 2
   sceneReloadDelay: 1
+  winConditionChecker: {fileID: 1082899054}
+  sceneLoader: {fileID: 1082899053}
 --- !u!114 &1082899052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +334,35 @@ MonoBehaviour:
   cameraPositionController: 2
   cameraPositionZ: -10
   cameraSizeController: 0.5
+--- !u!114 &1082899053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082899048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79446c30e9b7174fa52d7daf93996b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoadDelay: 1
+  loadingSceneNumber: 0
+--- !u!114 &1082899054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082899048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a32d4017b05c884e96376ffcff5dc7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnWin:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!120 &1256410786 stripped
 LineRenderer:
   m_CorrespondingSourceObject: {fileID: 1006907797792025827, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}

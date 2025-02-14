@@ -1,38 +1,15 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class BaseWinConditionChecker : MonoBehaviour
 {
-    // protected bool hasGameFinished = false;
-    public event System.Action OnWin;
-    [SerializeField] private SceneLoader sceneLoader;
+    public UnityEvent OnWin;
 
-    protected void Awake()
+    public abstract bool isWinConditionFulfilled();
+
+    // Метод для вызова события победы
+    protected void NotifyWin()
     {
-        if (sceneLoader == null)
-            sceneLoader = GetComponent<SceneLoader>();
+        OnWin?.Invoke();
     }
-
-    public abstract bool CheckWinCondition();
-
-    // Метод для обновления состояния (вызывается извне, например, после хода игрока)
-    public void UpdateWinCondition()
-    {
-        if (CheckWinCondition())
-        {
-            OnWin?.Invoke(); // Уведомляем о победе
-        }
-    }
-    
-    // protected void CheckHasGameFinished()
-    // {
-    //     if (hasGameFinished)
-    //     {
-    //         sceneLoader.LoadScene();
-    //     }
-    // }
-
-    // protected void SetHasGameFinishedTrue()
-    // {
-    //     hasGameFinished = true;
-    // }
 }
