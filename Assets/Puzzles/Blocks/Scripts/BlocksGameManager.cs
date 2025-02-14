@@ -8,7 +8,6 @@ namespace Blocks
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance;
-        // private CameraController cameraController;
 
         [SerializeField] public LevelData level;
         [SerializeField] private BGCell bGCellPrefab;
@@ -48,9 +47,6 @@ namespace Blocks
             blockPrefabObjectPool = new PoolBase<Block>(PreloadBlock, GetAction, ReturnAction, level.Blocks.Count);//level.Blocks.Count
             SpawnGrid();
             SpawnBlocks();
-
-            // cameraController = GetComponent<CameraController>();
-            // cameraController.SetupCamera(Mathf.Max(level.Columns* bgCellPositionRate, level.Rows* bgCellPositionRate) );
         }
 
         private void OnValidate()
@@ -104,9 +100,6 @@ namespace Blocks
             float maxRows = level.Rows + 2f + level.BlockRows * blockSpawnSize;
 
             Camera.main.orthographicSize = Mathf.Max(maxColumns, maxRows) * cameraSizeController;
-            // Vector3 camPos = Camera.main.transform.position;
-            // camPos.x = level.Columns * bgCellPositionRate;
-            // camPos.y = (level.Rows + bgCellPositionRate + startPos.y) * bgCellPositionRate;
             Camera.main.transform.position = new Vector3(level.Columns * bgCellPositionRate, (level.Rows + bgCellPositionRate + startPos.y) * bgCellPositionRate, -10f);
         }
 
