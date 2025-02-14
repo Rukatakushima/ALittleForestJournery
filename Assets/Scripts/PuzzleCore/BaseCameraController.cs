@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public abstract class BaseCameraController : MonoBehaviour
 {
-    [SerializeField] private float cameraPositionController = 0.5f;
-    [SerializeField] private float cameraPositionZ = -10f;
-    [SerializeField] private float cameraSizeController = 2f;
+    [SerializeField] protected float cameraPositionController = 0.5f;
+    [SerializeField] protected float cameraPositionZ = -10f;
+    [SerializeField] protected float cameraSizeController = 2f;
 
-    public void SetupCamera(float levelSize)
+    public virtual void SetupCamera(float levelSize)
     {
         // Camera.main.transform.position = new Vector3(currentLevelSize / 2f, currentLevelSize / 2f, -10f);
         // Camera.main.orthographicSize = currentLevelSize / cameraSizeController;
