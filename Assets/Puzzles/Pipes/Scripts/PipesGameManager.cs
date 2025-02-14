@@ -26,17 +26,17 @@ namespace Pipes
 
         private void SpawnLevel()
         {
-            pipes = new PipesPipe[_level.Row, _level.Col];
+            pipes = new PipesPipe[_level.Rows, _level.Columns];
             startPipes = new List<PipesPipe>();
 
-            for (int i = 0; i < _level.Row; i++)
+            for (int i = 0; i < _level.Rows; i++)
             {
-                for (int j = 0; j < _level.Col; j++)
+                for (int j = 0; j < _level.Columns; j++)
                 {
                     Vector2 spawnPos = new Vector2(j + 0.5f, i + 0.5f);
                     PipesPipe tempPipe = Instantiate(_cellPrefab);
                     tempPipe.transform.position = spawnPos;
-                    tempPipe.Init(_level.Data[i * _level.Col + j]);
+                    tempPipe.Init(_level.Data[i * _level.Columns + j]);
                     pipes[i, j] = tempPipe;
                     if (tempPipe.PipeType == 1)
                     {
@@ -45,10 +45,10 @@ namespace Pipes
                 }
             }
 
-            Camera.main.orthographicSize = Mathf.Max(_level.Row, _level.Col) / cameraSizeController;
+            Camera.main.orthographicSize = Mathf.Max(_level.Rows, _level.Columns) / cameraSizeController;
             Vector3 cameraPos = Camera.main.transform.position;
-            cameraPos.x = _level.Col * 0.5f;
-            cameraPos.y = _level.Row * 0.5f;
+            cameraPos.x = _level.Columns * 0.5f;
+            cameraPos.y = _level.Rows * 0.5f;
             Camera.main.transform.position = cameraPos;
 
             StartCoroutine(ShowHint());
@@ -62,8 +62,8 @@ namespace Pipes
             int row = Mathf.FloorToInt(mousePos.y);
             int col = Mathf.FloorToInt(mousePos.x);
             if (row < 0 || col < 0) return;
-            if (row >= _level.Row) return;
-            if (col >= _level.Col) return;
+            if (row >= _level.Rows) return;
+            if (col >= _level.Columns) return;
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -81,9 +81,9 @@ namespace Pipes
 
         private void CheckFill()
         {
-            for (int i = 0; i < _level.Row; i++)
+            for (int i = 0; i < _level.Rows; i++)
             {
-                for (int j = 0; j < _level.Col; j++)
+                for (int j = 0; j < _level.Columns; j++)
                 {
                     PipesPipe tempPipe = pipes[i, j];
                     if (tempPipe.PipeType != 0)
@@ -119,9 +119,9 @@ namespace Pipes
                 filled.IsFilled = true;
             }
 
-            for (int i = 0; i < _level.Row; i++)
+            for (int i = 0; i < _level.Rows; i++)
             {
-                for (int j = 0; j < _level.Col; j++)
+                for (int j = 0; j < _level.Columns; j++)
                 {
                     PipesPipe tempPipe = pipes[i, j];
                     tempPipe.UpdateFilled();
@@ -132,9 +132,9 @@ namespace Pipes
 
         private void CheckWin()
         {
-            for (int i = 0; i < _level.Row; i++)
+            for (int i = 0; i < _level.Rows; i++)
             {
-                for (int j = 0; j < _level.Col; j++)
+                for (int j = 0; j < _level.Columns; j++)
                 {
                     if (!pipes[i, j].IsFilled)
                         return;
