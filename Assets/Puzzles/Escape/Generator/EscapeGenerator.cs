@@ -31,12 +31,12 @@ namespace Escape
 
         private void CreateLevel()
         {
-            if (_row == _level.Rows && _col == _level.Col)
+            if (_row == _level.Row && _col == _level.Col)
             {
                 return;
             }
 
-            _level.Rows = _row;
+            _level.Row = _row;
             _level.Col = _col;
             _level.Pieces = new List<Piece>();
             _level.WinPiece = new Piece();
@@ -47,8 +47,8 @@ namespace Escape
         {
             //Set Up BG
             SpriteRenderer bg = Instantiate(_bgPrefab);
-            bg.size = new Vector2(_level.Col, _level.Rows);
-            bg.transform.position = new Vector3(_level.Col, _level.Rows, 0) * 0.5f;
+            bg.size = new Vector2(_level.Col, _level.Row);
+            bg.transform.position = new Vector3(_level.Col, _level.Row, 0) * 0.5f;
 
             SpawnWinPiece();
 
@@ -68,10 +68,10 @@ namespace Escape
             }
 
             //Set Up Camera
-            Camera.main.orthographicSize = Mathf.Max(_level.Col, _level.Rows) * 1.2f + 2f;
+            Camera.main.orthographicSize = Mathf.Max(_level.Col, _level.Row) * 1.2f + 2f;
             Vector3 camPos = Camera.main.transform.position;
             camPos.x = _level.Col * 0.5f;
-            camPos.y = _level.Rows * 0.5f;
+            camPos.y = _level.Row * 0.5f;
             Camera.main.transform.position = camPos;
         }
 

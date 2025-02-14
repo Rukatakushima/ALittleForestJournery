@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Blocks
 {
+
     [CreateAssetMenu(fileName = "Level", menuName = "BlocksLevel")]
     public class LevelData : ScriptableObject
     {
@@ -26,8 +27,7 @@ namespace Blocks
                 }
             }
         }
-    */
-    }
+    */}
 
     [Serializable]
     public struct BlockPiece

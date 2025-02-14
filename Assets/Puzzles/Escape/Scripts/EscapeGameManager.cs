@@ -34,8 +34,8 @@ namespace Escape
         {
             //Set Up BG
             SpriteRenderer bg = Instantiate(_bgPrefab);
-            bg.size = new Vector2(_level.Col, _level.Rows);
-            bg.transform.position = new Vector3(_level.Col, _level.Rows, 0) * 0.5f;
+            bg.size = new Vector2(_level.Col, _level.Row);
+            bg.transform.position = new Vector3(_level.Col, _level.Row, 0) * 0.5f;
 
             gamePieces = new List<GamePiece>();
 
@@ -63,8 +63,8 @@ namespace Escape
             }
 
             //Set Up Camera
-            Camera.main.orthographicSize = Mathf.Max(_level.Col, _level.Rows) / cameraSizeController;
-            Camera.main.transform.position = new Vector3(_level.Col * 0.5f, _level.Rows * 0.5f, -10);
+            Camera.main.orthographicSize = Mathf.Max(_level.Col, _level.Row) / cameraSizeController;
+            Camera.main.transform.position = new Vector3(_level.Col * 0.5f, _level.Row * 0.5f, -10);
         }
 
         private void Update()
@@ -86,8 +86,8 @@ namespace Escape
                 previousPos = currentPos;
 
                 //Calculate Collision
-                pieceCollision = new bool[_level.Rows, _level.Col];
-                for (int i = 0; i < _level.Rows; i++)
+                pieceCollision = new bool[_level.Row, _level.Col];
+                for (int i = 0; i < _level.Row; i++)
                 {
                     for (int j = 0; j < _level.Col; j++)
                     {
@@ -203,7 +203,7 @@ namespace Escape
 
         private bool IsValidPos(Vector2Int pos)
         {
-            return pos.x >= 0 && pos.y >= 0 && pos.x < _level.Rows && pos.y < _level.Col;
+            return pos.x >= 0 && pos.y >= 0 && pos.x < _level.Row && pos.y < _level.Col;
         }
 
         public void CheckWin()

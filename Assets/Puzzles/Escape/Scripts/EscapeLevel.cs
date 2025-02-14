@@ -7,7 +7,7 @@ namespace Escape
     [CreateAssetMenu(fileName = "EscapeLevel", menuName = "Levels/EscapeLevel", order = 0)]
     public class Level : ScriptableObject
     {
-        public int Rows;
+        public int Row;
         public int Col;
         public Piece WinPiece;
         public List<Piece> Pieces;

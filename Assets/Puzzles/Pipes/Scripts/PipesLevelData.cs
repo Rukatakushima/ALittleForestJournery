@@ -6,13 +6,13 @@ namespace Pipes
     [CreateAssetMenu(fileName = "PipesLevel", menuName = "Levels/PipesLevel")]
     public class PipesLevelData : ScriptableObject
     {
-        public int Rows;
-        public int Columns;
+        public int Row;
+        public int Col;
         public List<int> Data = new List<int>();
         private void OnValidate()
         {
             // Если значения Row или Col изменились, обновить размер списка Data
-            int newSize = Rows * Columns;
+            int newSize = Row * Col;
             if (Data.Count != newSize)
             {
                 while (Data.Count < newSize)
