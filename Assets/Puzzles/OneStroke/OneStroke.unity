@@ -170,6 +170,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Edge
       objectReference: {fileID: 0}
+    - target: {fileID: 4356471165143393812, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5111689565123493780, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5
@@ -209,6 +213,50 @@ PrefabInstance:
     - target: {fileID: 5111689565123493780, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.atime1
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.atime2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.ctime0
+      value: 59560
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.key0.b
+      value: 0.33490568
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.key0.g
+      value: 0.8798797
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.key1.b
+      value: 0.5613208
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.key1.g
+      value: 0.9283083
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.key1.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.key2.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: filledGradient.m_NumAlphaKeys
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -266,8 +314,6 @@ MonoBehaviour:
   cameraSizeController: 0.5
   cameraPositionController: 2
   sceneReloadDelay: 1
-  startPositionIndex: 0
-  endPositionIndex: 1
 --- !u!120 &1256410786 stripped
 LineRenderer:
   m_CorrespondingSourceObject: {fileID: 1006907797792025827, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}

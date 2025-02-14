@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Blocks;
 using UnityEngine;
 
 namespace OneStroke
@@ -25,10 +23,12 @@ namespace OneStroke
         private bool hasGameFinished = false;
         [SerializeField] private float sceneReloadDelay = 1f;
 
-        // [Header("Line Renderer Parameters")]
-        private int positionCount = 2;
-        [SerializeField] private int startPositionIndex = 0;
-        [SerializeField] private int endPositionIndex = 1;
+        private const int positionCount = 2;
+        private const int startPositionIndex = 0;
+        private const int endPositionIndex = 1;
+
+        private Edge highlightEdge;
+        private Vector2 previousHit;
 
         private void Awake()
         {
@@ -38,6 +38,7 @@ namespace OneStroke
             highlight.gameObject.SetActive(false);
             currentId = startId;
             SpawnLevel();
+            highlightEdge = highlight.gameObject.GetComponent<Edge>();
         }
 
         private void SpawnLevel()
@@ -46,27 +47,23 @@ namespace OneStroke
 
             for (int i = 0; i < level.Points.Count; i++)
             {
-                Vector4 positionData = level.Points[i];
-                Vector2 spawnPosition = new Vector3(positionData.x, positionData.y);
+                Vector3 positionData = level.Points[i];
+                Vector2 spawnPosition = new Vector2(positionData.x, positionData.y);
                 int id = (int)positionData.z;
                 points[id] = Instantiate(pointPrefab);
-                points[id].Initialize(id, spawnPosition);
+                points[id].SetPoint(id, spawnPosition);
             }
 
             for (int i = 0; i < level.Edges.Count; i++)
             {
                 Vector2Int normalEdge = level.Edges[i];
                 Vector2Int reversedEdge = new Vector2Int(normalEdge.y, normalEdge.x);
+
                 Edge spawnEdge = Instantiate(edgePrefab);
                 edges[normalEdge] = spawnEdge;
                 edges[reversedEdge] = spawnEdge;
 
-                Debug.Log("points[normalEdge.x].Position = " + points[normalEdge.x].Position);
-                Debug.Log("normalEdge.x = " + normalEdge.x);
-                Debug.Log("points[normalEdge.y].Position = " + points[normalEdge.y].Position);
-                Debug.Log("normalEdge.y = " + normalEdge.y);
-
-                spawnEdge.Initialize(points[normalEdge.x].Position, points[normalEdge.y].Position);
+                spawnEdge.SetEmptyEdge(points[normalEdge.x].Position, points[normalEdge.y].Position);
             }
         }
 
@@ -80,50 +77,56 @@ namespace OneStroke
 
             if (Input.GetMouseButtonDown(0))
             {
-                // Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                // Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
-                // RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
                 RaycastHit2D hit = GetHit();
 
                 if (!hit) return;
+
+                if (currentId == -1 || (Vector2)hit.transform.position == previousHit)
+                {
+                    highlightEdge.SetFilledGradient();
+                }
+                else
+                {
+                    highlightEdge.SetWrongGradient();
+                }
 
                 startPoint = hit.collider.gameObject.GetComponent<Point>();
 
                 highlight.gameObject.SetActive(true);
                 highlight.positionCount = positionCount;
                 UpdateHighlightPosition();
-                // SetHighlightPosition(startPoint.Position, startPoint.Position);
-                // highlight.SetPosition(startPositionIndex, startPoint.Position);
-                // highlight.SetPosition(endPositionIndex, startPoint.Position);
             }
             else if (Input.GetMouseButton(0) && startPoint != null)
             {
                 Vector2 mousePos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-                // RaycastHit2D hit = GetHit();
                 if (hit)
                 {
                     endPoint = hit.collider.gameObject.GetComponent<Point>();
                 }
                 highlight.SetPosition(endPositionIndex, mousePos);
 
-                if (startPoint == endPoint || endPoint == null) return;
+                if (startPoint == endPoint || endPoint == null)
+                {
+                    return;
+                }
 
-                if (IsStartAdd())
+                if (IsStartFilled())
                 {
                     currentId = endPoint.Id;
-                    edges[new Vector2Int(startPoint.Id, endPoint.Id)].Add();
+                    edges[new Vector2Int(startPoint.Id, endPoint.Id)].FillEdge();
                     startPoint = endPoint;
                     UpdateHighlightPosition();
-                    // SetHighlightPosition(startPoint.Position, endPoint.Position);
+                    previousHit = hit.transform.position;
                 }
-                else if (IsEndAdd())
+                else if (IsEndFilled())
                 {
                     currentId = endPoint.Id;
-                    edges[new Vector2Int(startPoint.Id, endPoint.Id)].Add();
+                    edges[new Vector2Int(startPoint.Id, endPoint.Id)].FillEdge();
                     CheckWin();
                     startPoint = endPoint;
                     UpdateHighlightPosition();
+                    previousHit = hit.transform.position;
                 }
             }
             else if (Input.GetMouseButtonUp(0))
@@ -141,19 +144,13 @@ namespace OneStroke
             return Physics2D.Raycast(mousePos, Vector2.zero);
         }
 
-        // private void SetHighlightPosition(Vector2 startPosition, Vector2 endPosition)
-        // {
-        //     highlight.SetPosition(startPositionIndex, startPosition);
-        //     highlight.SetPosition(endPositionIndex, endPosition);
-        // }
-
         private void UpdateHighlightPosition()
         {
             highlight.SetPosition(startPositionIndex, startPoint.Position);
-            highlight.SetPosition(endPositionIndex, endPoint.Position);
+            highlight.SetPosition(endPositionIndex, startPoint.Position);
         }
 
-        private bool IsStartAdd()
+        private bool IsStartFilled()
         {
             if (currentId != -1) return false;
             Vector2Int edge = new Vector2Int(startPoint.Id, endPoint.Id);
@@ -161,13 +158,14 @@ namespace OneStroke
             return true;
         }
 
-        private bool IsEndAdd()
+        private bool IsEndFilled()
         {
             if (currentId != startPoint.Id) return false;
+
             Vector2Int edge = new Vector2Int(endPoint.Id, startPoint.Id);
             if (edges.TryGetValue(edge, out Edge result))
             {
-                if (result.isFilled) return false;
+                if (result == null || result.IsFilled) return false;
             }
             else
             {
@@ -190,7 +188,7 @@ namespace OneStroke
         {
             foreach (var item in edges)
             {
-                if (!item.Value.isFilled)
+                if (!item.Value.IsFilled)
                 {
                     return;
                 }

@@ -7,11 +7,12 @@ namespace OneStroke
         public int Id { get; private set; }
         public Vector2 Position { get; private set; }
 
-        public void Initialize(int id, Vector2 position)
+        public void SetPoint(int id, Vector2 position)
         {
             Id = id;
             Position = position;
             transform.position = Position;
+            name = id.ToString();
         }
     }
 }
