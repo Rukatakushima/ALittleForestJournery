@@ -273,6 +273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1082899050}
   - component: {fileID: 1082899051}
+  - component: {fileID: 1082899052}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -314,6 +315,21 @@ MonoBehaviour:
   cameraSizeController: 0.5
   cameraPositionController: 2
   sceneReloadDelay: 1
+--- !u!114 &1082899052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082899048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af5f27e77956d0409324ab0fbb8c6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraPositionController: 2
+  cameraPositionZ: -10
+  cameraSizeController: 0.5
 --- !u!120 &1256410786 stripped
 LineRenderer:
   m_CorrespondingSourceObject: {fileID: 1006907797792025827, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}

@@ -6,6 +6,7 @@ namespace OneStroke
 {
     public class GameManager : MonoBehaviour
     {
+        private CameraController cameraController;
         [SerializeField] private LevelData level;
         [SerializeField] private Edge edgePrefab;
         [SerializeField] private Point pointPrefab;
@@ -31,6 +32,7 @@ namespace OneStroke
         private Vector2 previousHit;
 
         private void Awake()
+
         {
             hasGameFinished = false;
             points = new Dictionary<int, Point>();
@@ -39,11 +41,14 @@ namespace OneStroke
             currentId = startId;
             SpawnLevel();
             highlightEdge = highlight.gameObject.GetComponent<Edge>();
+
+            cameraController = GetComponent<CameraController>();
+            cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
         }
 
         private void SpawnLevel()
         {
-            SetCamera();
+            // SetCamera();
 
             for (int i = 0; i < level.Points.Count; i++)
             {
