@@ -4,7 +4,7 @@ using UnityEngine;
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] protected float sceneLoadDelay = 1f;
-    [SerializeField] protected int loadingSceneNumber = 0;
+    [SerializeField] public int loadingSceneNumber = 0;
 
     public void ChangeScene()
     {

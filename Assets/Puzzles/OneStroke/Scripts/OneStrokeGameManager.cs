@@ -1,51 +1,44 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace OneStroke
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : BaseGameManager<CameraController, WinConditionChecker>
     {
-        private CameraController cameraController;
+        [Header("Game Settings")]
         [SerializeField] private LevelData level;
-        [SerializeField] private Edge edgePrefab;
         [SerializeField] private Point pointPrefab;
+        [SerializeField] private Edge edgePrefab;
         [SerializeField] private LineRenderer highlight;
+        private Edge highlightEdge;
+        private Vector2 previousHit;
 
         private Dictionary<int, Point> points;
         private Dictionary<Vector2Int, Edge> edges;
         private Point startPoint, endPoint;
         private int currentId;
+
         private const int startId = -1;
-
-        // [SerializeField] private float cameraSizeController = 0.5f;
-        // [SerializeField] private float cameraPositionController = 2f;
-
-        private bool hasGameFinished = false;
-        [SerializeField] private float sceneReloadDelay = 1f;
-
         private const int positionCount = 2;
         private const int startPositionIndex = 0;
         private const int endPositionIndex = 1;
 
-        private Edge highlightEdge;
-        private Vector2 previousHit;
-
-        [SerializeField] private WinConditionChecker winConditionChecker;
-        [SerializeField] private SceneLoader sceneLoader;
-
-        private void Awake()
-
+        protected override void Awake()
         {
-            hasGameFinished = false;
+            InitializeComponents();
+
+            currentId = startId;
             points = new Dictionary<int, Point>();
             edges = new Dictionary<Vector2Int, Edge>();
             highlight.gameObject.SetActive(false);
-            currentId = startId;
-            SpawnLevel();
             highlightEdge = highlight.gameObject.GetComponent<Edge>();
 
-            cameraController = GetComponent<CameraController>();
+            SpawnLevel();
+            SetupManagers();
+        }
+
+        protected override void SetupManagers()
+        {
             cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
 
             winConditionChecker.Initialize(edges);
@@ -78,12 +71,6 @@ namespace OneStroke
 
         private void Update()
         {
-            if (hasGameFinished)
-            {
-                StartCoroutine(GameFinished());
-                return;
-            }
-
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit2D hit = GetHit();
@@ -115,10 +102,7 @@ namespace OneStroke
                 }
                 highlight.SetPosition(endPositionIndex, mousePos);
 
-                if (startPoint == endPoint || endPoint == null)
-                {
-                    return;
-                }
+                if (startPoint == endPoint || endPoint == null) return;
 
                 if (IsStartFilled())
                 {
@@ -132,10 +116,12 @@ namespace OneStroke
                 {
                     currentId = endPoint.Id;
                     edges[new Vector2Int(startPoint.Id, endPoint.Id)].FillEdge();
-                    // CheckWin();
-                    hasGameFinished = winConditionChecker.isWinConditionFulfilled();
+
+                    winConditionChecker.CheckWinCondition();
+
                     startPoint = endPoint;
                     UpdateHighlightPosition();
+
                     previousHit = hit.transform.position;
                 }
             }
@@ -144,8 +130,8 @@ namespace OneStroke
                 highlight.gameObject.SetActive(false);
                 startPoint = null;
                 endPoint = null;
-                // CheckWin();
-                hasGameFinished = winConditionChecker.isWinConditionFulfilled();
+
+                winConditionChecker.CheckWinCondition();
             }
         }
 
@@ -183,34 +169,6 @@ namespace OneStroke
                 return false;
             }
             return true;
-        }
-
-        // private void SetCamera()
-        // {
-        //     Vector3 cameraPosition = Camera.main.transform.position;
-        //     cameraPosition.x = level.Columns / cameraPositionController;
-        //     cameraPosition.y = level.Rows / cameraPositionController;
-        //     Camera.main.transform.position = cameraPosition;
-
-        //     Camera.main.orthographicSize = Mathf.Max(level.Columns, level.Rows) * cameraSizeController;
-        // }
-
-        // private void CheckWin()
-        // {
-        //     foreach (var item in edges)
-        //     {
-        //         if (!item.Value.IsFilled)
-        //         {
-        //             return;
-        //         }
-        //     }
-        //     hasGameFinished = true;
-        // }
-
-        private IEnumerator GameFinished()
-        {
-            yield return new WaitForSeconds(sceneReloadDelay);
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
     }
 }

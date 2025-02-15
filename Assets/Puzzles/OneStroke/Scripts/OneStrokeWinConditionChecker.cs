@@ -12,19 +12,18 @@ namespace OneStroke
             this.edges = edges; // Передаем ссылку на edges
         }
 
-        public override bool isWinConditionFulfilled()
+        public override void CheckWinCondition()
         {
-            if (edges == null) return false;
+            if (edges == null) return;
 
             foreach (var item in edges)
             {
                 if (!item.Value.IsFilled)
                 {
-                    return false;
+                    return;
                 }
             }
             NotifyWin();
-            return true;
         }
     }
 }

@@ -310,15 +310,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd093ed85dd7b545b2175a5b150d427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraController: {fileID: 1082899052}
+  winConditionChecker: {fileID: 1082899054}
+  sceneLoader: {fileID: 1082899053}
   level: {fileID: 11400000, guid: 3bbfd74b2b80b644d9ed39c2593b8455, type: 2}
   edgePrefab: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
   pointPrefab: {fileID: 5886321498476403106, guid: b8a8032347f95ed47b19e865108c8c11, type: 3}
   highlight: {fileID: 1256410786}
-  cameraSizeController: 0.5
-  cameraPositionController: 2
-  sceneReloadDelay: 1
-  winConditionChecker: {fileID: 1082899054}
-  sceneLoader: {fileID: 1082899053}
 --- !u!114 &1082899052
 MonoBehaviour:
   m_ObjectHideFlags: 0

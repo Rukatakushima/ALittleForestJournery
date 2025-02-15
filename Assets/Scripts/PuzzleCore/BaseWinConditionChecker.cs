@@ -5,7 +5,7 @@ public abstract class BaseWinConditionChecker : MonoBehaviour
 {
     public UnityEvent OnWin;
 
-    public abstract bool isWinConditionFulfilled();
+    public abstract void CheckWinCondition();
 
     // Метод для вызова события победы
     protected void NotifyWin()
