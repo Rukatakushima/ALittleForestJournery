@@ -30,6 +30,29 @@ namespace OneStroke
             lineRenderer.SetPosition(endPositionIndex, end);
         }
 
+        public void SetStartHighlight(Vector2 startPosition)
+        {
+            gameObject.SetActive(true);
+            lineRenderer.positionCount = positionCount;
+            UpdateHighlightPosition(startPosition);
+        }
+
+        public void UpdateHighlightPosition(Vector2 startPosition)
+        {
+            lineRenderer.SetPosition(startPositionIndex, startPosition);
+            lineRenderer.SetPosition(endPositionIndex, startPosition);
+        }
+
+        public void SetEndPosition(Vector2 endPosition)
+        {
+            lineRenderer.SetPosition(endPositionIndex, endPosition);
+        }
+
+        public void TurnOff()
+        {
+            gameObject.SetActive(false);
+        }
+
         private void SetGradient(Gradient gradient)
         {
             lineRenderer.colorGradient = gradient;

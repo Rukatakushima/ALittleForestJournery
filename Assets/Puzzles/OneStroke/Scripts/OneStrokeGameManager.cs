@@ -3,38 +3,26 @@ using UnityEngine;
 
 namespace OneStroke
 {
-    public class GameManager : BaseGameManager<CameraController, WinConditionChecker>
+    public class GameManager : BaseGameManager<DefaultCameraController, WinConditionChecker, LevelData>
     {
-        [Header("Game Settings")]
-        [SerializeField] private LevelData level;
         [SerializeField] private Point pointPrefab;
         [SerializeField] private Edge edgePrefab;
-        [SerializeField] private LineRenderer highlight;
-        private Edge highlightEdge;
-        private Vector2 previousHit;
+        [SerializeField] private Edge mainEdge;
 
         private Dictionary<int, Point> points;
         private Dictionary<Vector2Int, Edge> edges;
         private Point startPoint, endPoint;
+        private Vector2 previousHit;
         private int currentId;
-
         private const int startId = -1;
-        private const int positionCount = 2;
-        private const int startPositionIndex = 0;
-        private const int endPositionIndex = 1;
 
         protected override void Awake()
         {
-            InitializeComponents();
-
             currentId = startId;
             points = new Dictionary<int, Point>();
             edges = new Dictionary<Vector2Int, Edge>();
-            highlight.gameObject.SetActive(false);
-            highlightEdge = highlight.gameObject.GetComponent<Edge>();
 
-            SpawnLevel();
-            SetupManagers();
+            base.Awake();
         }
 
         protected override void SetupManagers()
@@ -45,7 +33,7 @@ namespace OneStroke
             winConditionChecker.OnWin.AddListener(sceneLoader.ChangeScene);
         }
 
-        private void SpawnLevel()
+        protected override void SpawnLevel()
         {
             for (int i = 0; i < level.Points.Count; i++)
             {
@@ -69,106 +57,90 @@ namespace OneStroke
             }
         }
 
-        private void Update()
+        protected override void MouseDown(Vector2 mousePosition)
         {
-            if (Input.GetMouseButtonDown(0))
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+            if (!hit) return;
+
+            startPoint = hit.collider.gameObject.GetComponent<Point>();
+            if (!startPoint) return;
+
+            if (currentId == startId || (Vector2)hit.transform.position == previousHit)
             {
-                RaycastHit2D hit = GetHit();
-
-                if (!hit) return;
-
-                if (currentId == -1 || (Vector2)hit.transform.position == previousHit)
-                {
-                    highlightEdge.SetFilledGradient();
-                }
-                else
-                {
-                    highlightEdge.SetWrongGradient();
-                }
-
-                startPoint = hit.collider.gameObject.GetComponent<Point>();
-
-                highlight.gameObject.SetActive(true);
-                highlight.positionCount = positionCount;
-                UpdateHighlightPosition();
+                mainEdge.SetFilledGradient();
             }
-            else if (Input.GetMouseButton(0) && startPoint != null)
+            else
             {
-                Vector2 mousePos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-                if (hit)
-                {
-                    endPoint = hit.collider.gameObject.GetComponent<Point>();
-                }
-                highlight.SetPosition(endPositionIndex, mousePos);
-
-                if (startPoint == endPoint || endPoint == null) return;
-
-                if (IsStartFilled())
-                {
-                    currentId = endPoint.Id;
-                    edges[new Vector2Int(startPoint.Id, endPoint.Id)].FillEdge();
-                    startPoint = endPoint;
-                    UpdateHighlightPosition();
-                    previousHit = hit.transform.position;
-                }
-                else if (IsEndFilled())
-                {
-                    currentId = endPoint.Id;
-                    edges[new Vector2Int(startPoint.Id, endPoint.Id)].FillEdge();
-
-                    winConditionChecker.CheckWinCondition();
-
-                    startPoint = endPoint;
-                    UpdateHighlightPosition();
-
-                    previousHit = hit.transform.position;
-                }
+                mainEdge.SetWrongGradient();
             }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                highlight.gameObject.SetActive(false);
-                startPoint = null;
-                endPoint = null;
 
+            mainEdge.SetStartHighlight(startPoint.Position);
+        }
+
+        protected override void MouseDrag(Vector2 mousePosition)
+        {
+            if (!startPoint) return;
+
+            Vector2 mousePos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+            if (hit)
+            {
+                endPoint = hit.collider.gameObject.GetComponent<Point>();
+            }
+
+            mainEdge.SetEndPosition(mousePos);
+
+            if (startPoint == endPoint || endPoint == null) return;
+
+            if (IsStartFilled())
+            {
+                FillEdge();
+            }
+            else if (IsEndFilled())
+            {
+                FillEdge();
                 winConditionChecker.CheckWinCondition();
             }
         }
 
-        private RaycastHit2D GetHit()
+        private void FillEdge()
         {
-            Vector2 mousePos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            return Physics2D.Raycast(mousePos, Vector2.zero);
+            currentId = endPoint.Id;
+            edges[new Vector2Int(startPoint.Id, endPoint.Id)].FillEdge();
+            startPoint = endPoint;
+            mainEdge.UpdateHighlightPosition(startPoint.Position);
+            previousHit = endPoint.transform.position;
         }
 
-        private void UpdateHighlightPosition()
+        protected override void OnMouseUp()
         {
-            highlight.SetPosition(startPositionIndex, startPoint.Position);
-            highlight.SetPosition(endPositionIndex, startPoint.Position);
+            mainEdge.TurnOff();
+
+            startPoint = null;
+            endPoint = null;
+
+            winConditionChecker.CheckWinCondition();
         }
 
         private bool IsStartFilled()
         {
-            if (currentId != -1) return false;
+            if (currentId != startId) return false;
+
             Vector2Int edge = new Vector2Int(startPoint.Id, endPoint.Id);
-            if (!edges.ContainsKey(edge)) return false;
-            return true;
+            return edges.ContainsKey(edge);
         }
 
         private bool IsEndFilled()
         {
             if (currentId != startPoint.Id) return false;
 
-            Vector2Int edge = new Vector2Int(endPoint.Id, startPoint.Id);
-            if (edges.TryGetValue(edge, out Edge result))
+            Vector2Int edgeId = new Vector2Int(endPoint.Id, startPoint.Id);
+            if (edges.TryGetValue(edgeId, out Edge result))
             {
-                if (result == null || result.IsFilled) return false;
+                return result != null && !result.IsFilled;
             }
-            else
-            {
-                return false;
-            }
-            return true;
+            return false;
         }
     }
 }
