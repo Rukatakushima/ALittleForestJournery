@@ -48,11 +48,11 @@ MonoBehaviour:
   isBlocked: 0
   isFilled: 0
   bgSprite: {fileID: 7216258193870676728}
-  emptyColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
-  blockedColor: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
-  startColor: {r: 1, g: 1, b: 1, a: 1}
-  correctColor: {r: 0.6254956, g: 1, b: 0.4292453, a: 1}
-  incorrectColor: {r: 1, g: 0.6462264, b: 0.6462264, a: 1}
+  emptyColor: {r: 0.46274513, g: 0.3372549, b: 0.654902, a: 1}
+  blockedColor: {r: 0.058823533, g: 0.050980397, b: 0.09411766, a: 1}
+  startColor: {r: 0.46274513, g: 0.3372549, b: 0.654902, a: 1}
+  correctColor: {r: 0.40784317, g: 0.8313726, b: 0.19607845, a: 1}
+  incorrectColor: {r: 0.5921569, g: 0.10980393, b: 0, a: 1}
 --- !u!212 &7216258193870676728
 SpriteRenderer:
   m_ObjectHideFlags: 0

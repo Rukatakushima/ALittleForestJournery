@@ -35,6 +35,12 @@ namespace OneStroke
 
         protected override void SpawnLevel()
         {
+            SpawnPoints();
+            SpawnEdges();
+        }
+
+        private void SpawnPoints()
+        {
             for (int i = 0; i < level.Points.Count; i++)
             {
                 Vector3 positionData = level.Points[i];
@@ -43,7 +49,10 @@ namespace OneStroke
                 points[id] = Instantiate(pointPrefab);
                 points[id].SetPoint(id, spawnPosition);
             }
+        }
 
+        private void SpawnEdges()
+        {
             for (int i = 0; i < level.Edges.Count; i++)
             {
                 Vector2Int normalEdge = level.Edges[i];
@@ -57,7 +66,7 @@ namespace OneStroke
             }
         }
 
-        protected override void MouseDown(Vector2 mousePosition)
+        protected override void HandleMouseDown(Vector2 mousePosition)
         {
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
             if (!hit) return;
@@ -77,7 +86,7 @@ namespace OneStroke
             mainEdge.SetStartHighlight(startPoint.Position);
         }
 
-        protected override void MouseDrag(Vector2 mousePosition)
+        protected override void HandleMouseDrag(Vector2 mousePosition)
         {
             if (!startPoint) return;
 
@@ -113,7 +122,7 @@ namespace OneStroke
             previousHit = endPoint.transform.position;
         }
 
-        protected override void OnMouseUp()
+        protected override void HandleMouseUp()
         {
             mainEdge.TurnOff();
 

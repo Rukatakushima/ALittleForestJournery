@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Blocked: 0
   Filled: 0
-  _blockedColor: {r: 0.18867922, g: 0.15218937, b: 0.15218937, a: 1}
-  _emptyColor: {r: 1, g: 1, b: 1, a: 1}
-  _filledColor: {r: 0.99283797, g: 1, b: 0.4198113, a: 1}
+  _blockedColor: {r: 0.31764707, g: 0.36078432, b: 0.44705886, a: 1}
+  _emptyColor: {r: 0.8862746, g: 0.854902, b: 0.86666673, a: 1}
+  _filledColor: {r: 0.89019614, g: 0.5882353, b: 0.54509807, a: 1}
   _cellRender: {fileID: 4634584950586991335}

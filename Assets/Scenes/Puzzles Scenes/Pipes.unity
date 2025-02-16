@@ -168,6 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _level: {fileID: 11400000, guid: 8033a3661924853469c5a8823fb00356, type: 2}
   _cellPrefab: {fileID: -5711112499624335155, guid: aa0deb5ab2ae97d45b0e7a021167099a, type: 3}
+  cameraSizeController: 2
 --- !u!1 &2011251915
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,7 +205,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.41433415, g: 0.28439835, b: 0.7830189, a: 0}
+  m_BackGroundColor: {r: 0.7490196, g: 0.16470589, b: 0.47843137, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

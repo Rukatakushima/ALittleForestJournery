@@ -56,14 +56,14 @@ public abstract class BaseGameManager<TCameraController, TWinConditionChecker, T
 
     protected virtual void SetupInputHandlers()
     {
-        inputHandler.OnMouseDown.AddListener(MouseDown);
-        inputHandler.OnMouseDrag.AddListener(MouseDrag);
-        inputHandler.OnMouseUp.AddListener(OnMouseUp);
+        inputHandler.OnMouseDown.AddListener(HandleMouseDown);
+        inputHandler.OnMouseDrag.AddListener(HandleMouseDrag);
+        inputHandler.OnMouseUp.AddListener(HandleMouseUp);
     }
 
-    protected abstract void MouseDown(Vector2 mousePosition);
+    protected abstract void HandleMouseDown(Vector2 mousePosition);
 
-    protected abstract void MouseDrag(Vector2 mousePosition);
+    protected abstract void HandleMouseDrag(Vector2 mousePosition);
 
-    protected abstract void OnMouseUp();
+    protected abstract void HandleMouseUp();
 }

@@ -7,8 +7,7 @@ namespace Blocks
         [HideInInspector] public bool isBlocked, isFilled;
 
         [SerializeField] private SpriteRenderer bgSprite;
-        [SerializeField] private Color emptyColor, blockedColor;
-        [SerializeField] private Color startColor, correctColor, incorrectColor;
+        [SerializeField] private Color emptyColor, blockedColor, correctColor, incorrectColor;
 
         public void Init(int blockValue)
         {
@@ -22,7 +21,7 @@ namespace Blocks
 
         public void ResetHighLight()
         {
-            bgSprite.color = startColor;
+            bgSprite.color = emptyColor;
         }
 
         public void UpdateHighlight(bool isCorrect)
