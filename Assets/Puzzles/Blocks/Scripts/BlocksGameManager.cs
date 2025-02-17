@@ -25,7 +25,6 @@ namespace Blocks
         public void ReturnAction(BGCell bGCellPrefab) => bGCellPrefab.gameObject.SetActive(false);
         public PoolBase<BGCell> bGCellPrefabObjectPool;
 
-
         public Block PreloadBlock() => Instantiate(blockPrefab);
         public void GetAction(Block blockPrefab) => blockPrefab.gameObject.SetActive(true);
         public void ReturnAction(Block blockPrefab) => blockPrefab.gameObject.SetActive(false);

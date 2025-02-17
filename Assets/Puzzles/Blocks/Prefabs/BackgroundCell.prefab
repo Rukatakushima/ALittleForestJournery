@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7532265389834519554}
   - component: {fileID: 7216258193870676728}
   m_Layer: 0
-  m_Name: BGCell
+  m_Name: BackgroundCell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
