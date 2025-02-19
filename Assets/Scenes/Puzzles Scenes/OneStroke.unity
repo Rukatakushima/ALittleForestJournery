@@ -192,7 +192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356471165143393812, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
       propertyPath: m_Name
-      value: Edge
+      value: Main Edge
       objectReference: {fileID: 0}
     - target: {fileID: 4356471165143393812, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
       propertyPath: m_IsActive
@@ -272,31 +272,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
       propertyPath: wrongGradient.ctime0
+      value: 50693
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: wrongGradient.ctime1
       value: 59560
       objectReference: {fileID: 0}
     - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
       propertyPath: wrongGradient.key0.b
-      value: 0.37254903
-      objectReference: {fileID: 0}
-    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
-      propertyPath: wrongGradient.key0.g
-      value: 0.4431373
-      objectReference: {fileID: 0}
-    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
-      propertyPath: wrongGradient.key0.r
-      value: 0.8980393
-      objectReference: {fileID: 0}
-    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
-      propertyPath: wrongGradient.key1.b
       value: 0.27058825
       objectReference: {fileID: 0}
     - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
-      propertyPath: wrongGradient.key1.g
+      propertyPath: wrongGradient.key0.g
       value: 0.2784314
       objectReference: {fileID: 0}
     - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
-      propertyPath: wrongGradient.key1.r
+      propertyPath: wrongGradient.key0.r
       value: 0.76470596
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: wrongGradient.key1.b
+      value: 0.37254903
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: wrongGradient.key1.g
+      value: 0.4431373
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
+      propertyPath: wrongGradient.key1.r
+      value: 0.8980393
       objectReference: {fileID: 0}
     - target: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
       propertyPath: filledGradient.atime1

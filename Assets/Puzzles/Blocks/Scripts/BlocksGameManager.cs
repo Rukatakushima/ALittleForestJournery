@@ -16,7 +16,6 @@ namespace Blocks
         protected override void Awake()
         {
             Instance = this;
-
             gridBlocks = new List<Block>();
             base.Awake();
         }
@@ -36,18 +35,28 @@ namespace Blocks
             this.BGCellGrid = BGCellGrid;
         }
 
-        private void ResetHighLight()
+        protected override void HandleMouseDown(Vector2 mousePosition)
         {
-            for (int i = 0; i < level.Rows; i++)
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+            if (!hit) return;
+
+            currentBlock = hit.collider.transform.parent.GetComponent<Block>();
+            if (currentBlock == null) return;
+
+            curPos = mousePosition;
+            prevPos = mousePosition;
+
+            currentBlock.ElevateSprites();
+            currentBlock.transform.localScale = Vector3.one * blockHighLightSize;
+
+            if (gridBlocks.Contains(currentBlock))
             {
-                for (int j = 0; j < level.Columns; j++)
-                {
-                    if (!BGCellGrid[i, j].isBlocked)
-                    {
-                        BGCellGrid[i, j].ResetHighLight();
-                    }
-                }
+                gridBlocks.Remove(currentBlock);
             }
+
+            UpdateFilled();
+            ResetHighLight();
+            UpdateHighLight();
         }
 
         private void UpdateFilled()
@@ -75,58 +84,9 @@ namespace Blocks
             }
         }
 
-        private void UpdateHighLight()
-        {
-            bool isCorrect = IsCorrectMove();
-            foreach (var pos in currentBlock.BlockPositions())
-            {
-                if (IsValidPos(pos))
-                {
-                    BGCellGrid[pos.x, pos.y].UpdateHighlight(isCorrect);
-                }
-            }
-        }
-
-        private bool IsCorrectMove()
-        {
-            foreach (var pos in currentBlock.BlockPositions())
-            {
-                if (!IsValidPos(pos) || BGCellGrid[pos.x, pos.y].isFilled)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-
         private bool IsValidPos(Vector2Int pos)
         {
             return pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
-        }
-
-        protected override void HandleMouseDown(Vector2 mousePosition)
-        {
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-            if (!hit) return;
-
-            currentBlock = hit.collider.transform.parent.GetComponent<Block>();
-            if (currentBlock == null) return;
-
-            curPos = mousePosition;
-            prevPos = mousePosition;
-
-            currentBlock.ElevateSprites();
-            currentBlock.transform.localScale = Vector3.one * blockHighLightSize;
-
-            if (gridBlocks.Contains(currentBlock))
-            {
-                gridBlocks.Remove(currentBlock);
-            }
-
-            UpdateFilled();
-            ResetHighLight();
-            UpdateHighLight();
         }
 
         protected override void HandleMouseDrag(Vector2 mousePosition)
@@ -139,6 +99,32 @@ namespace Blocks
 
             ResetHighLight();
             UpdateHighLight();
+        }
+
+        private void ResetHighLight()
+        {
+            for (int i = 0; i < level.Rows; i++)
+            {
+                for (int j = 0; j < level.Columns; j++)
+                {
+                    if (!BGCellGrid[i, j].isBlocked)
+                    {
+                        BGCellGrid[i, j].ResetHighLight();
+                    }
+                }
+            }
+        }
+
+        private void UpdateHighLight()
+        {
+            bool isCorrect = IsCorrectMove();
+            foreach (var pos in currentBlock.BlockPositions())
+            {
+                if (IsValidPos(pos))
+                {
+                    BGCellGrid[pos.x, pos.y].UpdateHighlight(isCorrect);
+                }
+            }
         }
 
         protected override void HandleMouseUp()
@@ -177,6 +163,18 @@ namespace Blocks
             UpdateFilled();
 
             CheckWinCondition();
+        }
+
+        private bool IsCorrectMove()
+        {
+            foreach (var pos in currentBlock.BlockPositions())
+            {
+                if (!IsValidPos(pos) || BGCellGrid[pos.x, pos.y].isFilled)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

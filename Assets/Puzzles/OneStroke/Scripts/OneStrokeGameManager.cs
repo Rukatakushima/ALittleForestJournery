@@ -9,7 +9,6 @@ namespace OneStroke
 
         [SerializeField] private Edge mainEdge;
 
-        // private Dictionary<int, Point> points;
         private Dictionary<Vector2Int, Edge> edges;
         private Point startPoint, endPoint;
         private Vector2 previousHit;
@@ -20,24 +19,22 @@ namespace OneStroke
         {
             Instance = this;
             currentId = startId;
-            // points = new Dictionary<int, Point>();
-            // edges = new Dictionary<Vector2Int, Edge>();
-
             base.Awake();
-        }
-
-        public void SetEdges(Dictionary<Vector2Int, Edge> edges)
-        {
-            this.edges = edges;
         }
 
         protected override void SetupManagers()
         {
             cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
+
             levelSpawner.Initialize(level);
             levelSpawner.SpawnLevel();
+            
             winConditionChecker.Initialize(edges);
-            winConditionChecker.OnWin.AddListener(sceneLoader.ChangeScene);
+        }
+
+        public void SetEdges(Dictionary<Vector2Int, Edge> edges)
+        {
+            this.edges = edges;
         }
 
         protected override void HandleMouseDown(Vector2 mousePosition)
@@ -64,7 +61,7 @@ namespace OneStroke
         {
             if (!startPoint) return;
 
-            Vector2 mousePos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // Vector2 mousePos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
             if (hit)
@@ -72,7 +69,7 @@ namespace OneStroke
                 endPoint = hit.collider.gameObject.GetComponent<Point>();
             }
 
-            mainEdge.SetEndPosition(mousePos);
+            mainEdge.SetEndPosition(mousePosition);
 
             if (startPoint == endPoint || endPoint == null) return;
 
@@ -87,15 +84,6 @@ namespace OneStroke
             }
         }
 
-        private void FillEdge()
-        {
-            currentId = endPoint.Id;
-            edges[new Vector2Int(startPoint.Id, endPoint.Id)].FillEdge();
-            startPoint = endPoint;
-            mainEdge.UpdateHighlightPosition(startPoint.Position);
-            previousHit = endPoint.transform.position;
-        }
-
         protected override void HandleMouseUp()
         {
             mainEdge.TurnOff();
@@ -104,6 +92,15 @@ namespace OneStroke
             endPoint = null;
 
             CheckWinCondition();
+        }
+        
+        private void FillEdge()
+        {
+            currentId = endPoint.Id;
+            edges[new Vector2Int(startPoint.Id, endPoint.Id)].FillEdge();
+            startPoint = endPoint;
+            mainEdge.UpdateHighlightPosition(startPoint.Position);
+            previousHit = endPoint.transform.position;
         }
 
         private bool IsStartFilled()
