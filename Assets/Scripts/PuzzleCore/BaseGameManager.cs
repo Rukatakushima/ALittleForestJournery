@@ -12,7 +12,7 @@ public abstract class BaseGameManager<TCameraController, TWinConditionChecker, T
     [SerializeField] protected InputHandler inputHandler;
 
     [Header("Game Settings")]
-    [SerializeField] protected TLevelData level;
+    [SerializeField] public TLevelData level;
 
     protected abstract void SetupManagers();
 
@@ -44,8 +44,7 @@ public abstract class BaseGameManager<TCameraController, TWinConditionChecker, T
 
     protected virtual void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        
+        // DontDestroyOnLoad(gameObject);        
         InitializeComponents();
         SpawnLevel();
         SetupManagers();

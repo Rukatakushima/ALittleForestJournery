@@ -21,10 +21,12 @@ namespace Blocks
         public void GetAction(SpriteRenderer blockPrefab) => blockPrefab.gameObject.SetActive(true);
         public void ReturnAction(SpriteRenderer blockPrefab) => blockPrefab.gameObject.SetActive(false);
         public PoolBase<SpriteRenderer> blockPrefabObjectPool;
-        // [SerializeField] private int blockPrefabPreloadCount = 10;
+
+        private CameraController cameraController;
 
         private void Awake()
         {
+            cameraController = GameManager.Instance.GetComponent<CameraController>();
             blockPrefabObjectPool = new PoolBase<SpriteRenderer>(PreloadSpriteRenderer, GetAction, ReturnAction, GameManager.Instance.level.Blocks.Count);
         }
 
@@ -35,17 +37,27 @@ namespace Blocks
             curPos = start;
             blockPositions = blocks;
             blockSpriteRenderers = new List<SpriteRenderer>();
-            for (int i = 0; i < blockPositions.Count; i++)
+
+            blockPrefabObjectPool = new PoolBase<SpriteRenderer>(() => Instantiate(blockPrefab),
+                sr => sr.gameObject.SetActive(true),
+                sr => sr.gameObject.SetActive(false),
+                blocks.Count);
+
+            CreateSprites(blockNum);
+            transform.localScale = Vector2.one * blockSpawnSize;
+            ElevateSprites(true);
+        }
+
+        private void CreateSprites(int blockNum)
+        {
+            foreach (var pos in blockPositions)
             {
                 SpriteRenderer spawnedBlock = blockPrefabObjectPool.GetFromPool();
                 spawnedBlock.transform.SetParent(transform);
-                spawnedBlock.name = i.ToString() + ") SpriteRenderer";
                 spawnedBlock.color = blockColors[blockNum + 1];
-                spawnedBlock.transform.localPosition = new Vector2(blockPositions[i].y, blockPositions[i].x);
+                spawnedBlock.transform.localPosition = new Vector2(pos.y, pos.x);
                 blockSpriteRenderers.Add(spawnedBlock);
             }
-            transform.localScale = Vector2.one * blockSpawnSize;
-            ElevateSprites(true);
         }
 
         public void ElevateSprites(bool reverse = false)
@@ -64,12 +76,13 @@ namespace Blocks
 
         public List<Vector2Int> BlockPositions()
         {
-            List<Vector2Int> result = new();
-            foreach (var pos in blockPositions)
-            {
-                result.Add(pos + new Vector2Int(Mathf.FloorToInt(curPos.y), Mathf.FloorToInt(curPos.x)));
-            }
-            return result;
+            return blockPositions.ConvertAll(pos => pos + new Vector2Int(Mathf.FloorToInt(curPos.y), Mathf.FloorToInt(curPos.x)));
+            // List<Vector2Int> result = new();
+            // foreach (var pos in blockPositions)
+            // {
+            //     result.Add(pos + new Vector2Int(Mathf.FloorToInt(curPos.y), Mathf.FloorToInt(curPos.x)));
+            // }
+            // return result;
         }
 
         public void UpdateIncorrectMove()
@@ -87,8 +100,8 @@ namespace Blocks
 
         public void UpdateCorrectMove()
         {
-            curPos.x = Mathf.FloorToInt(curPos.x) + GameManager.Instance.bgCellPositionRate;
-            curPos.y = Mathf.FloorToInt(curPos.y) + GameManager.Instance.bgCellPositionRate;
+            curPos.x = Mathf.FloorToInt(curPos.x) + cameraController.bgCellPositionRate;
+            curPos.y = Mathf.FloorToInt(curPos.y) + cameraController.bgCellPositionRate;
             prevPos = curPos;
             UpdatePosition();
         }

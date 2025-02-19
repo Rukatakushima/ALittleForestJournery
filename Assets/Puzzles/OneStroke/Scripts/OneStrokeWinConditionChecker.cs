@@ -9,7 +9,7 @@ namespace OneStroke
 
         public void Initialize(Dictionary<Vector2Int, Edge> edges)
         {
-            this.edges = edges; // Передаем ссылку на edges
+            this.edges = edges;
         }
 
         public override void CheckWinCondition()
@@ -23,6 +23,7 @@ namespace OneStroke
                     return;
                 }
             }
+            
             NotifyWin();
         }
     }

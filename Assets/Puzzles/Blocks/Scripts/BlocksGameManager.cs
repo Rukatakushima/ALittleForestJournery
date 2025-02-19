@@ -1,21 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ObjectsPool;
 
 namespace Blocks
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : BaseGameManager<CameraController, WinConditionChecker, LevelData>
     {
         public static GameManager Instance;
 
-        [SerializeField] public LevelData level;
         [SerializeField] private BGCell bGCellPrefab;
         [SerializeField] private Block blockPrefab;
         [SerializeField] private float blockSpawnSize, blockHighLightSize, blockPutSize;
 
         private BGCell[,] BGCellGrid;
-        [SerializeField] private bool hasGameFinished;
         private Block currentBlock;
         private Vector2 curPos, prevPos;
         private List<Block> gridBlocks;
@@ -30,31 +27,29 @@ namespace Blocks
         public void ReturnAction(Block blockPrefab) => blockPrefab.gameObject.SetActive(false);
         public PoolBase<Block> blockPrefabObjectPool;
 
-        public float bgCellPositionRate = 0.5f;
-        public float cameraSizeController = 0.65f;
-        public bool spawnInEditor;
-        private bool isAwaken = false;
-
-        private void Awake()
+        protected override void Awake()
         {
             Instance = this;
-            hasGameFinished = false;
-            cameraSizeController = blockPrefab.transform.localScale.x / 2;
-            bgCellPositionRate = blockPrefab.transform.localScale.x / 2;
+
             gridBlocks = new List<Block>();
             bGCellPrefabObjectPool = new PoolBase<BGCell>(PreloadBGCell, GetAction, ReturnAction, level.Rows * level.Columns);
             blockPrefabObjectPool = new PoolBase<Block>(PreloadBlock, GetAction, ReturnAction, level.Blocks.Count);//level.Blocks.Count
+
+            base.Awake();
+        }
+
+        protected override void SpawnLevel()
+        {
             SpawnGrid();
             SpawnBlocks();
         }
 
-        private void OnValidate()
+        protected override void SetupManagers() //override
         {
-            if (spawnInEditor && isAwaken == false)
-            {
-                Awake();
-                isAwaken = true;
-            }
+            cameraController.SetupCamera(level, blockSpawnSize, level.BlockRows, level.BlockColumns);
+
+            winConditionChecker.Initialize(BGCellGrid, level.Rows, level.Columns);
+            winConditionChecker.OnWin.AddListener(sceneLoader.ChangeScene);
         }
 
         private void SpawnGrid()
@@ -66,7 +61,7 @@ namespace Blocks
                 {
                     BGCell bgCell = bGCellPrefabObjectPool.GetFromPool();
                     bgCell.name = i.ToString() + " " + j.ToString();
-                    bgCell.transform.position = new Vector2(j + bgCellPositionRate, i + bgCellPositionRate);
+                    bgCell.transform.position = new Vector2(j + cameraController.bgCellPositionRate, i + cameraController.bgCellPositionRate);
                     bgCell.Init(level.Data[i * level.Columns + j]); // i = стока, размер строки = кол-во столбцов
                     BGCellGrid[i, j] = bgCell;
                 }
@@ -76,7 +71,7 @@ namespace Blocks
         private void SpawnBlocks()
         {
             Vector2 startPos = Vector2.zero;
-            startPos.x = 0.25f + (level.Columns - level.BlockColumns * blockSpawnSize) * bgCellPositionRate;
+            startPos.x = 0.25f + (level.Columns - level.BlockColumns * blockSpawnSize) * cameraController.bgCellPositionRate;
             startPos.y = -level.BlockRows * blockSpawnSize + 0.25f - 1f;
 
             for (int i = 0; i < level.Blocks.Count; i++)
@@ -88,86 +83,6 @@ namespace Blocks
                 Vector3 blockSpawnPos = startPos + new Vector2(blockPos.y, blockPos.x) * blockSpawnSize;
                 block.transform.position = blockSpawnPos;
                 block.Init(level.Blocks[i].BlockPositions, blockSpawnPos, level.Blocks[i].Id);
-            }
-
-            SetCamera(startPos);
-        }
-
-        private void SetCamera(Vector2 startPos)
-        {
-            float maxColumns = Mathf.Max(level.Columns, level.BlockColumns * blockSpawnSize);
-            float maxRows = level.Rows + 2f + level.BlockRows * blockSpawnSize;
-
-            Camera.main.orthographicSize = Mathf.Max(maxColumns, maxRows) * cameraSizeController;
-            Camera.main.transform.position = new Vector3(level.Columns * bgCellPositionRate, (level.Rows + bgCellPositionRate + startPos.y) * bgCellPositionRate, -10f);
-        }
-
-        private void Update()
-        {
-            if (hasGameFinished) return;
-
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-                if (!hit) return;
-                currentBlock = hit.collider.transform.parent.GetComponent<Block>();
-                if (currentBlock == null) return;
-                curPos = mousePos2D;
-                prevPos = mousePos2D;
-                currentBlock.ElevateSprites();
-                currentBlock.transform.localScale = Vector3.one * blockHighLightSize;
-                if (gridBlocks.Contains(currentBlock))
-                {
-                    gridBlocks.Remove(currentBlock);
-                }
-                UpdateFilled();
-                ResetHighLight();
-                UpdateHighLight();
-            }
-            else if (Input.GetMouseButton(0) && currentBlock != null)
-            {
-                curPos = mousePos;
-                currentBlock.UpdatePos(curPos - prevPos);
-                prevPos = curPos;
-                ResetHighLight();
-                UpdateHighLight();
-            }
-            else if (Input.GetMouseButtonUp(0) && currentBlock != null)
-            {
-                currentBlock.ElevateSprites(true);
-
-                if (IsCorrectMove())
-                {
-                    currentBlock.UpdateCorrectMove();
-                    currentBlock.transform.localScale = Vector3.one * blockPutSize;
-                    gridBlocks.Add(currentBlock);
-                }
-                else if (mousePos2D.y < 0)
-                {
-                    currentBlock.UpdateStartMove();
-                    currentBlock.transform.localScale = Vector3.one * blockSpawnSize;
-                }
-                else
-                {
-                    currentBlock.UpdateIncorrectMove();
-                    if (currentBlock.curPos.y > 0)
-                    {
-                        gridBlocks.Add(currentBlock);
-                        currentBlock.transform.localScale = Vector3.one * blockPutSize;
-                    }
-                    else
-                    {
-                        currentBlock.transform.localScale = Vector3.one * blockSpawnSize;
-                    }
-                }
-
-                currentBlock = null;
-                ResetHighLight();
-                UpdateFilled();
-                CheckWin();
             }
         }
 
@@ -240,27 +155,82 @@ namespace Blocks
             return pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
         }
 
-        private void CheckWin()
+        protected override void HandleMouseDown(Vector2 mousePosition)
         {
-            for (int i = 0; i < level.Rows; i++)
-            {
-                for (int j = 0; j < level.Columns; j++)
-                {
-                    if (!BGCellGrid[i, j].isFilled)
-                    {
-                        return;
-                    }
-                }
-            }
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
 
-            hasGameFinished = true;
-            StartCoroutine(GameFinished());
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+            if (!hit) return;
+            currentBlock = hit.collider.transform.parent.GetComponent<Block>();
+            if (currentBlock == null) return;
+            curPos = mousePos2D;
+            prevPos = mousePos2D;
+            currentBlock.ElevateSprites();
+            currentBlock.transform.localScale = Vector3.one * blockHighLightSize;
+            if (gridBlocks.Contains(currentBlock))
+            {
+                gridBlocks.Remove(currentBlock);
+            }
+            UpdateFilled();
+            ResetHighLight();
+            UpdateHighLight();
         }
 
-        private IEnumerator GameFinished()
+        protected override void HandleMouseDrag(Vector2 mousePosition)
         {
-            yield return new WaitForSeconds(1f);
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            if (currentBlock != null)
+            {
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                curPos = mousePos;
+                currentBlock.UpdatePos(curPos - prevPos);
+                prevPos = curPos;
+                ResetHighLight();
+                UpdateHighLight();
+            }
+        }
+
+        protected override void HandleMouseUp()
+        {
+            if (currentBlock != null)
+            {
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
+
+                currentBlock.ElevateSprites(true);
+
+                if (IsCorrectMove())
+                {
+                    currentBlock.UpdateCorrectMove();
+                    currentBlock.transform.localScale = Vector3.one * blockPutSize;
+                    gridBlocks.Add(currentBlock);
+                }
+                else if (mousePos2D.y < 0)
+                {
+                    currentBlock.UpdateStartMove();
+                    currentBlock.transform.localScale = Vector3.one * blockSpawnSize;
+                }
+                else
+                {
+                    currentBlock.UpdateIncorrectMove();
+                    if (currentBlock.curPos.y > 0)
+                    {
+                        gridBlocks.Add(currentBlock);
+                        currentBlock.transform.localScale = Vector3.one * blockPutSize;
+                    }
+                    else
+                    {
+                        currentBlock.transform.localScale = Vector3.one * blockSpawnSize;
+                    }
+                }
+
+                currentBlock = null;
+                ResetHighLight();
+                UpdateFilled();
+
+                winConditionChecker.CheckWinCondition();
+            }
         }
     }
 }
