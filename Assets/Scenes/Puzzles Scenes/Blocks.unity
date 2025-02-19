@@ -132,9 +132,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1323394105}
   - component: {fileID: 1323394104}
+  - component: {fileID: 1323394110}
   - component: {fileID: 1323394106}
-  - component: {fileID: 1323394107}
   - component: {fileID: 1323394109}
+  - component: {fileID: 1323394107}
   - component: {fileID: 1323394108}
   m_Layer: 0
   m_Name: GameManager
@@ -155,13 +156,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525dc18c124cf3a4fa1a568b26a6cdda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelSpawner: {fileID: 0}
   cameraController: {fileID: 0}
   winConditionChecker: {fileID: 0}
   sceneLoader: {fileID: 0}
   inputHandler: {fileID: 0}
   level: {fileID: 11400000, guid: 3981321f943988843971d46d008a7775, type: 2}
-  bGCellPrefab: {fileID: 7532265389834519554, guid: f058e9825b1e8c24081bf1f2df55a3a8, type: 3}
-  blockPrefab: {fileID: 4551132339990789417, guid: d8f4ef9b05d52e54baecb380f9b103aa, type: 3}
   blockSpawnSize: 0.5
   blockHighLightSize: 1
   blockPutSize: 1
@@ -246,6 +246,20 @@ MonoBehaviour:
   OnWin:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1323394110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323394103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c23726cb4da6e114e90b094e89934d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bGCellPrefab: {fileID: 7532265389834519554, guid: f058e9825b1e8c24081bf1f2df55a3a8, type: 3}
+  blockPrefab: {fileID: 4551132339990789417, guid: d8f4ef9b05d52e54baecb380f9b103aa, type: 3}
 --- !u!1 &2064103899
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ namespace Blocks
             float maxRows = level.Rows + 2f + blockRows * blockSpawnSize;
 
             Camera.main.orthographicSize = Mathf.Max(maxColumns, maxRows) * cameraSizeController;
-            Camera.main.transform.position = new Vector3(level.Columns * bgCellPositionRate, (level.Rows + bgCellPositionRate) * bgCellPositionRate, -10f);
+            Camera.main.transform.position = new Vector3(level.Columns * bgCellPositionRate, (level.Rows + bgCellPositionRate) * bgCellPositionRate, cameraPositionZ);
         }
     }
 }

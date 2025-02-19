@@ -22,15 +22,16 @@ namespace Blocks
         public void ReturnAction(SpriteRenderer blockPrefab) => blockPrefab.gameObject.SetActive(false);
         public PoolBase<SpriteRenderer> blockPrefabObjectPool;
 
-        private CameraController cameraController;
+        // private CameraController cameraController;
+        private float bgCellPositionRate;
 
         private void Awake()
         {
-            cameraController = GameManager.Instance.GetComponent<CameraController>();
+            bgCellPositionRate =  GameManager.Instance.GetComponent<CameraController>().bgCellPositionRate;
             blockPrefabObjectPool = new PoolBase<SpriteRenderer>(PreloadSpriteRenderer, GetAction, ReturnAction, GameManager.Instance.level.Blocks.Count);
         }
 
-        public void Init(List<Vector2Int> blocks, Vector2 start, int blockNum)
+        public void Initialize(List<Vector2Int> blocks, Vector2 start, int blockNum)
         {
             startPos = start;
             prevPos = start;
@@ -77,12 +78,6 @@ namespace Blocks
         public List<Vector2Int> BlockPositions()
         {
             return blockPositions.ConvertAll(pos => pos + new Vector2Int(Mathf.FloorToInt(curPos.y), Mathf.FloorToInt(curPos.x)));
-            // List<Vector2Int> result = new();
-            // foreach (var pos in blockPositions)
-            // {
-            //     result.Add(pos + new Vector2Int(Mathf.FloorToInt(curPos.y), Mathf.FloorToInt(curPos.x)));
-            // }
-            // return result;
         }
 
         public void UpdateIncorrectMove()
@@ -100,8 +95,8 @@ namespace Blocks
 
         public void UpdateCorrectMove()
         {
-            curPos.x = Mathf.FloorToInt(curPos.x) + cameraController.bgCellPositionRate;
-            curPos.y = Mathf.FloorToInt(curPos.y) + cameraController.bgCellPositionRate;
+            curPos.x = Mathf.FloorToInt(curPos.x) + bgCellPositionRate;
+            curPos.y = Mathf.FloorToInt(curPos.y) + bgCellPositionRate;
             prevPos = curPos;
             UpdatePosition();
         }

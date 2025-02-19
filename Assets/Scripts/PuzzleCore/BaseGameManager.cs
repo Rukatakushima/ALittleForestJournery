@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public abstract class BaseGameManager<TCameraController, TWinConditionChecker, TLevelData> : MonoBehaviour
+public abstract class BaseGameManager<TLevelSpawner, TCameraController, TWinConditionChecker, TLevelData> : MonoBehaviour
+    where TLevelSpawner : BaseLevelSpawner
     where TCameraController : BaseCameraController
     where TWinConditionChecker : BaseWinConditionChecker
     where TLevelData : ScriptableObject
 {
     [Header("Managers")]
+    [SerializeField] protected TLevelSpawner levelSpawner;
     [SerializeField] protected TCameraController cameraController;
     [SerializeField] protected TWinConditionChecker winConditionChecker;
     [SerializeField] protected SceneLoader sceneLoader;
@@ -18,10 +20,13 @@ public abstract class BaseGameManager<TCameraController, TWinConditionChecker, T
 
     protected virtual void InitializeComponents()
     {
+        if (levelSpawner == null)
+            levelSpawner = GetComponent<TLevelSpawner>();
         if (cameraController == null)
             cameraController = GetComponent<TCameraController>();
         if (winConditionChecker == null)
             winConditionChecker = GetComponent<TWinConditionChecker>();
+        winConditionChecker.OnWin.AddListener(GameFinished);
         if (sceneLoader == null)
             sceneLoader = GetComponent<SceneLoader>();
         if (inputHandler == null)
@@ -43,15 +48,12 @@ public abstract class BaseGameManager<TCameraController, TWinConditionChecker, T
     }
 
     protected virtual void Awake()
-    {
-        // DontDestroyOnLoad(gameObject);        
+    {      
         InitializeComponents();
-        SpawnLevel();
+        // SpawnLevel();
         SetupManagers();
         SetupInputHandlers();
     }
-
-    protected abstract void SpawnLevel();
 
     protected virtual void SetupInputHandlers()
     {
@@ -65,4 +67,28 @@ public abstract class BaseGameManager<TCameraController, TWinConditionChecker, T
     protected abstract void HandleMouseDrag(Vector2 mousePosition);
 
     protected abstract void HandleMouseUp();
+
+    protected void CheckWinCondition()
+    {
+        if (winConditionChecker != null)
+        {
+            winConditionChecker.CheckWinCondition();
+        }
+        else
+        {
+            Debug.LogError("WinConditionChecker is not assigned!");
+        }
+    }
+
+    protected void GameFinished()
+    {
+        if (sceneLoader != null)
+        {
+            sceneLoader.ChangeScene();
+        }
+        else
+        {
+            Debug.LogError("SceneLoader is not assigned!");
+        }
+    }
 }

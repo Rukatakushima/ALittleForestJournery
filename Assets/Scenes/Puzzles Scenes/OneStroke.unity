@@ -361,6 +361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1082899050}
   - component: {fileID: 1082899051}
+  - component: {fileID: 1082899056}
   - component: {fileID: 1082899052}
   - component: {fileID: 1082899054}
   - component: {fileID: 1082899053}
@@ -399,13 +400,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd093ed85dd7b545b2175a5b150d427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelSpawner: {fileID: 0}
   cameraController: {fileID: 1082899052}
   winConditionChecker: {fileID: 1082899054}
   sceneLoader: {fileID: 1082899053}
   inputHandler: {fileID: 1082899055}
   level: {fileID: 11400000, guid: 3bbfd74b2b80b644d9ed39c2593b8455, type: 2}
-  pointPrefab: {fileID: 5886321498476403106, guid: b8a8032347f95ed47b19e865108c8c11, type: 3}
-  edgePrefab: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
   mainEdge: {fileID: 1256410787}
 --- !u!114 &1082899052
 MonoBehaviour:
@@ -472,6 +472,20 @@ MonoBehaviour:
   OnMouseUp:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1082899056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082899048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530ae5eeb26e46449bf6f854349c2fbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointPrefab: {fileID: 5886321498476403106, guid: b8a8032347f95ed47b19e865108c8c11, type: 3}
+  edgePrefab: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
 --- !u!114 &1256410787 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
