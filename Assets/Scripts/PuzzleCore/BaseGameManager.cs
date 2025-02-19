@@ -16,8 +16,14 @@ public abstract class BaseGameManager<TLevelSpawner, TCameraController, TWinCond
     [Header("Game Settings")]
     [SerializeField] public TLevelData level;
 
-    protected abstract void SetupManagers();
-
+    protected virtual void Awake()
+    {      
+        InitializeComponents();
+        // SpawnLevel();
+        SetupManagers();
+        SetupInputHandlers();
+    }
+    
     protected virtual void InitializeComponents()
     {
         if (levelSpawner == null)
@@ -47,13 +53,7 @@ public abstract class BaseGameManager<TLevelSpawner, TCameraController, TWinCond
             Debug.LogError("InputHandler is not found!");
     }
 
-    protected virtual void Awake()
-    {      
-        InitializeComponents();
-        // SpawnLevel();
-        SetupManagers();
-        SetupInputHandlers();
-    }
+    protected abstract void SetupManagers();
 
     protected virtual void SetupInputHandlers()
     {
