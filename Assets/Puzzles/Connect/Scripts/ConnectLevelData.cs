@@ -6,7 +6,6 @@ namespace Connect
     [CreateAssetMenu(fileName = "ConnectLevel", menuName = "Levels/ConnectLevel")]
     public class LevelData : ScriptableObject
     {
-        // public string ConnectLevelName;
         public List<Edge> Connections;
     }
 

@@ -224,6 +224,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1784974171}
   - component: {fileID: 1784974170}
+  - component: {fileID: 1784974176}
+  - component: {fileID: 1784974175}
+  - component: {fileID: 1784974174}
+  - component: {fileID: 1784974173}
+  - component: {fileID: 1784974172}
   m_Layer: 0
   m_Name: GameplayManager
   m_TagString: Untagged
@@ -243,14 +248,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6aafc07212a02340b32a82bec05d573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasGameFinished: 0
-  cameraSizeController: 2
-  _boardPrefab: {fileID: 588532347153610255, guid: 61ccf270db7e4e846a46d1f2264917bc, type: 3}
-  _bgCellPrefab: {fileID: 6514445496831475100, guid: ff887c635710f9e4194003463d80485e, type: 3}
-  CurrentStage: 5
-  CurrentLevelData: {fileID: 11400000, guid: 42cdfc7ab8da45541831955517340fe0, type: 2}
-  _nodePrefab: {fileID: 5456855244353127478, guid: dfc875fb2c189b549bba871904981424, type: 3}
-  _nodes: []
+  levelSpawner: {fileID: 0}
+  cameraController: {fileID: 0}
+  winConditionChecker: {fileID: 0}
+  sceneLoader: {fileID: 0}
+  inputHandler: {fileID: 0}
+  level: {fileID: 11400000, guid: 42cdfc7ab8da45541831955517340fe0, type: 2}
+  levelSize: 5
   NodeColors:
   - {r: 0.9433962, g: 0.40494838, b: 0.40494838, a: 1}
   - {r: 0.56541973, g: 0.4039216, b: 0.94509804, a: 1}
@@ -279,6 +283,89 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1784974172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784974169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnMouseDown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMouseDrag:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMouseUp:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1784974173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784974169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79446c30e9b7174fa52d7daf93996b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoadDelay: 1
+  loadingSceneNumber: 0
+--- !u!114 &1784974174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784974169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646d3b90c3fbf6f4d9c751009e702837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnWin:
+    m_PersistentCalls:
+      m_Calls: []
+  nodes: []
+--- !u!114 &1784974175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784974169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c5b828540ad10429092172caee818f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardTracingSize: 0.25
+  boardPositionController: 2
+  boardPrefab: {fileID: 588532347153610255, guid: 61ccf270db7e4e846a46d1f2264917bc, type: 3}
+  backgroundCellPrefab: {fileID: 6514445496831475100, guid: ff887c635710f9e4194003463d80485e, type: 3}
+  nodePrefab: {fileID: 5456855244353127478, guid: dfc875fb2c189b549bba871904981424, type: 3}
+--- !u!114 &1784974176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784974169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0340810670b5f5843a75dfec8919a283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSizeController: 0.5
+  cameraPositionController: 2
+  cameraPositionZ: -10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
