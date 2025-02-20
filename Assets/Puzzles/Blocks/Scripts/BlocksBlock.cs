@@ -4,61 +4,72 @@ using ObjectsPool;
 
 namespace Blocks
 {
-    public class Block : MonoBehaviour
+    public class Blocks : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer blockPrefab;
-        [SerializeField] private List<Color> blockColors;
-        [SerializeField] private float blockSpawnSize;
+        #region SPAWN
+        // [SerializeField] private SpriteRenderer blockSpritePrefab;
+        // [SerializeField] private List<Color> blocksColors;
+        // [SerializeField] private float blocksSpawnSize;
+
+        // public SpriteRenderer PreloadSpriteRenderer() => Instantiate(blockSpritePrefab);
+        // public void GetAction(SpriteRenderer blockSpritePrefab) => blockSpritePrefab.gameObject.SetActive(true);
+        // public void ReturnAction(SpriteRenderer blockSpritePrefab) => blockSpritePrefab.gameObject.SetActive(false);
+        // public PoolBase<SpriteRenderer> blockSpritePrefabObjectPool;
+
+        // public void CreateMainBlock(List<Vector2Int> blocksPositions, Vector2 start, int blockNumber)
+        // {
+        //     startPos = start;
+        //     prevPos = start;
+        //     curPos = start;
+
+        //     blockPositions = blocksPositions;
+        //     CreateObjectPools();
+
+        //     blockSpriteRenderers = new List<SpriteRenderer>();
+        //     CreateChildrenBlocks(blockNumber);
+
+        //     transform.localScale = Vector2.one * blocksSpawnSize;
+        //     ElevateSprites(true);
+        // }
+
+        // private void CreateObjectPools()
+        // {
+        //     blockSpritePrefabObjectPool = new PoolBase<SpriteRenderer>(PreloadSpriteRenderer, GetAction, ReturnAction, blockPositions.Count);
+        // }
+
+        // private void CreateChildrenBlocks(int blockNumber)
+        // {
+        //     foreach (var pos in blockPositions)
+        //     {
+        //         SpriteRenderer spawnedBlock = blockSpritePrefabObjectPool.GetFromPool();
+        //         spawnedBlock.name = "Child Block: " + blockNumber.ToString();
+        //         spawnedBlock.transform.SetParent(transform);
+        //         spawnedBlock.color = blocksColors[blockNumber + 1];
+        //         spawnedBlock.transform.localPosition = new Vector2(pos.y, pos.x);
+        //         blockSpriteRenderers.Add(spawnedBlock);
+        //     }
+        // }
+        #endregion
 
         public Vector2 startPos, prevPos, curPos;
-        private List<SpriteRenderer> blockSpriteRenderers;
-        private List<Vector2Int> blockPositions;
+        public List<SpriteRenderer> blockSpriteRenderers;
+        public List<Vector2Int> blockPositions;
+        private float backgroundCellPositionRate;
 
         private const int TOP = 1;
         private const int BUTTON = 1;
 
-        public SpriteRenderer PreloadSpriteRenderer() => Instantiate(blockPrefab);
-        public void GetAction(SpriteRenderer blockPrefab) => blockPrefab.gameObject.SetActive(true);
-        public void ReturnAction(SpriteRenderer blockPrefab) => blockPrefab.gameObject.SetActive(false);
-        public PoolBase<SpriteRenderer> blockPrefabObjectPool;
-
-        // private CameraController cameraController;
-        private float bgCellPositionRate;
-
-        private void Awake()
-        {
-            bgCellPositionRate =  GameManager.Instance.GetComponent<CameraController>().bgCellPositionRate;
-            blockPrefabObjectPool = new PoolBase<SpriteRenderer>(PreloadSpriteRenderer, GetAction, ReturnAction, GameManager.Instance.level.Blocks.Count);
-        }
-
-        public void Initialize(List<Vector2Int> blocks, Vector2 start, int blockNum)
+        public void SetStartParametrs(Vector2 start, List<Vector2Int> blocksPositions, float blocksSpawnSize)
         {
             startPos = start;
             prevPos = start;
             curPos = start;
-            blockPositions = blocks;
+
+            blockPositions = blocksPositions;
+            transform.localScale = Vector2.one * blocksSpawnSize;//new Vector2(blocksSpawnSize, blocksSpawnSize);
+            backgroundCellPositionRate = GameManager.Instance.GetComponent<CameraController>().backgroundCellPositionRate;
+
             blockSpriteRenderers = new List<SpriteRenderer>();
-
-            blockPrefabObjectPool = new PoolBase<SpriteRenderer>(() => Instantiate(blockPrefab),
-                sr => sr.gameObject.SetActive(true),
-                sr => sr.gameObject.SetActive(false),
-                blocks.Count);
-
-            CreateSprites(blockNum);
-            transform.localScale = Vector2.one * blockSpawnSize;
-            ElevateSprites(true);
-        }
-
-        private void CreateSprites(int blockNum)
-        {
-            foreach (var pos in blockPositions)
-            {
-                SpriteRenderer spawnedBlock = blockPrefabObjectPool.GetFromPool();
-                spawnedBlock.transform.SetParent(transform);
-                spawnedBlock.color = blockColors[blockNum + 1];
-                spawnedBlock.transform.localPosition = new Vector2(pos.y, pos.x);
-                blockSpriteRenderers.Add(spawnedBlock);
-            }
         }
 
         public void ElevateSprites(bool reverse = false)
@@ -95,8 +106,8 @@ namespace Blocks
 
         public void UpdateCorrectMove()
         {
-            curPos.x = Mathf.FloorToInt(curPos.x) + bgCellPositionRate;
-            curPos.y = Mathf.FloorToInt(curPos.y) + bgCellPositionRate;
+            curPos.x = Mathf.FloorToInt(curPos.x) + backgroundCellPositionRate;
+            curPos.y = Mathf.FloorToInt(curPos.y) + backgroundCellPositionRate;
             prevPos = curPos;
             UpdatePosition();
         }

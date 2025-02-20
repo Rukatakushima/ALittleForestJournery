@@ -44,15 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc35642582f52554bb8455414a43ee6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockPrefab: {fileID: 4232948711527732210, guid: c0d9b6a0e583e3f438d2bb33768b64db, type: 3}
-  blockColors:
-  - {r: 0.3820755, g: 0.75283015, b: 1, a: 1}
-  - {r: 0.9725491, g: 0.8196079, b: 0.54901963, a: 1}
-  - {r: 0.93725497, g: 0.9843138, b: 0.6862745, a: 1}
-  - {r: 0.8588236, g: 0.64705884, b: 0.5019608, a: 1}
-  - {r: 0.9686275, g: 0.654902, b: 0.6039216, a: 1}
-  - {r: 0.43529415, g: 0.8431373, b: 0.65882355, a: 1}
-  blockSpawnSize: 0.5
+  blockSpritePrefab: {fileID: 4232948711527732210, guid: c0d9b6a0e583e3f438d2bb33768b64db, type: 3}
+  blocksColors:
+  - {r: 1, g: 0.4292453, b: 0.4292453, a: 1}
+  - {r: 1, g: 0.9892848, b: 0.2971698, a: 1}
+  - {r: 0.89045525, g: 0.9622642, b: 0.5310609, a: 0.54509807}
+  - {r: 1, g: 0.48584908, b: 0.81950176, a: 0.5529412}
+  blocksSpawnSize: 0.5
   startPos: {x: 0, y: 0}
   prevPos: {x: 0, y: 0}
   curPos: {x: 0, y: 0}

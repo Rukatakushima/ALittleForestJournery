@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Blocks
 {
-    public class BGCell : MonoBehaviour
+    public class BackgroundCell : MonoBehaviour
     {
         [HideInInspector] public bool isBlocked, isFilled;
 

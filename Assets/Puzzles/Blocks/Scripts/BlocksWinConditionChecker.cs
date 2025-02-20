@@ -2,10 +2,10 @@ namespace Blocks
 {
     public class WinConditionChecker : BaseWinConditionChecker
     {
-        private BGCell[,] bgCellGrid;
+        private BackgroundCell[,] bgCellGrid;
         private int rows, columns;
 
-        public void Initialize(BGCell[,] grid, int rows, int columns)
+        public void Initialize(BackgroundCell[,] grid, int rows, int columns)
         {
             bgCellGrid = grid;
             this.rows = rows;

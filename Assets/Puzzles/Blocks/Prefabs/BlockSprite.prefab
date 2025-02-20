@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4232948711527732210}
   - component: {fileID: 1456879946401344028}
   m_Layer: 0
-  m_Name: BlockCell
+  m_Name: BlockSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7363013f99c6cad4e9e5b17d257b4938, type: 3}
-  m_Color: {r: 0.32872015, g: 0.6459772, b: 0.8396226, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -8,15 +8,15 @@ namespace Blocks
         public static GameManager Instance;
 
         [SerializeField] private float blockSpawnSize, blockHighLightSize, blockPutSize;
-        private BGCell[,] BGCellGrid;
-        private Block currentBlock;
+        private BackgroundCell[,] BGCellGrid;
+        private Blocks currentBlock;
         private Vector2 curPos, prevPos;
-        private List<Block> gridBlocks;
+        private List<Blocks> gridBlocks;
 
         protected override void Awake()
         {
             Instance = this;
-            gridBlocks = new List<Block>();
+            gridBlocks = new List<Blocks>();
             base.Awake();
         }
 
@@ -24,13 +24,13 @@ namespace Blocks
         {
             cameraController.SetupCamera(level, blockSpawnSize, level.BlockRows, level.BlockColumns);
 
-            levelSpawner.Initialize(blockSpawnSize, level, cameraController.bgCellPositionRate);
+            levelSpawner.Initialize(blockSpawnSize, level, cameraController.backgroundCellPositionRate);
             levelSpawner.SpawnLevel();
 
             winConditionChecker.Initialize(BGCellGrid, level.Rows, level.Columns);
         }
 
-        public void SetBGCellGrid(BGCell[,] BGCellGrid)
+        public void SetBGCellGrid(BackgroundCell[,] BGCellGrid)
         {
             this.BGCellGrid = BGCellGrid;
         }
@@ -40,7 +40,7 @@ namespace Blocks
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
             if (!hit) return;
 
-            currentBlock = hit.collider.transform.parent.GetComponent<Block>();
+            currentBlock = hit.collider.transform.parent.GetComponent<Blocks>();
             if (currentBlock == null) return;
 
             curPos = mousePosition;
