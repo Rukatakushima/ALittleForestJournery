@@ -17,13 +17,12 @@ public abstract class BaseGameManager<TLevelSpawner, TCameraController, TWinCond
     [SerializeField] public TLevelData level;
 
     protected virtual void Awake()
-    {      
+    {
         InitializeComponents();
-        // SpawnLevel();
         SetupManagers();
         SetupInputHandlers();
     }
-    
+
     protected virtual void InitializeComponents()
     {
         if (levelSpawner == null)

@@ -1,49 +1,29 @@
-using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Fifteen
 {
     public class Box : MonoBehaviour
     {
         public int index = 0;
-        private int x = 0;
-        private int y = 0;
-        public bool isEmpty()
-        {
-            return index == 16;
-        }
-        private Action<int, int> swapFunc = null;
+        public int x = 0;
+        public int y = 0;
+        public bool isEmpty() => index == GameManager.Instance.boxes.Length;
         public Vector3 rightPosition;
-        // private Vector2 currentPosition;
-        public bool isInCorrectPosition;
+        public bool isInCorrectPosition = false;
 
-        [SerializeField] private float duration = 0.2f;
+        public UnityEvent winCheck;
 
-        private void Awake()
-        {
-            isInCorrectPosition = false;
-        }
-
-        public void Init(int i, int j, int index, Sprite sprite, Action<int, int> swapFunc)
+        public void Init(int i, int j, int index, Sprite sprite)
         {
             this.index = index;
-            // UpdatePos(i, j);
             x = i;
             y = j;
             ChangeSprite(sprite);
-            this.swapFunc = swapFunc;
-            this.name = index.ToString();
-            rightPosition = this.transform.position;
+            name = index.ToString();
+            rightPosition = transform.position;
             UpdateCorrectPosition();
-        }
-
-        private void OnMouseDown()
-        {
-            if (Input.GetMouseButtonDown(0) && swapFunc != null)
-            {
-                swapFunc(x, y);
-            }
         }
 
         public void UpdatePos(int i, int j)
@@ -56,39 +36,73 @@ namespace Fifteen
 
         public void UpdateCorrectPosition()
         {
-            if (rightPosition == this.transform.position)
-            {
-                isInCorrectPosition = true;
-            }
-            else
-            {
-                isInCorrectPosition = false;
-            }
-            //isInCorrectPosition = (rightPosition == this.transform.position);
+            isInCorrectPosition = rightPosition == gameObject.transform.position;
         }
 
         private IEnumerator AnimateNumberBoxMove()
         {
             float elapsedTime = 0;
 
-            Vector2 startPosition = this.gameObject.transform.position;
+            Vector2 startPosition = gameObject.transform.position;
             Vector2 endPosition = new Vector2(x, y);
 
-            while (elapsedTime < duration)
+            while (elapsedTime < GameManager.Instance.boxMoveDuration)
             {
-                this.gameObject.transform.position = Vector2.Lerp(startPosition, endPosition, elapsedTime / duration);
+                gameObject.transform.position = Vector2.Lerp(startPosition, endPosition, elapsedTime / GameManager.Instance.boxMoveDuration);
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
-            this.gameObject.transform.position = endPosition;
+            gameObject.transform.position = endPosition;
             UpdateCorrectPosition();
-            GameManager.Instance.CheckAllBoxesCorrectPosition();
+            winCheck?.Invoke();
+            GameManager.Instance.CheckWin();
         }
 
         public void ChangeSprite(Sprite sprite)
         {
-            this.GetComponent<SpriteRenderer>().sprite = sprite;
+            GetComponent<SpriteRenderer>().sprite = sprite;
+        }
+
+        public void ClickToSwap()
+        {
+            int xDirection = GetDirectionX();
+            int yDirection = GetDirectionY();
+
+            if (xDirection != 0 || yDirection != 0)
+            {
+                GameManager.Instance.SwapBoxes(x, y, xDirection, yDirection);
+            }
+        }
+
+        private int GetDirectionX()
+        {
+            if ((x < 3) && GameManager.Instance.boxes[x + 1, y].isEmpty())
+            {
+                return 1;
+            }
+
+            if ((x > 0) && GameManager.Instance.boxes[x - 1, y].isEmpty())
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        private int GetDirectionY()
+        {
+            if (y < 3 && GameManager.Instance.boxes[x, y + 1].isEmpty())
+            {
+                return 1;
+            }
+
+            if (y > 0 && GameManager.Instance.boxes[x, y - 1].isEmpty())
+            {
+                return -1;
+            }
+
+            return 0;
         }
     }
 }
