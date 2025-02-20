@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7398bc61e708b42ac4a86ad0362017, type: 3}
   m_Name: EscapeLevel
   m_EditorClassIdentifier: 
-  Row: 5
-  Col: 5
+  Rows: 5
+  Columns: 5
   WinPiece:
     Id: 0
     IsVertical: 0

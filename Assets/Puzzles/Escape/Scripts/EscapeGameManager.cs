@@ -1,129 +1,65 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Escape
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : BaseGameManager<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>
     {
         public static GameManager Instance;
 
-        [SerializeField] private Level _level;
-        [SerializeField] private SpriteRenderer _bgPrefab;
-        [SerializeField] private GamePiece _piecePrefab;
-        [SerializeField] private GamePiece _winPrefab;
-
-        private bool hasGameFinished;
         private List<GamePiece> gamePieces;
         private GamePiece winPiece;
         private GamePiece currentPiece;
-        private Vector2 currentPos, previousPos;
+        private Vector2 currentPosition, previousPosition;
         private List<Vector2> offsets;
         private bool[,] pieceCollision;
 
-        public float cameraSizeController = 2f;
-
-        private void Awake()
+        protected override void Awake()
         {
             Instance = this;
-            hasGameFinished = false;
-            SpawnLevel();
+            base.Awake();
         }
 
-        private void SpawnLevel()
+        protected override void SetupManagers()
         {
-            //Set Up BG
-            SpriteRenderer bg = Instantiate(_bgPrefab);
-            bg.size = new Vector2(_level.Col, _level.Row);
-            bg.transform.position = new Vector3(_level.Col, _level.Row, 0) * 0.5f;
+            cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
 
-            gamePieces = new List<GamePiece>();
+            levelSpawner.Initialize(level);
+            levelSpawner.SpawnLevel();
 
-            //Spawn Win Piece
-            winPiece = Instantiate(_winPrefab);
-            Vector3 spawnPos = new Vector3(
-                _level.WinPiece.Start.y + 0.5f,
-                _level.WinPiece.Start.x + 0.5f,
-                0);
-            winPiece.transform.position = spawnPos;
-            winPiece.Init(_level.WinPiece);
-            gamePieces.Add(winPiece);
-
-            //Spawn All Pieces
-            foreach (var piece in _level.Pieces)
-            {
-                GamePiece temp = Instantiate(_piecePrefab);
-                spawnPos = new Vector3(
-                    piece.Start.y + 0.5f,
-                    piece.Start.x + 0.5f, 0
-                    );
-                temp.transform.position = spawnPos;
-                temp.Init(piece);
-                gamePieces.Add(temp);
-            }
-
-            //Set Up Camera
-            Camera.main.orthographicSize = Mathf.Max(_level.Col, _level.Row) / cameraSizeController;
-            Camera.main.transform.position = new Vector3(_level.Col * 0.5f, _level.Row * 0.5f, -10);
+            winConditionChecker.Initialize(winPiece, level.Columns);
         }
 
-        private void Update()
+        public void SetPieces(GamePiece winPiece, List<GamePiece> gamePieces)
         {
-            if (hasGameFinished) return;
+            this.winPiece = winPiece;
+            this.gamePieces = gamePieces;
+        }
 
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
-            RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
+        protected override void HandleMouseDown(Vector2 mousePosition)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
-            if (Input.GetMouseButtonDown(0))
+            if (!hit || !hit.collider.transform.parent.TryGetComponent(out currentPiece)) return;
+
+            currentPosition = mousePosition;
+            previousPosition = currentPosition;
+
+            CalculateCollision();
+
+            offsets = new List<Vector2>();
+        }
+
+        protected override void HandleMouseDrag(Vector2 mousePosition)
+        {
+            if (currentPiece == null) return;
             {
-                if (!hit || !hit.collider.transform.parent.TryGetComponent(out currentPiece))
-                {
-                    return;
-                }
-
-                currentPos = mousePos2D;
-                previousPos = currentPos;
-
-                //Calculate Collision
-                pieceCollision = new bool[_level.Row, _level.Col];
-                for (int i = 0; i < _level.Row; i++)
-                {
-                    for (int j = 0; j < _level.Col; j++)
-                    {
-                        pieceCollision[i, j] = false;
-                    }
-                }
-
-                foreach (var piece in gamePieces)
-                {
-                    for (int i = 0; i < piece.Size; i++)
-                    {
-                        pieceCollision[
-                            piece.CurrentGridPos.x + (piece.IsVertical ? i : 0),
-                            piece.CurrentGridPos.y + (piece.IsVertical ? 0 : i)
-                            ] = true;
-                    }
-                }
-
-                for (int i = 0; i < currentPiece.Size; i++)
-                {
-                    pieceCollision[
-                        currentPiece.CurrentGridPos.x + (currentPiece.IsVertical ? i : 0),
-                        currentPiece.CurrentGridPos.y + (currentPiece.IsVertical ? 0 : i)
-                        ] = false;
-
-                }
-
-                offsets = new List<Vector2>();
-            }
-
-            else if (Input.GetMouseButton(0) && currentPiece != null)
-            {
-                currentPos = mousePos;
-                Vector2 offset = currentPos - previousPos;
+                currentPosition = mousePosition;
+                Vector2 offset = currentPosition - previousPosition;
                 offsets.Add(offset);
+
                 bool isMovingOpposite = IsMovingOpposite();
+
                 if (currentPiece.IsVertical)
                 {
                     Vector2 piecePos = currentPiece.CurrentPos;
@@ -148,19 +84,56 @@ namespace Escape
                     currentPiece.CurrentGridPos = pieceGridPos;
                     currentPiece.UpdatePos(offset.x);
                 }
-                previousPos = currentPos;
-            }
 
-            else if (Input.GetMouseButtonUp(0) && currentPiece != null)
+                previousPosition = currentPosition;
+            }
+        }
+
+        protected override void HandleMouseUp()
+        {
+            if (currentPiece == null) return;
             {
                 currentPiece.transform.position = new Vector3(
                     currentPiece.CurrentGridPos.y + 0.5f,
                     currentPiece.CurrentGridPos.x + 0.5f,
                     0);
                 currentPiece = null;
-                currentPos = Vector2.zero;
-                previousPos = Vector2.zero;
-                CheckWin();
+                currentPosition = Vector2.zero;
+                previousPosition = Vector2.zero;
+
+                CheckWinCondition();
+            }
+        }
+
+        private void CalculateCollision()
+        {
+            pieceCollision = new bool[level.Rows, level.Columns];
+            for (int i = 0; i < level.Rows; i++)
+            {
+                for (int j = 0; j < level.Columns; j++)
+                {
+                    pieceCollision[i, j] = false;
+                }
+            }
+
+            foreach (var piece in gamePieces)
+            {
+                for (int i = 0; i < piece.Size; i++)
+                {
+                    pieceCollision[
+                        piece.CurrentGridPos.x + (piece.IsVertical ? i : 0),
+                        piece.CurrentGridPos.y + (piece.IsVertical ? 0 : i)
+                        ] = true;
+                }
+            }
+
+            for (int i = 0; i < currentPiece.Size; i++)
+            {
+                pieceCollision[
+                    currentPiece.CurrentGridPos.x + (currentPiece.IsVertical ? i : 0),
+                    currentPiece.CurrentGridPos.y + (currentPiece.IsVertical ? 0 : i)
+                    ] = false;
+
             }
         }
 
@@ -203,24 +176,7 @@ namespace Escape
 
         private bool IsValidPos(Vector2Int pos)
         {
-            return pos.x >= 0 && pos.y >= 0 && pos.x < _level.Row && pos.y < _level.Col;
-        }
-
-        public void CheckWin()
-        {
-            if (winPiece.CurrentGridPos.y + winPiece.Size < _level.Col)
-            {
-                return;
-            }
-
-            hasGameFinished = true;
-            StartCoroutine(GameFinished());
-        }
-
-        private IEnumerator GameFinished()
-        {
-            yield return new WaitForSeconds(1f);
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            return pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
         }
     }
 }
