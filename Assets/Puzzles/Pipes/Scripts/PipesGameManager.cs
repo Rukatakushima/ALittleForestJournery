@@ -39,7 +39,6 @@ namespace Pipes
             this.pipes = pipes;
         }
 
-
         protected override void HandleMouseDown(Vector2 mousePosition)
         {
             int row = Mathf.FloorToInt(mousePosition.y);

@@ -132,6 +132,11 @@ GameObject:
   m_Component:
   - component: {fileID: 81534390}
   - component: {fileID: 81534391}
+  - component: {fileID: 81534396}
+  - component: {fileID: 81534395}
+  - component: {fileID: 81534394}
+  - component: {fileID: 81534393}
+  - component: {fileID: 81534392}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -166,9 +171,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8f89d80f5464e4fb1a2ee0470a1ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _level: {fileID: 11400000, guid: 8033a3661924853469c5a8823fb00356, type: 2}
-  _cellPrefab: {fileID: -5711112499624335155, guid: aa0deb5ab2ae97d45b0e7a021167099a, type: 3}
-  cameraSizeController: 2
+  levelSpawner: {fileID: 0}
+  cameraController: {fileID: 0}
+  winConditionChecker: {fileID: 0}
+  sceneLoader: {fileID: 0}
+  inputHandler: {fileID: 0}
+  level: {fileID: 11400000, guid: 8033a3661924853469c5a8823fb00356, type: 2}
+--- !u!114 &81534392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81534388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnMouseDown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMouseDrag:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMouseUp:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &81534393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81534388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79446c30e9b7174fa52d7daf93996b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoadDelay: 1
+  loadingSceneNumber: 0
+--- !u!114 &81534394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81534388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ef619241f41dce449cb25a7e3b27852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnWin:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &81534395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81534388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed5b10e281da124ca5d24b68a865355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellPrefab: {fileID: -5711112499624335155, guid: aa0deb5ab2ae97d45b0e7a021167099a, type: 3}
+--- !u!114 &81534396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81534388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0340810670b5f5843a75dfec8919a283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSizeController: 0.6
+  cameraPositionController: 0.5
+  cameraPositionZ: -10
 --- !u!1 &2011251915
 GameObject:
   m_ObjectHideFlags: 0
