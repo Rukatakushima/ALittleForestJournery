@@ -8,7 +8,7 @@ namespace Fill
     {
         [SerializeField] private int _row;
         [SerializeField] private int _col;
-        [SerializeField] private Level _level;
+        [SerializeField] private LevelData _level;
         [SerializeField] private Cell _cellPrefab;
         [SerializeField] private Transform _edgePrefab;
         private Cell[,] cells;
@@ -31,17 +31,17 @@ namespace Fill
         private void SpawnLevel()
         {
             Vector3 camPos = Camera.main.transform.position;
-            camPos.x = _level.Col * 0.5f;
-            camPos.y = _level.Row * 0.5f;
+            camPos.x = _level.Columns * 0.5f;
+            camPos.y = _level.Rows * 0.5f;
             Camera.main.transform.position = camPos;
-            Camera.main.orthographicSize = Mathf.Max(_level.Row, _level.Col) + 2f;
+            Camera.main.orthographicSize = Mathf.Max(_level.Rows, _level.Columns) + 2f;
 
-            for (int i = 0; i < _level.Row; i++)
+            for (int i = 0; i < _level.Rows; i++)
             {
-                for (int j = 0; j < _level.Col; j++)
+                for (int j = 0; j < _level.Columns; j++)
                 {
                     cells[i, j] = Instantiate(_cellPrefab);
-                    cells[i, j].Init(_level.Data[i * _level.Col + j]);
+                    cells[i, j].Init(_level.Data[i * _level.Columns + j]);
                     cells[i, j].transform.position = new Vector3(j + 0.5f, i + 0.5f);
                 }
             }
@@ -107,10 +107,10 @@ namespace Fill
         }
         private void CreateLevel()
         {
-            if (_level.Row == _row && _level.Col == _col) return;
+            if (_level.Rows == _row && _level.Columns == _col) return;
 
-            _level.Row = _row;
-            _level.Col = _col;
+            _level.Rows = _row;
+            _level.Columns = _col;
             _level.Data = new List<int>();
 
             for (int i = 0; i < _row; i++)
@@ -128,7 +128,7 @@ namespace Fill
         }
         private bool IsValid(Vector2Int pos)
         {
-            return pos.x >= 0 && pos.y >= 0 && pos.x < _level.Row && pos.y < _level.Col;
+            return pos.x >= 0 && pos.y >= 0 && pos.x < _level.Rows && pos.y < _level.Columns;
         }
         private bool toAddEmpty()
         {

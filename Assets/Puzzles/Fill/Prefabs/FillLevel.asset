@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865ac93624f0abc4cb1d89d03b76279b, type: 3}
   m_Name: FillLevel
   m_EditorClassIdentifier: 
-  Row: 3
-  Col: 4
+  Rows: 3
+  Columns: 4
   Data: 010000000000000000000000000000000000000000000000010000000000000001000000000000000000000000000000

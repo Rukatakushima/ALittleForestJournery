@@ -4,15 +4,16 @@ using UnityEngine;
 namespace Fill
 {
     [CreateAssetMenu(fileName = "FillLevel", menuName = "Levels/FillLevel")]
-    public class Level : ScriptableObject
+    public class LevelData : ScriptableObject
     {
-        public int Row;
-        public int Col;
+        public int Rows;
+        public int Columns;
         public List<int> Data = new List<int>();
+        
         private void OnValidate()
         {
             // Если значения Row или Col изменились, обновить размер списка Data
-            int newSize = Row * Col;
+            int newSize = Rows * Columns;
             if (Data.Count != newSize)
             {
                 while (Data.Count < newSize)
