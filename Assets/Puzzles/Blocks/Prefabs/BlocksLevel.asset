@@ -19,23 +19,23 @@ MonoBehaviour:
   Data: 000000000000000000000000000000000000000000000000000000000000000000000000
   Blocks:
   - Id: 0
-    StartPos: {x: 0, y: -2}
-    CenterPos: {x: 0, y: 0}
+    StartPosition: {x: 0, y: 2}
+    CenterPosition: {x: 0, y: 0}
     BlockPositions:
     - {x: 1, y: 0}
     - {x: 0, y: 0}
     - {x: -1, y: 0}
   - Id: 1
-    StartPos: {x: 0, y: 0}
-    CenterPos: {x: 0, y: 0}
+    StartPosition: {x: 0, y: 0}
+    CenterPosition: {x: 0, y: 0}
     BlockPositions:
     - {x: 1, y: 0}
     - {x: 0, y: 0}
     - {x: 1, y: 1}
     - {x: 0, y: 1}
   - Id: 2
-    StartPos: {x: 0, y: 2}
-    CenterPos: {x: 0, y: 0}
+    StartPosition: {x: 0, y: -2}
+    CenterPosition: {x: 0, y: 0}
     BlockPositions:
     - {x: 1, y: 0}
     - {x: 1, y: 1}

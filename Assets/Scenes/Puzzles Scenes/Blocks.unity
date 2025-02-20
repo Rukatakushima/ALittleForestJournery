@@ -260,6 +260,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundCellPrefab: {fileID: 7532265389834519554, guid: f058e9825b1e8c24081bf1f2df55a3a8, type: 3}
   blockPrefab: {fileID: 4551132339990789417, guid: d8f4ef9b05d52e54baecb380f9b103aa, type: 3}
+  blocksColors:
+  - {r: 1, g: 0.83516175, b: 0.4575472, a: 0.45490196}
+  - {r: 1, g: 0.45882356, b: 0.4723303, a: 0.45490196}
+  - {r: 0.45882356, g: 0.5747254, b: 1, a: 0.45490196}
+  - {r: 0.45882356, g: 1, b: 0.49616912, a: 0.45490196}
+  blockSpritePrefab: {fileID: 4232948711527732210, guid: c0d9b6a0e583e3f438d2bb33768b64db, type: 3}
 --- !u!1 &2064103899
 GameObject:
   m_ObjectHideFlags: 0
