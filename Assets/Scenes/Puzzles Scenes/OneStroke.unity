@@ -423,9 +423,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0340810670b5f5843a75dfec8919a283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPositionController: 2
-  cameraPositionZ: -10
   cameraSizeController: 0.5
+  cameraPositionController: 0.5
+  cameraPositionZ: -10
 --- !u!114 &1082899053
 MonoBehaviour:
   m_ObjectHideFlags: 0
