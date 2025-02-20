@@ -9,7 +9,7 @@ namespace Pipes
     {
         public static PipesGenerator Instance;
 
-        [SerializeField] private PipesLevelData _level;
+        [SerializeField] private LevelData _level;
         [SerializeField] private SpawnCell _cellPrefab;
 
         [SerializeField] private int _row, _col;

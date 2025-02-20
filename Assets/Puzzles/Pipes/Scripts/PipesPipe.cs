@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 namespace Pipes
 {
-    public class PipesPipe : MonoBehaviour
+    public class Pipe : MonoBehaviour
     {
         [HideInInspector] public bool IsFilled;
         [HideInInspector] public int PipeType;
@@ -14,8 +15,7 @@ namespace Pipes
         private Transform currentPipe;
         private int rotation;
 
-        private SpriteRenderer emptySprite;
-        private SpriteRenderer filledSprite;
+        private SpriteRenderer emptySprite, filledSprite;
         private List<Transform> connectBoxes;
 
         private const int minRotation = 0;
@@ -59,7 +59,7 @@ namespace Pipes
             }
         }
 
-        public void UpdateInput()
+        public void RotatePipe()
         {
             if (PipeType == 0 || PipeType == 1 || PipeType == 2)
             {
@@ -70,23 +70,23 @@ namespace Pipes
             currentPipe.transform.eulerAngles = new Vector3(0, 0, rotation * rotationMultiplier);
         }
 
-        public void UpdateFilled()
+        public void UpdateFillState()
         {
             if (PipeType == 0) return;
             emptySprite.gameObject.SetActive(!IsFilled);
             filledSprite.gameObject.SetActive(IsFilled);
         }
 
-        public List<PipesPipe> ConnectedPipes()
+        public List<Pipe> ConnectedPipes()
         {
-            List<PipesPipe> result = new List<PipesPipe>();
+            List<Pipe> result = new List<Pipe>();
 
             foreach (var box in connectBoxes)
             {
                 RaycastHit2D[] hit = Physics2D.RaycastAll(box.transform.position, Vector2.zero, 0.1f);
                 for (int i = 0; i < hit.Length; i++)
                 {
-                    result.Add(hit[i].collider.transform.parent.parent.GetComponent<PipesPipe>());
+                    result.Add(hit[i].collider.transform.parent.parent.GetComponent<Pipe>());
                 }
             }
 

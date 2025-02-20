@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Pipes
 {
     [CreateAssetMenu(fileName = "PipesLevel", menuName = "Levels/PipesLevel")]
-    public class PipesLevelData : ScriptableObject
+    public class LevelData : ScriptableObject
     {
         public int Row;
         public int Col;
