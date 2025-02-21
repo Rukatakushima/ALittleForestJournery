@@ -12,35 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7398bc61e708b42ac4a86ad0362017, type: 3}
   m_Name: EscapeLevelGenerator
   m_EditorClassIdentifier: 
-  Row: 5
-  Col: 5
+  Rows: 5
+  Columns: 5
   WinPiece:
     Id: 0
     IsVertical: 0
-    Size: 1
-    Start: {x: 2, y: 0}
-  Pieces:
-  - Id: 0
-    IsVertical: 1
-    Size: 2
-    Start: {x: 3, y: 4}
-  - Id: 1
-    IsVertical: 0
-    Size: 2
-    Start: {x: 0, y: 3}
-  - Id: 2
-    IsVertical: 1
-    Size: 1
-    Start: {x: 0, y: 1}
-  - Id: 3
-    IsVertical: 0
-    Size: 1
-    Start: {x: 1, y: 1}
-  - Id: 4
-    IsVertical: 1
-    Size: 2
-    Start: {x: 2, y: 3}
-  - Id: 5
-    IsVertical: 0
-    Size: 2
-    Start: {x: 4, y: 2}
+    Size: 0
+    Start: {x: 0, y: 0}
+  Pieces: []

@@ -21,16 +21,16 @@ MonoBehaviour:
     Start: {x: 2, y: 1}
   Pieces:
   - Id: 1
-    IsVertical: 1
+    IsVertical: 0
     Size: 2
     Start: {x: 3, y: 1}
   - Id: 2
     IsVertical: 1
-    Size: 2
+    Size: 1
     Start: {x: 0, y: 0}
   - Id: 3
     IsVertical: 1
-    Size: 2
+    Size: 1
     Start: {x: 2, y: 3}
   - Id: 4
     IsVertical: 0
@@ -38,5 +38,5 @@ MonoBehaviour:
     Start: {x: 4, y: 3}
   - Id: 5
     IsVertical: 0
-    Size: 3
+    Size: 2
     Start: {x: 0, y: 2}
