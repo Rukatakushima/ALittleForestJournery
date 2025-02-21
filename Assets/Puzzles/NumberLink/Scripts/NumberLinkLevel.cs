@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NumberLink
@@ -5,14 +6,7 @@ namespace NumberLink
     [CreateAssetMenu(fileName = "NumberLinkLevel", menuName = "Levels/NumberLinkLevel")]
     public class LevelData : ScriptableObject
     {
-        void Start()
-        {
-
-        }
-
-        void Update()
-        {
-
-        }
+        [SerializeField] public int Rows, Columns;
+        [SerializeField] public List<int> Data;
     }
 }
