@@ -32,11 +32,13 @@ namespace NumberLink
         protected override void SetupManagers()
         {
             levelSpawner.SpawnLevel();
+
+            winConditionChecker.Initialize(level, cellGrid);
         }
 
-        public void SetGameManagerParameters()
+        public void SetGameManagerParameters(Cell[,] cellGrid)
         {
-
+            this.cellGrid = cellGrid;
         }
 
         protected override void HandleMouseDown(Vector2 mousePosition)

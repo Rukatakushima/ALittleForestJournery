@@ -11,8 +11,8 @@ namespace NumberLink
         [SerializeField] private float cellGap;
         [SerializeField] private float cellSize;
         [SerializeField] private float levelGap;
-        private int[,] levelGrid;
-        private Cell[,] cellGrid;
+        // private int[,] levelGrid;
+        // private Cell[,] cellGrid;
 
         public void Initialize()
         {
@@ -22,8 +22,9 @@ namespace NumberLink
         public override void SpawnLevel()
         {
 
-            levelGrid = new int[levelData.Rows, levelData.Columns];
-            cellGrid = new Cell[levelData.Rows, levelData.Columns];
+            int[,] levelGrid = new int[levelData.Rows, levelData.Columns];
+            Cell[,] cellGrid = new Cell[levelData.Rows, levelData.Columns];
+            
             for (int i = 0; i < levelData.Rows; i++)
             {
                 for (int j = 0; j < levelData.Columns; j++)
@@ -72,7 +73,7 @@ namespace NumberLink
                     }
                 }
             }
-
+            GameManager.Instance.SetGameManagerParameters(cellGrid);
         }
     }
 }
