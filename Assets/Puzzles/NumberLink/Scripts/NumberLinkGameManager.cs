@@ -182,24 +182,16 @@ namespace NumberLink
 
         private Vector2Int GetDirection(Vector2 offset)
         {
-            Vector2Int result;
+            float angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
 
-            if (Mathf.Abs(offset.y) > Mathf.Abs(offset.x))
-            {
-                if (offset.y > 0)
-                    result = Vector2Int.up;
-                else
-                    result = Vector2Int.down;
-            }
+            if (angle >= -45 && angle < 45)
+                return Vector2Int.right;
+            else if (angle >= 45 && angle < 135)
+                return Vector2Int.up;
+            else if (angle >= -135 && angle < -45)
+                return Vector2Int.down;
             else
-            {
-                if (offset.y > 0)
-                    result = Vector2Int.right;
-                else
-                    result = Vector2Int.left;
-            }
-
-            return result;
+                return Vector2Int.left;
         }
 
         public Cell GetAdjacentCell(int row, int column, int direction)
