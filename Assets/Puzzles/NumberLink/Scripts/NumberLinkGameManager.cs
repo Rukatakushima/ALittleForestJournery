@@ -9,7 +9,7 @@ namespace NumberLink
 
         [SerializeField] private SpriteRenderer highlightSprite;
         [SerializeField] private Vector2 highlightSize;
-        public float EdgeSize;
+        [HideInInspector] public float EdgeSize;
 
         private Cell[,] cellGrid;
         private Cell startCell;
@@ -17,6 +17,8 @@ namespace NumberLink
 
         private List<Vector2Int> Directions = new List<Vector2Int>()
         { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
+
+        public const int LINK_DIRECTIONS = 4;
 
         protected override void Awake()
         {
@@ -70,19 +72,19 @@ namespace NumberLink
             {
                 hit = Physics2D.Raycast(mousePosition, Vector2.left);
                 if (hit && hit.collider.TryGetComponent(out startCell))
-                    startCell.RemoveEdge(0);
+                    startCell.RemoveLink(0);
 
                 hit = Physics2D.Raycast(mousePosition, Vector2.down);
                 if (hit && hit.collider.TryGetComponent(out startCell))
-                    startCell.RemoveEdge(1);
+                    startCell.RemoveLink(1);
 
                 hit = Physics2D.Raycast(mousePosition, Vector2.right);
                 if (hit && hit.collider.TryGetComponent(out startCell))
-                    startCell.RemoveEdge(2);
+                    startCell.RemoveLink(2);
 
                 hit = Physics2D.Raycast(mousePosition, Vector2.up);
                 if (hit && hit.collider.TryGetComponent(out startCell))
-                    startCell.RemoveEdge(3);
+                    startCell.RemoveLink(3);
 
                 startCell = null;
                 CheckWinCondition();
@@ -115,15 +117,14 @@ namespace NumberLink
             {
                 if (endCell == startCell)
                 {
-                    startCell.RemoveAllEdges();
-                    for (int i = 0; i < 4; i++)
+                    startCell.RemoveAllLinks();
+                    for (int i = 0; i < LINK_DIRECTIONS; i++)
                     {
                         Cell adjacentCell = GetAdjacentCell(startCell.rowCoordinate, startCell.columnCoordinate, i);
                         if (adjacentCell != null)
                         {
-                            int adjacentDirection = (i + 2) % 4;
-                            adjacentCell.RemoveEdge(adjacentDirection);
-                            adjacentCell.RemoveEdge(adjacentDirection);
+                            int adjacentDirection = (i + 2) % LINK_DIRECTIONS;
+                            adjacentCell.RemoveLink(adjacentDirection);
                         }
                     }
                 }
@@ -135,8 +136,8 @@ namespace NumberLink
 
                     if (startCell.IsValidCell(endCell, directionIndex))
                     {
-                        startCell.AddEdge(directionIndex);
-                        endCell.AddEdge((directionIndex + 2) % 4);
+                        startCell.AddLink(directionIndex);
+                        endCell.AddLink((directionIndex + 2) % LINK_DIRECTIONS);
                     }
                 }
             }
