@@ -47,16 +47,24 @@ namespace NumberLink
         private Dictionary<int, int> linksCounts;
         private Dictionary<int, Cell> linkedCell;
 
-        private const int RIGHT = 0;
-        private const int TOP = 1;
-        private const int LEFT = 2;
-        private const int BOTTOM = 3;
+        public const int LINK_DIRECTIONS = 4;
+        private const int RIGHT_DIRECTION_ID = 0;
+        private const int TOP_DIRECTION_ID = 1;
+        private const int LEFT_DIRECTION_ID = 2;
+        private const int BOTTOM_DIRECTION_ID = 3;
 
         private const int ZERO_LINKS = 0;
         private const int ONE_LINK = 1;
         private const int TWO_LINKS = 2;
+        private const int THREE_LINKS = 3;
 
-        public const int LINK_DIRECTIONS = 4;
+        public Dictionary<int, int> OppositeDirections = new()
+        {
+            { RIGHT_DIRECTION_ID, LEFT_DIRECTION_ID },
+            { TOP_DIRECTION_ID, BOTTOM_DIRECTION_ID },
+            { LEFT_DIRECTION_ID, RIGHT_DIRECTION_ID },
+            { BOTTOM_DIRECTION_ID, TOP_DIRECTION_ID }
+        };
 
         public void InitializeCellData(int row, int column, int number)
         {
@@ -65,43 +73,43 @@ namespace NumberLink
             columnCoordinate = column;
 
             linksCounts = new()
-            {
-                { RIGHT, 0 },
-                { LEFT, 0 },
-                { TOP, 0 },
-                { BOTTOM, 0 }
-            };
+        {
+            { RIGHT_DIRECTION_ID, 0 },
+            { LEFT_DIRECTION_ID, 0 },
+            { TOP_DIRECTION_ID, 0 },
+            { BOTTOM_DIRECTION_ID, 0 }
+        };
 
             linkedCell = new()
-            {
-                { LEFT, null },
-                { TOP, null },
-                { BOTTOM, null },
-                { RIGHT, null }
-            };
+        {
+            { LEFT_DIRECTION_ID, null },
+            { TOP_DIRECTION_ID, null },
+            { BOTTOM_DIRECTION_ID, null },
+            { RIGHT_DIRECTION_ID, null }
+        };
 
             links = new Dictionary<int, Dictionary<int, GameObject>>
-            {
-                { RIGHT, new Dictionary<int, GameObject> { { ONE_LINK, rightOneLink }, { TWO_LINKS, rightTwoLinks } } },
-                { TOP, new Dictionary<int, GameObject> { { ONE_LINK, topOneLink }, { TWO_LINKS, topTwoLinks } } },
-                { LEFT, new Dictionary<int, GameObject> { { ONE_LINK, leftOneLink }, { TWO_LINKS, leftTwoLinks } } },
-                { BOTTOM, new Dictionary<int, GameObject> { { ONE_LINK, bottomOneLink }, { TWO_LINKS, bottomTwoLinks } } }
-            };
+        {
+            { RIGHT_DIRECTION_ID, new Dictionary<int, GameObject> { { ONE_LINK, rightOneLink }, { TWO_LINKS, rightTwoLinks } } },
+            { TOP_DIRECTION_ID, new Dictionary<int, GameObject> { { ONE_LINK, topOneLink }, { TWO_LINKS, topTwoLinks } } },
+            { LEFT_DIRECTION_ID, new Dictionary<int, GameObject> { { ONE_LINK, leftOneLink }, { TWO_LINKS, leftTwoLinks } } },
+            { BOTTOM_DIRECTION_ID, new Dictionary<int, GameObject> { { ONE_LINK, bottomOneLink }, { TWO_LINKS, bottomTwoLinks } } }
+        };
         }
 
         public void InitializeCell()
         {
             for (int i = 0; i < LINK_DIRECTIONS; i++)
             {
-                linkedCell[i] = GameManager.Instance.GetAdjacentCell(rowCoordinate, columnCoordinate, i);
+                linkedCell[i] = GameManager.Instance.GetLinkedCell(rowCoordinate, columnCoordinate, i);
                 if (linkedCell[i] == null) continue;
 
                 Vector2Int linkOffset = new Vector2Int(linkedCell[i].rowCoordinate - rowCoordinate, linkedCell[i].columnCoordinate - columnCoordinate);
                 float linkSize = Mathf.Abs(linkOffset.x) > Mathf.Abs(linkOffset.y) ? Mathf.Abs(linkOffset.x) : Mathf.Abs(linkOffset.y);
                 linkSize *= GameManager.Instance.EdgeSize;
 
-                SpriteRenderer singleLink = links[i][1].GetComponentInChildren<SpriteRenderer>();
-                SpriteRenderer[] doubleLinks = links[i][2].GetComponentsInChildren<SpriteRenderer>();
+                SpriteRenderer singleLink = links[i][ONE_LINK].GetComponentInChildren<SpriteRenderer>();
+                SpriteRenderer[] doubleLinks = links[i][TWO_LINKS].GetComponentsInChildren<SpriteRenderer>();
 
                 ChangeSpriteSize(singleLink, linkSize);
                 foreach (var item in doubleLinks)
@@ -124,7 +132,7 @@ namespace NumberLink
         {
             if (linkedCell[direction] == null) return;
 
-            if (linksCounts[direction] == TWO_LINKS)
+            if (linksCounts[direction] == THREE_LINKS)
             {
                 RemoveLink(direction);
                 return;
@@ -133,9 +141,29 @@ namespace NumberLink
             linksCounts[direction]++;
             Number--;
 
-            links[direction][ONE_LINK].SetActive(false);
-            links[direction][TWO_LINKS].SetActive(false);
-            links[direction][linksCounts[direction]].SetActive(true);
+            DisplayLinks(direction, linksCounts[direction]);
+        }
+
+        private void ToggleLinksDisplay(int direction, bool isActive)
+        {
+            links[direction][TWO_LINKS].SetActive(isActive);
+            links[direction][ONE_LINK].SetActive(isActive);
+        }
+
+        private void DisplayLinks(int direction, int displayingLinksCount)
+        {
+            ToggleLinksDisplay(direction, false);
+
+            switch (displayingLinksCount)
+            {
+                case ONE_LINK:
+                case TWO_LINKS:
+                    links[direction][displayingLinksCount].SetActive(true);
+                    break;
+                case THREE_LINKS:
+                    ToggleLinksDisplay(direction, true);
+                    break;
+            }
         }
 
         public void RemoveLink(int direction)
@@ -145,18 +173,32 @@ namespace NumberLink
             linksCounts[direction]--;
             Number++;
 
-            links[direction][ONE_LINK].SetActive(false);
-            links[direction][TWO_LINKS].SetActive(false);
-
-            if (linksCounts[direction] != ZERO_LINKS)
-                links[direction][linksCounts[direction]].SetActive(true);
+            DisplayLinks(direction, linksCounts[direction]);
         }
 
         public void RemoveAllLinks()
         {
             for (int i = 0; i < LINK_DIRECTIONS; i++)
             {
-                RemoveLink(i);
+                // Удаляем все соединения на текущем направлении
+                while (linksCounts[i] > ZERO_LINKS)
+                {
+                    RemoveLink(i);
+                }
+
+                RemoveLinkFromLinkedCells(i);
+            }
+        }
+
+        public void RemoveLinkFromLinkedCells(int linkedCellID)
+        {
+            if (linkedCell[linkedCellID] != null)
+            {
+                int oppositeDirection = OppositeDirections[linkedCellID]; // Противоположное направление
+                while (linkedCell[linkedCellID].linksCounts[oppositeDirection] > ZERO_LINKS)
+                {
+                    linkedCell[linkedCellID].RemoveLink(oppositeDirection);
+                }
             }
         }
 

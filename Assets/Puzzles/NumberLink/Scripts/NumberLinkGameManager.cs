@@ -19,6 +19,10 @@ namespace NumberLink
         { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
 
         public const int LINK_DIRECTIONS = 4;
+        private const int RIGHT_DIRECTION_ID = 0;
+        private const int TOP_DIRECTION_ID = 1;
+        private const int LEFT_DIRECTION_ID = 2;
+        private const int BOTTOM_DIRECTION_ID = 3;
 
         protected override void Awake()
         {
@@ -72,19 +76,19 @@ namespace NumberLink
             {
                 hit = Physics2D.Raycast(mousePosition, Vector2.left);
                 if (hit && hit.collider.TryGetComponent(out startCell))
-                    startCell.RemoveLink(0);
+                    startCell.RemoveLink(RIGHT_DIRECTION_ID);
 
                 hit = Physics2D.Raycast(mousePosition, Vector2.down);
                 if (hit && hit.collider.TryGetComponent(out startCell))
-                    startCell.RemoveLink(1);
+                    startCell.RemoveLink(TOP_DIRECTION_ID);
 
                 hit = Physics2D.Raycast(mousePosition, Vector2.right);
                 if (hit && hit.collider.TryGetComponent(out startCell))
-                    startCell.RemoveLink(2);
+                    startCell.RemoveLink(LEFT_DIRECTION_ID);
 
                 hit = Physics2D.Raycast(mousePosition, Vector2.up);
                 if (hit && hit.collider.TryGetComponent(out startCell))
-                    startCell.RemoveLink(3);
+                    startCell.RemoveLink(BOTTOM_DIRECTION_ID);
 
                 startCell = null;
                 CheckWinCondition();
@@ -116,28 +120,19 @@ namespace NumberLink
             if (hit && hit.collider.TryGetComponent(out Cell endCell))
             {
                 if (endCell == startCell)
-                {
                     startCell.RemoveAllLinks();
-                    for (int i = 0; i < LINK_DIRECTIONS; i++)
-                    {
-                        Cell adjacentCell = GetAdjacentCell(startCell.rowCoordinate, startCell.columnCoordinate, i);
-                        if (adjacentCell != null)
-                        {
-                            int adjacentDirection = (i + 2) % LINK_DIRECTIONS;
-                            adjacentCell.RemoveLink(adjacentDirection);
-                        }
-                    }
-                }
+
                 else
                 {
-                    Vector2 offset = mousePosition - startPosition;
-                    Vector2Int offsetDirection = GetDirection(offset);
+                    Vector2Int offsetDirection = GetDirection(mousePosition - startPosition);
                     int directionIndex = GetDirectionIndex(offsetDirection);
 
                     if (startCell.IsValidCell(endCell, directionIndex))
                     {
                         startCell.AddLink(directionIndex);
-                        endCell.AddLink((directionIndex + 2) % LINK_DIRECTIONS);
+
+                        int oppositeDirectionID = startCell.OppositeDirections[directionIndex];
+                        endCell.AddLink(oppositeDirectionID);
                     }
                 }
             }
@@ -152,16 +147,16 @@ namespace NumberLink
             int result = 0;
 
             if (offsetDirection == Vector2Int.right)
-                result = 0;
+                result = RIGHT_DIRECTION_ID;
 
             if (offsetDirection == Vector2Int.left)
-                result = 2;
+                result = LEFT_DIRECTION_ID;
 
             if (offsetDirection == Vector2Int.up)
-                result = 1;
+                result = TOP_DIRECTION_ID;
 
             if (offsetDirection == Vector2Int.down)
-                result = 3;
+                result = BOTTOM_DIRECTION_ID;
 
             return result;
         }
@@ -169,14 +164,17 @@ namespace NumberLink
         private float GetOffset(Vector2 offset, Vector2Int offsetDirection)
         {
             float result = 0;
+
             if (offsetDirection == Vector2Int.left || offsetDirection == Vector2Int.right)
             {
                 result = Mathf.Abs(offset.x);
             }
+
             if (offsetDirection == Vector2Int.up || offsetDirection == Vector2Int.down)
             {
                 result = Mathf.Abs(offset.y);
             }
+
             return result;
         }
 
@@ -194,7 +192,7 @@ namespace NumberLink
                 return Vector2Int.left;
         }
 
-        public Cell GetAdjacentCell(int row, int column, int direction)
+        public Cell GetLinkedCell(int row, int column, int direction)
         {
             Vector2Int currentDirection = Directions[direction];
             Vector2Int startPosition = new Vector2Int(row, column);

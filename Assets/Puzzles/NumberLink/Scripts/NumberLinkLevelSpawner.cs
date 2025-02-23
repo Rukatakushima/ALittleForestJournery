@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace NumberLink
@@ -66,7 +67,7 @@ namespace NumberLink
 
                     Cell tempCell = Instantiate(cellPrefab, spawnPosition, Quaternion.identity);
                     tempCell.InitializeCellData(i, j, levelGrid[i, j]);
-                    // / InitializeCellData(tempCell, i, j, levelGrid[i, j]);
+                    tempCell.gameObject.name = "Cell) " + i.ToString() + " - " + j.ToString();
 
                     cellGrid[i, j] = tempCell;
 
