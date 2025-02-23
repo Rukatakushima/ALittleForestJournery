@@ -10,7 +10,6 @@ namespace NumberLink
         public int Number
         {
             get => number;
-
             set
             {
                 number = value;
@@ -22,7 +21,7 @@ namespace NumberLink
                 }
                 else if (number < 0)
                 {
-                    cellSprite.color = inCorrectColor;
+                    cellSprite.color = overloadedColor;
                     numberText.gameObject.SetActive(false);
                 }
                 else
@@ -31,16 +30,17 @@ namespace NumberLink
                     numberText.gameObject.SetActive(true);
                 }
             }
+
         }
 
-        [HideInInspector] public int row, column;
+        [HideInInspector] public int row;
+        [HideInInspector] public int column;
 
         [SerializeField] private TMP_Text numberText;
         [SerializeField] private SpriteRenderer cellSprite;
+        [SerializeField] private Color defaultColor, solvedColor, overloadedColor;
 
         [SerializeField] private GameObject right1, right2, top1, top2, left1, left2, bottom1, bottom2;
-
-        [SerializeField] private Color defaultColor, solvedColor, inCorrectColor;
 
         private int number;
         private Dictionary<int, Dictionary<int, GameObject>> edges;
@@ -58,34 +58,29 @@ namespace NumberLink
             this.row = row;
             column = col;
 
-            edgeCounts = new Dictionary<int, int>();
-            edgeCounts[RIGHT] = 0;
-            edgeCounts[LEFT] = 0;
-            edgeCounts[TOP] = 0;
-            edgeCounts[BOTTOM] = 0;
+            edgeCounts = new()
+            {
+                { RIGHT, 0 },
+                { LEFT, 0 },
+                { TOP, 0 },
+                { BOTTOM, 0 }
+            };
 
-            connectedCell = new Dictionary<int, Cell>();
-            connectedCell[LEFT] = null;
-            connectedCell[TOP] = null;
-            connectedCell[BOTTOM] = null;
-            connectedCell[RIGHT] = null;
+            connectedCell = new()
+            {
+                { LEFT, null },
+                { TOP, null },
+                { BOTTOM, null },
+                { RIGHT, null }
+            };
 
-            edges = new Dictionary<int, Dictionary<int, GameObject>>();
-            edges[RIGHT] = new Dictionary<int, GameObject>();
-            edges[RIGHT][1] = right1;
-            edges[RIGHT][2] = right2;
-
-            edges[TOP] = new Dictionary<int, GameObject>();
-            edges[TOP][1] = top1;
-            edges[TOP][2] = top2;
-
-            edges[LEFT] = new Dictionary<int, GameObject>();
-            edges[LEFT][1] = left1;
-            edges[LEFT][2] = left2;
-
-            edges[BOTTOM] = new Dictionary<int, GameObject>();
-            edges[BOTTOM][1] = bottom1;
-            edges[BOTTOM][2] = bottom2;
+            edges = new Dictionary<int, Dictionary<int, GameObject>>
+            {
+                { RIGHT, new Dictionary<int, GameObject> { { 1, right1 }, { 2, right2 } } },
+                { TOP, new Dictionary<int, GameObject> { { 1, top1 }, { 2, top2 } } },
+                { LEFT, new Dictionary<int, GameObject> { { 1, left1 }, { 2, left2 } } },
+                { BOTTOM, new Dictionary<int, GameObject> { { 1, bottom1 }, { 2, bottom2 } } }
+            };
         }
 
         public void Init()
@@ -95,13 +90,13 @@ namespace NumberLink
                 connectedCell[i] = GameManager.Instance.GetAdjacentCell(row, column, i);
                 if (connectedCell[i] == null) continue;
 
-                var singleEdge = edges[i][1].GetComponentInChildren<SpriteRenderer>();
-                var doubleEdges = edges[i][2].GetComponentsInChildren<SpriteRenderer>();
-
                 Vector2Int edgeOffset = new Vector2Int(connectedCell[i].row - row, connectedCell[i].column - column);
                 float edgeSize = Mathf.Abs(edgeOffset.x) > Mathf.Abs(edgeOffset.y) ? Mathf.Abs(edgeOffset.x) : Mathf.Abs(edgeOffset.y);
                 edgeSize *= GameManager.Instance.EdgeSize;
-                
+
+                SpriteRenderer singleEdge = edges[i][1].GetComponentInChildren<SpriteRenderer>();
+                SpriteRenderer[] doubleEdges = edges[i][2].GetComponentsInChildren<SpriteRenderer>();
+
                 ChangeSpriteSize(singleEdge, edgeSize);
                 foreach (var item in doubleEdges)
                 {
@@ -126,12 +121,12 @@ namespace NumberLink
             if (edgeCounts[direction] == 2)
             {
                 RemoveEdge(direction);
-                RemoveEdge(direction);
                 return;
             }
 
             edgeCounts[direction]++;
             Number--;
+
             edges[direction][1].SetActive(false);
             edges[direction][2].SetActive(false);
             edges[direction][edgeCounts[direction]].SetActive(true);
@@ -155,7 +150,6 @@ namespace NumberLink
         {
             for (int i = 0; i < 4; i++)
             {
-                RemoveEdge(i);
                 RemoveEdge(i);
             }
         }

@@ -7,17 +7,13 @@ namespace NumberLink
     {
         public static GameManager Instance;
 
-        public float EdgeSize => cellGap + cellSize;
-
         [SerializeField] private SpriteRenderer highlightSprite;
         [SerializeField] private Vector2 highlightSize;
-        [SerializeField] private LevelData levelData;
-        [SerializeField] private float cellGap;
-        [SerializeField] private float cellSize;
+        public float EdgeSize;
 
         private Cell[,] cellGrid;
         private Cell startCell;
-        private Vector2 startPos;
+        private Vector2 startPosition;
 
         private List<Vector2Int> Directions = new List<Vector2Int>()
         { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
@@ -25,29 +21,45 @@ namespace NumberLink
         protected override void Awake()
         {
             Instance = this;
+            base.Awake();
 
             highlightSprite.gameObject.SetActive(false);
         }
 
         protected override void SetupManagers()
         {
+            cameraController.SetupCamera(level.Columns * level.Rows);
+
+            levelSpawner.Initialize(level);
             levelSpawner.SpawnLevel();
 
             winConditionChecker.Initialize(level, cellGrid);
         }
 
-        public void SetGameManagerParameters(Cell[,] cellGrid)
+        public void SetCellGrid(Cell[,] cellGrid)
         {
             this.cellGrid = cellGrid;
+
+            for (int i = 0; i < level.Rows; i++)
+            {
+                for (int j = 0; j < level.Columns; j++)
+                {
+                    if (cellGrid[i, j] != null)
+                    {
+                        cellGrid[i, j].Init();
+                    }
+                }
+            }
         }
+
+        public void SetEdgeSize(float EdgeSize) => this.EdgeSize = EdgeSize;
 
         protected override void HandleMouseDown(Vector2 mousePosition)
         {
             startCell = null;
+            startPosition = mousePosition;
 
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-            startPos = mousePosition;
-
             if (hit && hit.collider.TryGetComponent(out startCell))
             {
                 highlightSprite.gameObject.SetActive(true);
@@ -73,6 +85,7 @@ namespace NumberLink
                     startCell.RemoveEdge(3);
 
                 startCell = null;
+                CheckWinCondition();
             }
         }
 
@@ -80,16 +93,15 @@ namespace NumberLink
         {
             if (startCell == null) return;
 
-            Vector2 offset = mousePosition - startPos;
+            Vector2 offset = mousePosition - startPosition;
             Vector2Int offsetDirection = GetDirection(offset);
 
-            float offsetValue = GetOffset(offset, offsetDirection);
             int directionIndex = GetDirectionIndex(offsetDirection);
-
+            float offsetValue = GetOffset(offset, offsetDirection);
             Vector3 angle = new Vector3(0, 0, 90f * (directionIndex - 1));
 
-            highlightSprite.size = new Vector2(highlightSize.x, offsetValue);
             highlightSprite.transform.eulerAngles = angle;
+            highlightSprite.size = new Vector2(highlightSize.x, offsetValue);
         }
 
         protected override void HandleMouseUp()
@@ -97,8 +109,8 @@ namespace NumberLink
             if (startCell == null) return;
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
             if (hit && hit.collider.TryGetComponent(out Cell endCell))
             {
                 if (endCell == startCell)
@@ -106,7 +118,7 @@ namespace NumberLink
                     startCell.RemoveAllEdges();
                     for (int i = 0; i < 4; i++)
                     {
-                        var adjacentCell = GetAdjacentCell(startCell.row, startCell.column, i);
+                        Cell adjacentCell = GetAdjacentCell(startCell.row, startCell.column, i);
                         if (adjacentCell != null)
                         {
                             int adjacentDirection = (i + 2) % 4;
@@ -117,7 +129,7 @@ namespace NumberLink
                 }
                 else
                 {
-                    Vector2 offset = mousePosition - startPos;
+                    Vector2 offset = mousePosition - startPosition;
                     Vector2Int offsetDirection = GetDirection(offset);
                     int directionIndex = GetDirectionIndex(offsetDirection);
 
@@ -153,55 +165,56 @@ namespace NumberLink
             return result;
         }
 
-        private Vector2Int GetDirection(Vector2 offset)
-        {
-            Vector2Int result = Vector2Int.zero;
-
-            if (Mathf.Abs(offset.y) > Mathf.Abs(offset.x) && offset.y > 0)
-                result = Vector2Int.up;
-
-            if (Mathf.Abs(offset.y) > Mathf.Abs(offset.x) && offset.y < 0)
-                result = Vector2Int.down;
-
-            if (Mathf.Abs(offset.y) < Mathf.Abs(offset.x) && offset.x > 0)
-                result = Vector2Int.right;
-
-            if (Mathf.Abs(offset.y) < Mathf.Abs(offset.x) && offset.x < 0)
-                result = Vector2Int.left;
-
-            return result;
-        }
-
         private float GetOffset(Vector2 offset, Vector2Int offsetDirection)
         {
             float result = 0;
-
             if (offsetDirection == Vector2Int.left || offsetDirection == Vector2Int.right)
+            {
                 result = Mathf.Abs(offset.x);
-
+            }
             if (offsetDirection == Vector2Int.up || offsetDirection == Vector2Int.down)
+            {
                 result = Mathf.Abs(offset.y);
+            }
+            return result;
+        }
+
+        private Vector2Int GetDirection(Vector2 offset)
+        {
+            Vector2Int result;
+
+            if (Mathf.Abs(offset.y) > Mathf.Abs(offset.x))
+            {
+                if (offset.y > 0)
+                    result = Vector2Int.up;
+                else
+                    result = Vector2Int.down;
+            }
+            else
+            {
+                if (offset.y > 0)
+                    result = Vector2Int.right;
+                else
+                    result = Vector2Int.left;
+            }
 
             return result;
         }
 
-        public Cell GetAdjacentCell(int row, int col, int direction)
+        public Cell GetAdjacentCell(int row, int column, int direction)
         {
             Vector2Int currentDirection = Directions[direction];
-            Vector2Int startPos = new Vector2Int(row, col);
-            Vector2Int checkPos = startPos + currentDirection;
+            Vector2Int startPosition = new Vector2Int(row, column);
+            Vector2Int checkPosition = startPosition + currentDirection;
 
-            while (IsValid(checkPos) && cellGrid[checkPos.x, checkPos.y] == null)
+            while (IsValid(checkPosition) && cellGrid[checkPosition.x, checkPosition.y] == null)
             {
-                checkPos += currentDirection;
+                checkPosition += currentDirection;
             }
 
-            return IsValid(checkPos) ? cellGrid[checkPos.x, checkPos.y] : null;
+            return IsValid(checkPosition) ? cellGrid[checkPosition.x, checkPosition.y] : null;
         }
 
-        public bool IsValid(Vector2Int pos)
-        {
-            return pos.x >= 0 && pos.y >= 0 && pos.x < levelData.Rows && pos.y < levelData.Columns;
-        }
+        public bool IsValid(Vector2Int pos) => pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
     }
 }

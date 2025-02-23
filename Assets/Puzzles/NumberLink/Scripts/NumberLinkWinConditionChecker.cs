@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace NumberLink
 {
     public class WinConditionChecker : BaseWinConditionChecker
@@ -19,9 +17,11 @@ namespace NumberLink
             {
                 for (int j = 0; j < levelData.Columns; j++)
                 {
-                    if (cellGrid[i, j] != null && cellGrid[i, j].Number != 0) return; ;
+                    if (cellGrid[i, j] != null && cellGrid[i, j].Number != 0) return;
                 }
             }
+
+            NotifyWin();
         }
     }
 }

@@ -4,57 +4,70 @@ namespace NumberLink
 {
     public class LevelSpawner : BaseLevelSpawner
     {
-        [SerializeField] private Cell cellPrefab;
-        [SerializeField] private SpriteRenderer bgSprite;
+        private LevelData level;
 
-        [SerializeField] private LevelData levelData;
+        [SerializeField] private Cell cellPrefab;
+        [SerializeField] private SpriteRenderer backgroundSprite;
+
         [SerializeField] private float cellGap;
         [SerializeField] private float cellSize;
         [SerializeField] private float levelGap;
-        // private int[,] levelGrid;
-        // private Cell[,] cellGrid;
+        [SerializeField] private float backgroundPositionController = 2f;
 
-        public void Initialize()
-        {
-
-        }
+        public void Initialize(LevelData level) => this.level = level;
 
         public override void SpawnLevel()
         {
+            GameManager.Instance.SetEdgeSize(cellGap + cellSize);
 
-            int[,] levelGrid = new int[levelData.Rows, levelData.Columns];
-            Cell[,] cellGrid = new Cell[levelData.Rows, levelData.Columns];
-            
-            for (int i = 0; i < levelData.Rows; i++)
+            int[,] levelGrid = new int[level.Rows, level.Columns];
+            FullfillLevelGridData(levelGrid);
+            CreateBackcround();
+            CreateCells(levelGrid);
+        }
+
+        private void FullfillLevelGridData(int[,] levelGrid)
+        {
+            for (int i = 0; i < level.Rows; i++)
             {
-                for (int j = 0; j < levelData.Columns; j++)
+                for (int j = 0; j < level.Columns; j++)
                 {
-                    levelGrid[i, j] = levelData.Data[i * levelData.Rows + j];
+                    levelGrid[i, j] = level.Data[i * level.Rows + j];
                 }
             }
+        }
 
-            float width = (cellSize + cellGap) * levelData.Columns - cellGap + levelGap;
-            float height = (cellSize + cellGap) * levelData.Rows - cellGap + levelGap;
-            bgSprite.size = new Vector2(width, height);
-            Vector3 bgPos = new Vector3(
-                width / 2f - cellSize / 2f - levelGap / 2f,
-                height / 2f - cellSize / 2f - levelGap / 2f,
-                0
-                );
-            bgSprite.transform.position = bgPos;
+        private void CreateBackcround()
+        {
+            float width = (cellSize + cellGap) * level.Columns - cellGap + levelGap;
+            float height = (cellSize + cellGap) * level.Rows - cellGap + levelGap;
+            backgroundSprite.size = new Vector2(width, height);
 
-            Vector3 startPos = Vector3.zero;
-            Vector3 rightOffset = Vector3.right * (cellSize + cellGap);
-            Vector3 topOffset = Vector3.up * (cellSize + cellGap);
+            Vector2 backgroundPosition = new Vector2(
+                width / backgroundPositionController - cellSize / backgroundPositionController - levelGap / backgroundPositionController,
+                height / backgroundPositionController - cellSize / backgroundPositionController - levelGap / backgroundPositionController);
+            backgroundSprite.transform.position = backgroundPosition;
+        }
 
-            for (int i = 0; i < levelData.Rows; i++)
+        private void CreateCells(int[,] levelGrid)
+        {
+            Cell[,] cellGrid = new Cell[level.Rows, level.Columns];
+
+            Vector2 startPosition = Vector2.zero;
+            Vector2 rightOffset = Vector2.right * (cellSize + cellGap);
+            Vector2 topOffset = Vector2.up * (cellSize + cellGap);
+
+            for (int i = 0; i < level.Rows; i++)
             {
-                for (int j = 0; j < levelData.Columns; j++)
+                for (int j = 0; j < level.Columns; j++)
                 {
-                    Vector3 spawnPos = startPos + j * rightOffset + i * topOffset;
-                    Cell tempCell = Instantiate(cellPrefab, spawnPos, Quaternion.identity);
+                    Vector2 spawnPosition = startPosition + j * rightOffset + i * topOffset;
+
+                    Cell tempCell = Instantiate(cellPrefab, spawnPosition, Quaternion.identity);
                     tempCell.Init(i, j, levelGrid[i, j]);
+
                     cellGrid[i, j] = tempCell;
+
                     if (tempCell.Number == 0)
                     {
                         Destroy(tempCell.gameObject);
@@ -63,17 +76,7 @@ namespace NumberLink
                 }
             }
 
-            for (int i = 0; i < levelData.Rows; i++)
-            {
-                for (int j = 0; j < levelData.Columns; j++)
-                {
-                    if (cellGrid[i, j] != null)
-                    {
-                        cellGrid[i, j].Init();
-                    }
-                }
-            }
-            GameManager.Instance.SetGameManagerParameters(cellGrid);
+            GameManager.Instance.SetCellGrid(cellGrid);
         }
     }
 }

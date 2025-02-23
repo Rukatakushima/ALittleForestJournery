@@ -4,7 +4,7 @@ namespace NumberLink
 {
     public class CameraController : BaseCameraController
     {
-        public void SetupCamera(float width, Vector3 bgPos)
+        public void SetupCamera(float width, Vector3 backgroundPosition)
         {
             /*
             
@@ -17,7 +17,7 @@ namespace NumberLink
             float width = (cellSize + cellGap) * levelData.col - cellGap + levelGap;
             */
             Camera.main.orthographicSize = width * cameraSizeController;
-            Camera.main.transform.position = new Vector3(bgPos.x, bgPos.y, cameraPositionZ);
+            Camera.main.transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, cameraPositionZ);
         }
     }
 }

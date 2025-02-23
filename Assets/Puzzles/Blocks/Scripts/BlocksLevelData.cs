@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Blocks
 {
 
-    [CreateAssetMenu(fileName = "Level", menuName = "BlocksLevel")]
+    [CreateAssetMenu(fileName = "BlocksLevel", menuName = "Levels/BlocksLevel")]
     public class LevelData : ScriptableObject
     {
         public int Rows, Columns, BlockRows, BlockColumns;
