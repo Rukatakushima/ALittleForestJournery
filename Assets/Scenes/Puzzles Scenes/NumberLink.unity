@@ -245,14 +245,9 @@ MonoBehaviour:
   sceneLoader: {fileID: 0}
   inputHandler: {fileID: 0}
   level: {fileID: 11400000, guid: 3fba9e8d8adf6744eaac6587fdb0eb4f, type: 2}
-  hasGameFinished: 0
-  _cellPrefab: {fileID: 0}
-  _bgSprite: {fileID: 0}
-  _highlightSprite: {fileID: 2401785773238070343, guid: 2ba36a6de5dcc154991d937b99919826, type: 3}
-  _highlightSize: {x: 1, y: 2}
-  _cellGap: 2
-  _cellSize: 2
-  _levelGap: 2
+  highlightSprite: {fileID: 2401785773238070343, guid: 2ba36a6de5dcc154991d937b99919826, type: 3}
+  highlightSize: {x: 1, y: 2}
+  EdgeSize: 0
 --- !u!4 &163382224
 Transform:
   m_ObjectHideFlags: 0

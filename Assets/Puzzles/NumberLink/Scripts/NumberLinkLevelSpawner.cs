@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NumberLink
@@ -64,7 +65,8 @@ namespace NumberLink
                     Vector2 spawnPosition = startPosition + j * rightOffset + i * topOffset;
 
                     Cell tempCell = Instantiate(cellPrefab, spawnPosition, Quaternion.identity);
-                    tempCell.Init(i, j, levelGrid[i, j]);
+                    tempCell.InitializeCellData(i, j, levelGrid[i, j]);
+                    // / InitializeCellData(tempCell, i, j, levelGrid[i, j]);
 
                     cellGrid[i, j] = tempCell;
 
@@ -77,6 +79,35 @@ namespace NumberLink
             }
 
             GameManager.Instance.SetCellGrid(cellGrid);
+        }
+
+
+        private const int RIGHT = 0;
+        private const int TOP = 1;
+        private const int LEFT = 2;
+        private const int BOTTOM = 3;
+
+        public void InitializeCellData(Cell cell, int row, int column, int number)
+        {
+            cell.Number = number;
+            cell.rowCoordinate = row;
+            cell.columnCoordinate = column;
+
+            Dictionary<int, int> edgeCounts = new()
+            {
+                { RIGHT, 0 },
+                { LEFT, 0 },
+                { TOP, 0 },
+                { BOTTOM, 0 }
+            };
+
+            Dictionary<int, Cell> connectedCell = new()
+            {
+                { LEFT, null },
+                { TOP, null },
+                { BOTTOM, null },
+                { RIGHT, null }
+            };
         }
     }
 }

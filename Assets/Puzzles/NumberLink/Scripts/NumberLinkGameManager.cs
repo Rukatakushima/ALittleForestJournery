@@ -46,7 +46,7 @@ namespace NumberLink
                 {
                     if (cellGrid[i, j] != null)
                     {
-                        cellGrid[i, j].Init();
+                        cellGrid[i, j].InitializeCell();
                     }
                 }
             }
@@ -118,7 +118,7 @@ namespace NumberLink
                     startCell.RemoveAllEdges();
                     for (int i = 0; i < 4; i++)
                     {
-                        Cell adjacentCell = GetAdjacentCell(startCell.row, startCell.column, i);
+                        Cell adjacentCell = GetAdjacentCell(startCell.rowCoordinate, startCell.columnCoordinate, i);
                         if (adjacentCell != null)
                         {
                             int adjacentDirection = (i + 2) % 4;
