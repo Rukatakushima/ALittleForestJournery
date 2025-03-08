@@ -39,7 +39,7 @@ namespace Pipes
             this.pipes = pipes;
         }
 
-        protected override void HandleMouseDown(Vector2 mousePosition)
+        protected override void HandleInputStart(Vector2 mousePosition)
         {
             int row = Mathf.FloorToInt(mousePosition.y);
             int col = Mathf.FloorToInt(mousePosition.x);
@@ -51,9 +51,9 @@ namespace Pipes
             StartCoroutine(ShowHint());
         }
 
-        protected override void HandleMouseDrag(Vector2 mousePosition) { }
+        protected override void HandleInputUpdate(Vector2 mousePosition) { }
 
-        protected override void HandleMouseUp() { }
+        protected override void HandleInputEnd() { }
 
         private IEnumerator ShowHint()
         {

@@ -7,9 +7,7 @@ public class DialogTrigger : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
-        {
-           DialogManager.Instance.SetStartDialogueButtonAnimation(true);
-        }
+            DialogManager.Instance.SetStartDialogueButtonAnimation(true);
     }
 
     public void OnTriggerExit2D(Collider2D other)

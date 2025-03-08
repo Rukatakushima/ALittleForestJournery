@@ -4,13 +4,10 @@ public class Slot : MonoBehaviour
 {
     private Inventory inventory;
     public int i;
-    public GameObject player;
+    // public GameObject player;
 
-    private void Start()
-    {
-        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+    private void Awake() => inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
+    // player = GameObject.FindGameObjectWithTag("Player");
 
     public void DropItem()
     {

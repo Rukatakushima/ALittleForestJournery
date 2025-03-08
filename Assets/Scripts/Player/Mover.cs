@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
     [SerializeField] public float speed = 4;
     [SerializeField] public float jumpForce;
-    // checkRadius;
+    public Vector2 Velocity => rb.velocity;
+
     // [SerializeField] private Transform feetPos;
     // [SerializeField] private LayerMask whatIsGround;
 
@@ -16,7 +15,7 @@ public class Mover : MonoBehaviour
 
     // private bool isGrounded;
 
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -24,7 +23,7 @@ public class Mover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Move();
+        Move(Input.GetAxis("Horizontal"));
         // UpdateRunningAnimation();
     }
 
@@ -36,21 +35,12 @@ public class Mover : MonoBehaviour
         UpdateRunningAnimation();
 
         if ((facingLeft && moveInput > 0) || (!facingLeft && moveInput < 0))
-        {
             Flip();
-        }
     }
 
-    
-    public void UpdateRunningAnimation()
-    {
-        anim.SetBool("isWalking", Mathf.Abs(rb.velocity.x) > 0);
-    }
 
-    public Vector2 GetVelocity()
-    {
-        return rb.velocity;
-    }
+    public void UpdateRunningAnimation() => anim.SetBool("isWalking", Mathf.Abs(rb.velocity.x) > 0);
+
 
     // private void UpdateAnimation()
     // {
@@ -62,15 +52,6 @@ public class Mover : MonoBehaviour
     // {
     //     isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
     // }
-
-    private void Jump()
-    {
-        // if (isGrounded && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)))
-        // {
-        rb.velocity = Vector2.up * jumpForce;
-        //     anim.SetTrigger("takeOf");
-        // }
-    }
 
     private void Flip()
     {

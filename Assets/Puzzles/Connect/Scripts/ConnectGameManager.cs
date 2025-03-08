@@ -35,9 +35,9 @@ namespace Connect
             this._nodeGrid = _nodeGrid;
         }
 
-        protected override void HandleMouseDown(Vector2 mousePosition) => startNode = null;
+        protected override void HandleInputStart(Vector2 mousePosition) => startNode = null;
 
-        protected override void HandleMouseDrag(Vector2 mousePosition)
+        protected override void HandleInputUpdate(Vector2 mousePosition)
         {
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
@@ -60,6 +60,6 @@ namespace Connect
             }
         }
 
-        protected override void HandleMouseUp() => startNode = null;
+        protected override void HandleInputEnd() => startNode = null;
     }
 }
