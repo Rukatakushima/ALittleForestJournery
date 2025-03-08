@@ -39,13 +39,13 @@ namespace Fill
 
         public void SetEdges(PoolBase<Transform> edgePrefabObjectPool) => this.edgePrefabObjectPool = edgePrefabObjectPool;
 
-        protected override void HandleMouseDown(Vector2 mousePosition)
+        protected override void HandleInputStart(Vector2 mousePosition)
         {
             startPosition = new Vector2Int(Mathf.FloorToInt(mousePosition.y), Mathf.FloorToInt(mousePosition.x));
             endPosition = startPosition;
         }
 
-        protected override void HandleMouseDrag(Vector2 mousePosition)
+        protected override void HandleInputUpdate(Vector2 mousePosition)
         {
             endPosition = new Vector2Int(Mathf.FloorToInt(mousePosition.y), Mathf.FloorToInt(mousePosition.x));
 
@@ -89,7 +89,7 @@ namespace Fill
             startPosition = endPosition;
         }
 
-        protected override void HandleMouseUp() { }
+        protected override void HandleInputEnd() { }
 
         private bool IsNeighbour() => IsValid(startPosition) && IsValid(endPosition) && directions.Contains(startPosition - endPosition);
 

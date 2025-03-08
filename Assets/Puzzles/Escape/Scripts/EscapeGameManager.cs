@@ -36,7 +36,7 @@ namespace Escape
             this.gamePieces = gamePieces;
         }
 
-        protected override void HandleMouseDown(Vector2 mousePosition)
+        protected override void HandleInputStart(Vector2 mousePosition)
         {
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
@@ -50,7 +50,7 @@ namespace Escape
             offsets = new List<Vector2>();
         }
 
-        protected override void HandleMouseDrag(Vector2 mousePosition)
+        protected override void HandleInputUpdate(Vector2 mousePosition)
         {
             if (currentPiece == null) return;
             {
@@ -89,7 +89,7 @@ namespace Escape
             }
         }
 
-        protected override void HandleMouseUp()
+        protected override void HandleInputEnd()
         {
             if (currentPiece == null) return;
             {

@@ -7,10 +7,7 @@ public class Inventory : MonoBehaviour
     public GameObject inventory;
     private bool inventoryOn;
 
-    private void Start()
-    {
-        inventoryOn = false;
-    }
+    private void Start() => inventoryOn = false;
 
     public void ToggleChest()
     {

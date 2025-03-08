@@ -1,14 +1,13 @@
 using UnityEngine;
 
-public abstract class BaseGameManager<TLevelSpawner, TCameraController, TWinConditionChecker, TLevelData> : MonoBehaviour
+public abstract class BaseGameManager<TLevelSpawner, DefaultCameraController, TWinConditionChecker, TLevelData> : MonoBehaviour
     where TLevelSpawner : BaseLevelSpawner
-    where TCameraController : BaseCameraController
     where TWinConditionChecker : BaseWinConditionChecker
     where TLevelData : ScriptableObject
 {
     [Header("Managers")]
     [SerializeField] protected TLevelSpawner levelSpawner;
-    [SerializeField] protected TCameraController cameraController;
+    [SerializeField] protected DefaultCameraController cameraController;
     [SerializeField] protected TWinConditionChecker winConditionChecker;
     [SerializeField] protected SceneLoader sceneLoader;
     [SerializeField] protected InputHandler inputHandler;
@@ -28,14 +27,15 @@ public abstract class BaseGameManager<TLevelSpawner, TCameraController, TWinCond
         if (levelSpawner == null)
             levelSpawner = GetComponent<TLevelSpawner>();
         if (cameraController == null)
-            cameraController = GetComponent<TCameraController>();
+            cameraController = GetComponent<DefaultCameraController>();
         if (winConditionChecker == null)
             winConditionChecker = GetComponent<TWinConditionChecker>();
-        winConditionChecker.OnWin.AddListener(GameFinished);
         if (sceneLoader == null)
             sceneLoader = GetComponent<SceneLoader>();
         if (inputHandler == null)
             inputHandler = GetComponent<InputHandler>();
+
+        winConditionChecker.OnWin.AddListener(GameFinished);
 
         CheckComponents();
     }
@@ -43,51 +43,43 @@ public abstract class BaseGameManager<TLevelSpawner, TCameraController, TWinCond
     protected void CheckComponents()
     {
         if (cameraController == null)
-            Debug.LogError("CameraController is not found!");
+            throw new System.ArgumentNullException(nameof(cameraController));
         if (winConditionChecker == null)
-            Debug.LogError("WinConditionChecker is not found!");
+            throw new System.ArgumentNullException(nameof(winConditionChecker));
         if (sceneLoader == null)
-            Debug.LogError("SceneLoader is not found!");
+            throw new System.ArgumentNullException(nameof(sceneLoader));
         if (inputHandler == null)
-            Debug.LogError("InputHandler is not found!");
+            throw new System.ArgumentNullException(nameof(inputHandler));
     }
 
     protected abstract void SetupManagers();
 
     protected virtual void SetupInputHandlers()
     {
-        inputHandler.OnMouseDown.AddListener(HandleMouseDown);
-        inputHandler.OnMouseDrag.AddListener(HandleMouseDrag);
-        inputHandler.OnMouseUp.AddListener(HandleMouseUp);
+        inputHandler.OnInputStart.AddListener(HandleInputStart);
+        inputHandler.OnInputUpdate.AddListener(HandleInputUpdate);
+        inputHandler.OnInputEnd.AddListener(HandleInputEnd);
     }
 
-    protected abstract void HandleMouseDown(Vector2 mousePosition);
+    protected abstract void HandleInputStart(Vector2 mousePosition);
 
-    protected abstract void HandleMouseDrag(Vector2 mousePosition);
+    protected abstract void HandleInputUpdate(Vector2 mousePosition);
 
-    protected abstract void HandleMouseUp();
+    protected abstract void HandleInputEnd();
 
     protected void CheckWinCondition()
     {
         if (winConditionChecker != null)
-        {
             winConditionChecker.CheckWinCondition();
-        }
         else
-        {
             Debug.LogError("WinConditionChecker is not assigned!");
-        }
     }
 
     protected void GameFinished()
     {
         if (sceneLoader != null)
-        {
             sceneLoader.ChangeScene();
-        }
         else
-        {
             Debug.LogError("SceneLoader is not assigned!");
-        }
     }
 }

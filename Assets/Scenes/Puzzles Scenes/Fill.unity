@@ -248,11 +248,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cee1fbc4ecbac84aaf5f118b2e3f478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSpawner: {fileID: 0}
-  cameraController: {fileID: 0}
-  winConditionChecker: {fileID: 0}
-  sceneLoader: {fileID: 0}
-  inputHandler: {fileID: 0}
+  levelSpawner: {fileID: 2122757324}
+  cameraController: {fileID: 2122757325}
+  winConditionChecker: {fileID: 2122757323}
+  sceneLoader: {fileID: 2122757322}
+  inputHandler: {fileID: 2122757321}
   level: {fileID: 11400000, guid: 848ee0c62948302438e2a9c9de1bf7f3, type: 2}
 --- !u!4 &2122757320
 Transform:
@@ -281,15 +281,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnMouseDown:
-    m_PersistentCalls:
-      m_Calls: []
-  OnMouseDrag:
-    m_PersistentCalls:
-      m_Calls: []
-  OnMouseUp:
-    m_PersistentCalls:
-      m_Calls: []
+  inputType: 0
+  startKey: 101
+  updateKey: 101
+  endKey: 113
+  targetObject: {fileID: 0}
 --- !u!114 &2122757322
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ public class DialogManager : MonoBehaviour
         public bool isRead;
         public List<Sentence> SentencesList;
     }
-    
+
     [System.Serializable]
     public class Sentence
     {
@@ -23,9 +23,9 @@ public class DialogManager : MonoBehaviour
         public float SpeedLetters;
     }
 
-    [HideInInspector] public int count;
-    [HideInInspector] public int currentIndex;
-    [HideInInspector] public List<Sentence> CurrentSentences;
+    private int sentencesCount;
+    private int currentSentenceIndex;
+    private List<Sentence> CurrentSentences;
 
     [SerializeField] private Animator startDialogueButtonAnim;
     [SerializeField] private Animator dialogueBoxAnim;
@@ -34,7 +34,7 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private Text fieldSentence;
     [SerializeField] private Transform characterTransform;
     [SerializeField] private List<Dialog> DialogsQueue;
-    
+
     public static DialogManager Instance
     {
         get
@@ -64,16 +64,13 @@ public class DialogManager : MonoBehaviour
     public void SetStartDialogueButtonAnimation(bool isOpen)
     {
         if (startDialogueButtonAnim != null)
-        {
             startDialogueButtonAnim.SetBool("startDialougueButtonOpen", isOpen);
-        }
     }
+
     public void SetStartDialogueAnimation(bool isOpen)
     {
         if (dialogueBoxAnim != null)
-        {
             dialogueBoxAnim.SetBool("dialogueBoxOpen", isOpen);
-        }
     }
 
     public void StartDialogue(int idDialog)
@@ -86,8 +83,8 @@ public class DialogManager : MonoBehaviour
         if (currentDialog != null)
         {
             CurrentSentences = currentDialog.SentencesList;
-            count = CurrentSentences.Count;
-            currentIndex = 0;
+            sentencesCount = CurrentSentences.Count;
+            currentSentenceIndex = 0;
 
             StartCoroutine(TypeSentenceAndSetName(CurrentSentences[0]));
         }
@@ -122,28 +119,22 @@ public class DialogManager : MonoBehaviour
             dialogBoxGameObject.transform.position = camera.WorldToScreenPoint(characterTransform.position) + new Vector3(0, 115f);
             // if ()
             // {
-// // установить диалог. окно рядом с границей экрана, чтобы полностью помещалось, а не уходило за экран
+            // // установить диалог. окно рядом с границей экрана, чтобы полностью помещалось, а не уходило за экран
             // }
         }
         else
-        {
             dialogBoxRect.anchoredPosition = new Vector2(0, 1.5f);
-        }
     }
 
     public void DisplayNextSentence()
     {
-        currentIndex++;
+        currentSentenceIndex++;
         StopAllCoroutines();
 
-        if (currentIndex < count)
-        {
-            StartCoroutine(TypeSentenceAndSetName(CurrentSentences[currentIndex]));
-        }
+        if (currentSentenceIndex < sentencesCount)
+            StartCoroutine(TypeSentenceAndSetName(CurrentSentences[currentSentenceIndex]));
         else
-        {
             EndDialogue();
-        }
     }
 
     public static void EndDialogue()

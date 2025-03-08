@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Blocks
 {
-    public class CameraController : BaseCameraController
+    public class CameraController : DefaultCameraController
     {
         public float backgroundCellPositionRate = 0.5f;
 

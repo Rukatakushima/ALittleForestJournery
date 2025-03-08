@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Fill
 {
-    public class CameraController : BaseCameraController
+    public class CameraController : DefaultCameraController
     {
         public void SetupCamera(float x, float y)
         {

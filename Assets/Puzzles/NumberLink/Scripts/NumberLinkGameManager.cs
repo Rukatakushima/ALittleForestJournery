@@ -60,7 +60,7 @@ namespace NumberLink
 
         public void SetEdgeSize(float EdgeSize) => this.EdgeSize = EdgeSize;
 
-        protected override void HandleMouseDown(Vector2 mousePosition)
+        protected override void HandleInputStart(Vector2 mousePosition)
         {
             startCell = null;
             startPosition = mousePosition;
@@ -95,7 +95,7 @@ namespace NumberLink
             }
         }
 
-        protected override void HandleMouseDrag(Vector2 mousePosition)
+        protected override void HandleInputUpdate(Vector2 mousePosition)
         {
             if (startCell == null) return;
 
@@ -110,7 +110,7 @@ namespace NumberLink
             highlightSprite.size = new Vector2(highlightSize.x, offsetValue);
         }
 
-        protected override void HandleMouseUp()
+        protected override void HandleInputEnd()
         {
             if (startCell == null) return;
 

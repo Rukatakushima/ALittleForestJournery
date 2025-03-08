@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace NumberLink
 {
-    public class CameraController : BaseCameraController
+    public class CameraController : DefaultCameraController
     {
         public void SetupCamera(float width, Vector3 backgroundPosition)
         {

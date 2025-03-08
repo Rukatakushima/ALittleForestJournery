@@ -7,9 +7,5 @@ public abstract class BaseWinConditionChecker : MonoBehaviour
 
     public abstract void CheckWinCondition();
 
-    // Метод для вызова события победы
-    protected void NotifyWin()
-    {
-        OnWin?.Invoke();
-    }
+    protected void NotifyWin() => OnWin?.Invoke();
 }

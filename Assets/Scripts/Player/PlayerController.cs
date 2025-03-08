@@ -6,23 +6,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform feetPos;
     [SerializeField] private LayerMask whatIsGround;
 
-    private Mover mover;
     private Rigidbody2D rb;
     private Animator anim;
     private bool isGrounded;
 
-    private void Start()
+    private void Awake()
     {
-        mover = GetComponent<Mover>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-    }
-
-    private void FixedUpdate()
-    {
-        mover.Move(Input.GetAxis("Horizontal"));
-        // Move();
-        // UpdateAnimation();
     }
 
     private void Update()
@@ -32,27 +23,10 @@ public class PlayerController : MonoBehaviour
         UpdateAnimation();
     }
 
-    // private void Move()
-    // {
-    //     float moveInput = Input.GetAxis("Horizontal");
-    //     rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+    private void UpdateAnimation() => anim.SetBool("isJumping", !isGrounded);
+    // anim.SetBool("isRunning", Mathf.Abs(rb.velocity.x) > 0);
 
-    //     if ((facingLeft && moveInput > 0) || (!facingLeft && moveInput < 0))
-    //     {
-    //         Flip();
-    //     }
-    // }
-
-    private void UpdateAnimation()
-    {
-        // anim.SetBool("isRunning", Mathf.Abs(rb.velocity.x) > 0);
-        anim.SetBool("isJumping", !isGrounded);
-    }
-
-    private void CheckGrounded()
-    {
-        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-    }
+    private void CheckGrounded() => isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
     private void Jump()
     {
@@ -62,12 +36,4 @@ public class PlayerController : MonoBehaviour
             anim.SetTrigger("takeOf");
         }
     }
-
-    // private void Flip()
-    // {
-    //     facingLeft = !facingLeft;
-    //     Vector3 scaler = transform.localScale;
-    //     scaler.x *= -1;
-    //     transform.localScale = scaler;
-    // }
 }
