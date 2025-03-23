@@ -56,7 +56,7 @@ namespace Fifteen
             gameObject.transform.position = endPosition;
             UpdateCorrectPosition();
             winCheck?.Invoke();
-            GameManager.Instance.CheckWin();
+            GameManager.Instance.CheckWinCondition();
         }
 
         public void ChangeSprite(Sprite sprite)

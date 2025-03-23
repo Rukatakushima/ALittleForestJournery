@@ -49,9 +49,6 @@ namespace Fifteen
 
         protected override void HandleInputEnd() { }
 
-        public void CheckWin()
-        {
-            CheckWinCondition();
-        }
+        // public void CheckWin() => CheckWinCondition();
     }
 }
