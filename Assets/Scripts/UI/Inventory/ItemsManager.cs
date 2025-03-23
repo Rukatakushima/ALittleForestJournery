@@ -16,7 +16,8 @@ public class ItemsManager : MonoBehaviour
     //     }
     // #endif
 
-    [SerializeField] private Transform player;
+    [SerializeField] private Mover player;
+    [SerializeField] private Transform playerTransform;
     private Inventory inventory;
     public List<GameObject> itemsOnScenePrefabs;
 
@@ -33,10 +34,10 @@ public class ItemsManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+        if (playerTransform == null)
+            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
-        inventory = player.gameObject.GetComponent<Inventory>();
+        inventory = playerTransform.gameObject.GetComponent<Inventory>();
     }
 
     private void Start() => PopulateItemPrefabs();
@@ -59,7 +60,12 @@ public class ItemsManager : MonoBehaviour
     public void SpawnOnScene(int itemId)
     {
         GameObject item = GetItemByIdOnScene(itemId);
-        Vector2 spawnPos = new Vector2(player.position.x + item.transform.localScale.x, player.position.y);
+
+        Vector2 spawnPos;
+        if (player.isFacingLeft)
+            spawnPos = new Vector2(playerTransform.position.x - item.transform.localScale.x, playerTransform.position.y);
+        else
+            spawnPos = new Vector2(playerTransform.position.x + item.transform.localScale.x, playerTransform.position.y);
         item.SetActive(true);
         item.transform.position = spawnPos;
         item.GetComponent<ItemOnScene>().spawnedItemInInventoryGameObject.SetActive(false);
