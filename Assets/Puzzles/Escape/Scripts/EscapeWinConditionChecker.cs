@@ -15,9 +15,7 @@ namespace Escape
         public override void CheckWinCondition()
         {
             if (winPiece.CurrentGridPos.y + winPiece.Size < columnsCount)
-            {
                 return;
-            }
 
             NotifyWin();
         }

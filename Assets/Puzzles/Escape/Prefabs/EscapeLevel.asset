@@ -30,7 +30,7 @@ MonoBehaviour:
     Start: {x: 0, y: 0}
   - Id: 3
     IsVertical: 1
-    Size: 1
+    Size: 2
     Start: {x: 2, y: 3}
   - Id: 4
     IsVertical: 0
