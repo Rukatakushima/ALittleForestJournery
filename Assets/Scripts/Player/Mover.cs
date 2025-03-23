@@ -11,7 +11,7 @@ public class Mover : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
-    private bool facingLeft = true;
+    public bool isFacingLeft = true;
 
     // private bool isGrounded;
 
@@ -34,7 +34,7 @@ public class Mover : MonoBehaviour
 
         UpdateRunningAnimation();
 
-        if ((facingLeft && moveInput > 0) || (!facingLeft && moveInput < 0))
+        if ((isFacingLeft && moveInput > 0) || (!isFacingLeft && moveInput < 0))
             Flip();
     }
 
@@ -55,7 +55,7 @@ public class Mover : MonoBehaviour
 
     private void Flip()
     {
-        facingLeft = !facingLeft;
+        isFacingLeft = !isFacingLeft;
         Vector3 scaler = transform.localScale;
         scaler.x *= -1;
         transform.localScale = scaler;
