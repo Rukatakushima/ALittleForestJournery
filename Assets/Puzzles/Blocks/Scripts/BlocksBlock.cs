@@ -86,10 +86,7 @@ namespace Blocks
             UpdatePosition();
         }
 
-        public List<Vector2Int> BlockPositions()
-        {
-            return blockPositions.ConvertAll(pos => pos + new Vector2Int(Mathf.FloorToInt(curPos.y), Mathf.FloorToInt(curPos.x)));
-        }
+        public List<Vector2Int> BlockPositions => blockPositions.ConvertAll(pos => pos + new Vector2Int(Mathf.FloorToInt(curPos.y), Mathf.FloorToInt(curPos.x)));
 
         public void UpdateIncorrectMove()
         {
@@ -112,9 +109,6 @@ namespace Blocks
             UpdatePosition();
         }
 
-        public void UpdatePosition()
-        {
-            transform.position = curPos;
-        }
+        public void UpdatePosition() => transform.position = curPos;
     }
 }
