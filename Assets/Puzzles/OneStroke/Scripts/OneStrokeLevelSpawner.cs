@@ -12,10 +12,7 @@ namespace OneStroke
         private Dictionary<int, Point> points;
         private Dictionary<Vector2Int, Edge> edges;
 
-        public void Initialize(LevelData level)
-        {
-            this.level = level;
-        }
+        public void Initialize(LevelData level) => this.level = level;
 
         public override void SpawnLevel()
         {

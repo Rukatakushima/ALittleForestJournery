@@ -32,10 +32,7 @@ namespace OneStroke
             winConditionChecker.Initialize(edges);
         }
 
-        public void SetEdges(Dictionary<Vector2Int, Edge> edges)
-        {
-            this.edges = edges;
-        }
+        public void SetEdges(Dictionary<Vector2Int, Edge> edges) => this.edges = edges;
 
         protected override void HandleInputStart(Vector2 mousePosition)
         {
@@ -60,8 +57,6 @@ namespace OneStroke
         protected override void HandleInputUpdate(Vector2 mousePosition)
         {
             if (!startPoint) return;
-
-            // Vector2 mousePos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
             if (hit)

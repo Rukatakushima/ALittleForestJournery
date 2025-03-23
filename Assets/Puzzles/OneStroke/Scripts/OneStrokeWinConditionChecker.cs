@@ -7,10 +7,7 @@ namespace OneStroke
     {
         private Dictionary<Vector2Int, Edge> edges;
 
-        public void Initialize(Dictionary<Vector2Int, Edge> edges)
-        {
-            this.edges = edges;
-        }
+        public void Initialize(Dictionary<Vector2Int, Edge> edges) => this.edges = edges;
 
         public override void CheckWinCondition()
         {

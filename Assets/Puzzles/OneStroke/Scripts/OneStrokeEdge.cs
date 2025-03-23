@@ -43,20 +43,11 @@ namespace OneStroke
             lineRenderer.SetPosition(endPositionIndex, startPosition);
         }
 
-        public void SetEndPosition(Vector2 endPosition)
-        {
-            lineRenderer.SetPosition(endPositionIndex, endPosition);
-        }
+        public void SetEndPosition(Vector2 endPosition) => lineRenderer.SetPosition(endPositionIndex, endPosition);
 
-        public void TurnOff()
-        {
-            gameObject.SetActive(false);
-        }
+        public void TurnOff() => gameObject.SetActive(false);
 
-        private void SetGradient(Gradient gradient)
-        {
-            lineRenderer.colorGradient = gradient;
-        }
+        private void SetGradient(Gradient gradient) => lineRenderer.colorGradient = gradient;
 
         public void FillEdge()
         {
@@ -64,15 +55,9 @@ namespace OneStroke
             SetFilledGradient();
         }
 
-        public void SetWrongGradient()
-        {
-            SetGradient(wrongGradient);
-        }
+        public void SetWrongGradient() => SetGradient(wrongGradient);
 
-        public void SetFilledGradient()
-        {
-            SetGradient(filledGradient);
-        }
+        public void SetFilledGradient() => SetGradient(filledGradient);
 
         public void ResetEdge()
         {
