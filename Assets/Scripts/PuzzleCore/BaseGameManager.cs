@@ -67,7 +67,7 @@ public abstract class BaseGameManager<TLevelSpawner, DefaultCameraController, TW
 
     protected abstract void HandleInputEnd();
 
-    protected void CheckWinCondition()
+    public void CheckWinCondition()
     {
         if (winConditionChecker != null)
             winConditionChecker.CheckWinCondition();

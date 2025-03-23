@@ -30,10 +30,7 @@ namespace Blocks
             winConditionChecker.Initialize(BGCellGrid, level.Rows, level.Columns);
         }
 
-        public void SetBGCellGrid(BackgroundCell[,] BGCellGrid)
-        {
-            this.BGCellGrid = BGCellGrid;
-        }
+        public void SetBGCellGrid(BackgroundCell[,] BGCellGrid) => this.BGCellGrid = BGCellGrid;
 
         protected override void HandleInputStart(Vector2 mousePosition)
         {
@@ -74,7 +71,7 @@ namespace Blocks
 
             foreach (var block in gridBlocks)
             {
-                foreach (var pos in block.BlockPositions())
+                foreach (var pos in block.BlockPositions)
                 {
                     if (IsValidPos(pos))
                     {
@@ -118,7 +115,7 @@ namespace Blocks
         private void UpdateHighLight()
         {
             bool isCorrect = IsCorrectMove();
-            foreach (var pos in currentBlock.BlockPositions())
+            foreach (var pos in currentBlock.BlockPositions)
             {
                 if (IsValidPos(pos))
                 {
@@ -167,7 +164,7 @@ namespace Blocks
 
         private bool IsCorrectMove()
         {
-            foreach (var pos in currentBlock.BlockPositions())
+            foreach (var pos in currentBlock.BlockPositions)
             {
                 if (!IsValidPos(pos) || BGCellGrid[pos.x, pos.y].isFilled)
                 {
