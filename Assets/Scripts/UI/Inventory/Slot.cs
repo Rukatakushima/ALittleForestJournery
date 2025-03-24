@@ -2,51 +2,45 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
-    private Inventory inventory;
-    public int i;
-    // public GameObject player;
+    public int index;
+    public bool isFull;
 
-    private void Awake() => inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-    // player = GameObject.FindGameObjectWithTag("Player");
+    public void AddItem(Transform item)
+    {
+        item.SetParent(transform);
+        item.SetAsFirstSibling();
+        item.position = transform.position;
+        isFull = true;
+    }
 
     public void DropItem()
     {
         foreach (Transform child in transform)
         {
-            ItemInInventory childItem = child.GetComponent<ItemInInventory>();
+            InventoryItem childItem = child.GetComponent<InventoryItem>();
             if (childItem != null)
             {
-                ItemsManager.Instance.SpawnOnScene(childItem.id);
-                inventory.isFull[i] = false;
+                childItem.Drop();
+                isFull = false;
             }
         }
     }
 
-    public void PlaceInNextSlot()
+    public void PlaceInNextSlot(Inventory inventory)
     {
-        if (inventory.isFull[i] == true)
-        {
-            i++;
-            if (inventory.isFull[i] == false)
-            {
-                foreach (Transform child in transform)
-                {
-                    ItemInInventory childItem = child.GetComponent<ItemInInventory>();
-                    if (childItem != null)
-                    {
-                        child.SetParent(inventory.slots[i].transform);
-                        child.SetAsFirstSibling();
-                        child.position = inventory.slots[i].transform.position;
+        if (isFull != true || inventory == null) return;
 
-                        inventory.isFull[i] = true;
-                        i--;
-                        inventory.isFull[i] = false;
-                        i++;
-                        break;
-                    }
-                }
+        Slot nextSlot = inventory.slots[index + 1];
+        if (nextSlot.isFull != false) return;
+
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponent<InventoryItem>() != null)
+            {
+                nextSlot.AddItem(child);
+                isFull = false;
+                break;
             }
-            i--;
         }
     }
 }

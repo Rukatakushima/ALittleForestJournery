@@ -1,17 +1,29 @@
+using System.Linq;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public bool[] isFull;
-    public GameObject[] slots;
-    public GameObject inventory;
-    private bool inventoryOn;
+    public static Inventory Instance { get; private set; }
+    public Slot[] slots;
 
-    private void Start() => inventoryOn = false;
-
-    public void ToggleChest()
+    private void Awake()
     {
-        inventoryOn = !inventoryOn;
-        inventory.SetActive(inventoryOn);
+        Instance = this;
+        SetSlots();
+    }
+
+    private void SetSlots()
+    {
+        int i = 0;
+        foreach (Transform child in transform)
+        {
+            Slot childItem = child.GetComponent<Slot>();
+            if (childItem != null && !slots.Contains(childItem))
+            {
+                slots[i] = childItem;
+                childItem.index = i;
+                i++;
+            }
+        }
     }
 }
