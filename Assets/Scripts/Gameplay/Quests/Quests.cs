@@ -3,10 +3,9 @@ using UnityEngine.Events;
 
 public class Quests : MonoBehaviour
 {
-    // [SerializeField] private List<int> dialogueIDs = new List<int> { 1, 2, 3, 4, 6 };
     [SerializeField] private int requiredItemsCount = 4;
     [SerializeField] private int specialDialogueID = 5;
-    [HideInInspector] public int itemsPickedUp { get; private set; }
+    private int itemsPickedUp;
 
     [SerializeField] private UnityEvent startQuestDialogueEvent;
 
@@ -14,41 +13,32 @@ public class Quests : MonoBehaviour
     {
         if (other.CompareTag("Player")) return;
 
-        SceneItem pickup = other.GetComponent<SceneItem>();
-        if (pickup == null) return;
+        SceneItem item = other.GetComponent<SceneItem>();
+        if (item != null) ItemPickup(item);
+    }
 
-        other.gameObject.SetActive(false);
-
-        int itemID = pickup.ID;
+    private void ItemPickup(SceneItem item)
+    {
+        item.Hide();
         itemsPickedUp++;
 
-        if (itemsPickedUp == requiredItemsCount)
+        if (itemsPickedUp == requiredItemsCount && IsValidDialogueID(specialDialogueID))
         {
             StartQuestDialogue(specialDialogueID);
-            // DialogueManager.Instance.StartDialogue(specialDialogueID);
             return;
         }
 
-        if (itemID >= 0 && itemID < DialogueManager.Instance.DialogsQueue.Count)
-        {
-            StartQuestDialogue(itemID);
-            // startQuestDialogueEvent?.Invoke();
-            // DialogueManager.Instance.StartDialogue(itemID);
-
-            // DialogueManager.Instance.StartDialogue(dialogueIDs[itemID]);
-        }
+        StartQuestDialogue(item.ID);
     }
+
+    private bool IsValidDialogueID(int id) => id >= 0 && id < DialogueManager.Instance.DialogsQueue.Count;
 
     public void StartQuestDialogue(int dialogueID)
     {
-        startQuestDialogueEvent?.Invoke();
-        DialogueManager.Instance.StartDialogue(dialogueID);
+        if (IsValidDialogueID(dialogueID))
+        {
+            startQuestDialogueEvent?.Invoke();
+            DialogueManager.Instance.StartDialogue(dialogueID);
+        }
     }
-
-    // private void StartQuestDialogue(int dialogueId)
-    // {
-    //     startQuestDialogueEvent?.Invoke();
-    // DialogueManager.Instance.SetStartDialogueButtonAnimation(true);
-    // DialogueManager.Instance.StartDialogue(dialogueId);
-    // }
 }
