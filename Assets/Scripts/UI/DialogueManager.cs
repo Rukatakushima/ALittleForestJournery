@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,132 +6,140 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    private static DialogueManager instance;
+    public static DialogueManager Instance { get; private set; }
 
-    [System.Serializable]
-    public class Dialog
+    [Serializable]
+    public class Dialogue
     {
         public int id;
         public bool isRead;
         public List<Sentence> SentencesList;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Sentence
     {
-        public string CharacterName;
-        public string Letters;
-        public float SpeedLetters;
+        public string characterName;
+        public string text;
+        public float typingSpeed;
     }
 
-    private int sentencesCount;
+    [Header("References")]
+    [SerializeField] private AnimatorToggler buttonToggler;
+    [SerializeField] private AnimatorToggler boxToggler;
+    [SerializeField] private RectTransform dialogueBox;
+    [SerializeField] private Text speakerName;
+    [SerializeField] private Text dialogueText;
+    [SerializeField] private Transform speakerTransform;
+
+    [Header("Settings")]
+    [SerializeField] private Vector2 defaultDialoguePosition = new Vector2(0, 1.5f);
+    [SerializeField] private Vector2 characterDialogueOffset = new Vector2(0, 115f);
+    [SerializeField] private float dialogueSizeMargin = 0.35f;
+    [SerializeField] private List<Dialogue> Dialogues;
+
+    public int DialoguesCount => Dialogues.Count;
     private int currentSentenceIndex;
-    private List<Sentence> CurrentSentences;
-
-    // [SerializeField] private Animator startDialogueButtonAnim;
-    [SerializeField] private AnimatorToggler buttonTogger, boxTogger;
-    [SerializeField] private Animator dialogueBoxAnim;
-    [SerializeField] private GameObject dialogBoxGameObject;
-    [SerializeField] private Text fieldName;
-    [SerializeField] private Text fieldSentence;
-    [SerializeField] private Transform characterTransform;
-    [SerializeField] public List<Dialog> DialogsQueue;
-
-    public static DialogueManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                Debug.Log("DialogManager is null! Make sure it is in the scene.");
-            }
-            return instance;
-        }
-    }
+    private List<Sentence> currentSentences;
+    private Camera mainCamera;
+    private Coroutine typingCoroutine;
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        mainCamera = Camera.main;
+    }
+
+    public void StartDialogue(int dialogId)
+    {
+        var dialog = GetDialog(dialogId);
+        if (dialog == null)
+        {
+            Debug.LogWarning($"Dialog {dialogId} not found");
+            return;
+        }
+
+        SetupDialogue(dialog);
+    }
+
+    private Dialogue GetDialog(int id) => Dialogues.Find(d => d.id == id);
+
+    private void SetupDialogue(Dialogue dialog)
+    {
+        buttonToggler?.SetActive(false);
+        boxToggler?.SetActive(true);
+
+        currentSentences = dialog.SentencesList;
+        currentSentenceIndex = 0;
+
+        StartTyping(currentSentences[0]);
+    }
+
+    private void StartTyping(Sentence sentence)
+    {
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        typingCoroutine = StartCoroutine(TypeSentence(sentence));
+    }
+
+    private IEnumerator TypeSentence(Sentence sentence)
+    {
+        speakerName.text = sentence.characterName;
+        dialogueText.text = string.Empty;
+
+        UpdateDialogueBoxPosition(sentence.characterName);
+
+        var text = sentence.text;
+        for (int i = 0; i < text.Length; i++)
+        {
+            dialogueText.text = text.Substring(0, i + 1);
+            yield return new WaitForSeconds(sentence.typingSpeed * Time.deltaTime);
         }
     }
 
-    public void StartDialogue(int idDialog)
+    private void UpdateDialogueBoxPosition(string speakerName)
     {
-        buttonTogger.SetActive(false);
-        boxTogger.SetActive(true);
+        if (dialogueBox == null || mainCamera == null) return;
 
-        Dialog currentDialog = DialogsQueue.Find(x => x.id == idDialog);
-        if (currentDialog != null)
+        if (speakerName == speakerTransform?.name)
         {
-            CurrentSentences = currentDialog.SentencesList;
-            sentencesCount = CurrentSentences.Count;
-            currentSentenceIndex = 0;
-
-            StartCoroutine(TypeSentenceAndSetName(CurrentSentences[0]));
+            Vector2 screenPosition = (Vector2)mainCamera.WorldToScreenPoint(speakerTransform.position) + characterDialogueOffset;
+            dialogueBox.position = AdjustPosition(screenPosition);
         }
         else
-        {
-            Debug.LogWarning($"Dialog with ID {idDialog} not found.");
-            // DIALOG NOT FOUND HELP FUNCTION
-        }
+            dialogueBox.anchoredPosition = defaultDialoguePosition;
     }
 
-    private IEnumerator TypeSentenceAndSetName(Sentence sentence)
+    private Vector2 AdjustPosition(Vector2 position)
     {
-        fieldName.text = sentence.CharacterName;
-        fieldSentence.text = "";
+        if (dialogueBox == null) return position;
 
-        SetDialogueBoxPosition(sentence.CharacterName);
+        Vector2 min = dialogueBox.sizeDelta * dialogueSizeMargin;
+        Vector2 max = new Vector2(Screen.width, Screen.height) - min;
 
-        foreach (char letter in sentence.Letters.ToCharArray())
-        {
-            fieldSentence.text += letter;
-            yield return new WaitForSeconds(Time.deltaTime * sentence.SpeedLetters);
-        }
-    }
-
-    private void SetDialogueBoxPosition(string characterName)
-    {
-        RectTransform dialogBoxRect = dialogBoxGameObject.GetComponent<RectTransform>();
-
-        if (characterName == characterTransform.name)
-        {
-            Camera camera = Camera.main;
-            dialogBoxGameObject.transform.position = camera.WorldToScreenPoint(characterTransform.position) + new Vector3(0, 115f);
-            // if ()
-            // {
-            // // установить диалог. окно рядом с границей экрана, чтобы полностью помещалось, а не уходило за экран
-            // }
-        }
-        else
-            dialogBoxRect.anchoredPosition = new Vector2(0, 1.5f);
+        return new Vector2(Mathf.Clamp(position.x, min.x, max.x), Mathf.Clamp(position.y, min.y, max.y));
     }
 
     public void DisplayNextSentence()
     {
-        currentSentenceIndex++;
-        StopAllCoroutines();
-
-        if (currentSentenceIndex < sentencesCount)
-            StartCoroutine(TypeSentenceAndSetName(CurrentSentences[currentSentenceIndex]));
+        if (++currentSentenceIndex < currentSentences.Count)
+            StartTyping(currentSentences[currentSentenceIndex]);
         else
             EndDialogue();
     }
 
-    public static void EndDialogue()
+    public void EndDialogue()
     {
-        if (Instance.dialogueBoxAnim == null) return;
-
-        Instance.buttonTogger.SetActive(false);
-        Instance.boxTogger.SetActive(false);
-
-        Instance.dialogueBoxAnim.enabled = true;
+        buttonToggler?.SetActive(false);
+        boxToggler?.SetActive(false);
     }
 }

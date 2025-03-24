@@ -31,7 +31,7 @@ public class Quests : MonoBehaviour
         StartQuestDialogue(item.ID);
     }
 
-    private bool IsValidDialogueID(int id) => id >= 0 && id < DialogueManager.Instance.DialogsQueue.Count;
+    private bool IsValidDialogueID(int id) => id >= 0 && id < DialogueManager.Instance.DialoguesCount;
 
     public void StartQuestDialogue(int dialogueID)
     {
