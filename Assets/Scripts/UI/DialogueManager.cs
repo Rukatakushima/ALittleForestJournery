@@ -34,7 +34,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Text fieldName;
     [SerializeField] private Text fieldSentence;
     [SerializeField] private Transform characterTransform;
-    [SerializeField] private List<Dialog> DialogsQueue;
+    [SerializeField] public List<Dialog> DialogsQueue;
 
     public static DialogueManager Instance
     {
@@ -130,7 +130,7 @@ public class DialogueManager : MonoBehaviour
 
         Instance.buttonTogger.SetActive(false);
         Instance.boxTogger.SetActive(false);
-        
+
         Instance.dialogueBoxAnim.enabled = true;
     }
 }

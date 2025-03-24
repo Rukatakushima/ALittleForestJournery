@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Quests : MonoBehaviour
 {
-    [SerializeField] private List<int> dialogueIDs = new List<int> { 1, 2, 3, 4, 6 };
+    // [SerializeField] private List<int> dialogueIDs = new List<int> { 1, 2, 3, 4, 6 };
     [SerializeField] private int requiredItemsCount = 4;
     [SerializeField] private int specialDialogueID = 5;
     [HideInInspector] public int itemsPickedUp { get; private set; }
@@ -20,17 +19,30 @@ public class Quests : MonoBehaviour
 
         other.gameObject.SetActive(false);
 
-        int itemID = pickup.id;
+        int itemID = pickup.ID;
         itemsPickedUp++;
 
-        if (itemID >= 0 && itemID < dialogueIDs.Count)
+        if (itemsPickedUp == requiredItemsCount)
         {
-            startQuestDialogueEvent?.Invoke();
-            DialogueManager.Instance.StartDialogue(dialogueIDs[itemID]);
+            StartQuestDialogue(specialDialogueID);
+            // DialogueManager.Instance.StartDialogue(specialDialogueID);
+            return;
         }
 
-        if (itemsPickedUp == requiredItemsCount)
-            DialogueManager.Instance.StartDialogue(specialDialogueID);
+        if (itemID >= 0 && itemID < DialogueManager.Instance.DialogsQueue.Count)
+        {
+            StartQuestDialogue(itemID);
+            // startQuestDialogueEvent?.Invoke();
+            // DialogueManager.Instance.StartDialogue(itemID);
+
+            // DialogueManager.Instance.StartDialogue(dialogueIDs[itemID]);
+        }
+    }
+
+    public void StartQuestDialogue(int dialogueID)
+    {
+        startQuestDialogueEvent?.Invoke();
+        DialogueManager.Instance.StartDialogue(dialogueID);
     }
 
     // private void StartQuestDialogue(int dialogueId)
