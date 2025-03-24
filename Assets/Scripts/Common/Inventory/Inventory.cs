@@ -21,17 +21,6 @@ public class Inventory : MonoBehaviour
                 return slot;
             })
             .ToArray();
-        // int i = 0;
-        // foreach (Transform child in transform)
-        // {
-        //     Slot childItem = child.GetComponent<Slot>();
-        //     if (childItem != null && !slots.Contains(childItem))
-        //     {
-        //         slots[i] = childItem;
-        //         childItem.SetIndex(i);
-        //         i++;
-        //     }
-        // }
     }
 
     public bool TryFindFirstEmptySlot(out Slot slot)
