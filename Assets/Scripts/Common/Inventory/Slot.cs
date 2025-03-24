@@ -2,44 +2,54 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
-    public int index;
-    public bool isFull;
+    private int Index;
+    public bool IsFull { get; private set; }
 
-    public void AddItem(Transform item)
+    public void SetIndex(int index) => Index = index;
+
+    public bool TryAddItem(Transform item)
     {
+        if (IsFull || item == null) return false;
+
         item.SetParent(transform);
         item.SetAsFirstSibling();
-        item.position = transform.position;
-        isFull = true;
+        item.localPosition = Vector2.zero;
+        IsFull = true;
+        return true;
     }
 
     public void DropItem()
     {
         foreach (Transform child in transform)
         {
-            InventoryItem childItem = child.GetComponent<InventoryItem>();
-            if (childItem != null)
+            if (child.TryGetComponent(out InventoryItem item))
             {
-                childItem.Drop();
-                isFull = false;
+                item.Drop();
+                IsFull = false;
+                break;
             }
         }
     }
 
-    public void PlaceInNextSlot(Inventory inventory)
+    public void PlaceInNextSlot()
     {
-        if (isFull != true || inventory == null) return;
+        if (!IsFull || Inventory.Instance == null) return;
 
-        Slot nextSlot = inventory.slots[index + 1];
-        if (nextSlot.isFull != false) return;
+        int nextIndex = Index + 1;
+        if (nextIndex >= Inventory.Instance.slots.Length) return;
+
+        Slot nextSlot = Inventory.Instance.slots[nextIndex];
+        if (nextSlot == null || nextSlot.IsFull) return;
 
         foreach (Transform child in transform)
         {
             if (child.GetComponent<InventoryItem>() != null)
             {
-                nextSlot.AddItem(child);
-                isFull = false;
-                break;
+                if (nextSlot.TryAddItem(child))
+                {
+                    IsFull = false;
+                    break;
+                }
             }
         }
     }

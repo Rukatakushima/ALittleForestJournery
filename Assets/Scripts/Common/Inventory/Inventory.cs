@@ -9,21 +9,34 @@ public class Inventory : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        SetSlots();
+        InitializeSlots();
     }
 
-    private void SetSlots()
+    private void InitializeSlots()
     {
-        int i = 0;
-        foreach (Transform child in transform)
-        {
-            Slot childItem = child.GetComponent<Slot>();
-            if (childItem != null && !slots.Contains(childItem))
+        slots = GetComponentsInChildren<Slot>(true)
+            .Select((slot, i) =>
             {
-                slots[i] = childItem;
-                childItem.index = i;
-                i++;
-            }
-        }
+                slot.SetIndex(i);
+                return slot;
+            })
+            .ToArray();
+        // int i = 0;
+        // foreach (Transform child in transform)
+        // {
+        //     Slot childItem = child.GetComponent<Slot>();
+        //     if (childItem != null && !slots.Contains(childItem))
+        //     {
+        //         slots[i] = childItem;
+        //         childItem.SetIndex(i);
+        //         i++;
+        //     }
+        // }
+    }
+
+    public bool TryFindFirstEmptySlot(out Slot slot)
+    {
+        slot = slots.FirstOrDefault(s => !s.IsFull);
+        return slot != null;
     }
 }

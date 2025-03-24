@@ -6,9 +6,6 @@ public class InventoryItem : BaseItem
 {
     [SerializeField] private const float MAX_SPRITE_SIZE = 0.4f;
     private SceneItem linkedSceneItem;
-    private Slot[] inventory;
-
-    private void Start() => inventory = Inventory.Instance.slots;
 
     public void Initialize(int id, SceneItem sceneItem, Sprite sprite)
     {
@@ -16,19 +13,17 @@ public class InventoryItem : BaseItem
         linkedSceneItem = sceneItem;
 
         GetComponent<Image>().sprite = sprite;
-        GetComponent<RectTransform>().localScale = sprite.bounds.size * MAX_SPRITE_SIZE;
+        GetComponent<RectTransform>().localScale = MAX_SPRITE_SIZE * sprite.bounds.size;
     }
 
     public override void Spawn()
     {
-        for (int i = 0; i < inventory.Length; i++)
+        if (Inventory.Instance == null) return;
+
+        if (Inventory.Instance.TryFindFirstEmptySlot(out Slot slot))
         {
-            if (!inventory[i].isFull)
-            {
-                inventory[i].AddItem(transform);
-                Show();
-                break;
-            }
+            slot.TryAddItem(transform);
+            Show();
         }
     }
 
@@ -37,6 +32,6 @@ public class InventoryItem : BaseItem
         Hide();
         transform.SetParent(null);
 
-        linkedSceneItem.Spawn();
+        linkedSceneItem?.Spawn();
     }
 }

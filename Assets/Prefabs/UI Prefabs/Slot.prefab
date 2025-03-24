@@ -222,8 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b89f158a6f3ef44b8fbce437af62df4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFull: 0
-  index: 0
 --- !u!1 &7977427250159988074
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,10 +345,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1912054805862170479}
         m_TargetAssemblyTypeName: Slot, Assembly-CSharp
         m_MethodName: PlaceInNextSlot
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: Inventory, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

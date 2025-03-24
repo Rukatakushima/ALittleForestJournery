@@ -2,11 +2,9 @@ using UnityEngine;
 
 public abstract class BaseItem : MonoBehaviour
 {
-    [SerializeField] public int ID;
-    // public Sprite Icon { get; protected set; }
+    [SerializeField] public int ID { get; protected set; }
 
-    protected virtual void Show() => gameObject.SetActive(true);
-    protected virtual void Hide() => gameObject.SetActive(false);
-
+    public virtual void Show() => gameObject.SetActive(true);
+    public virtual void Hide() => gameObject.SetActive(false);
     public abstract void Spawn();
 }
