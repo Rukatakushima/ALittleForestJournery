@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCMovement : MonoBehaviour
+public class Movement : MonoBehaviour
 {
     public float speed = 3f;
     private bool facingLeft = true;

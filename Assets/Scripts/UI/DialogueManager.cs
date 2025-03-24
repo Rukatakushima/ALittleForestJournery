@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogManager : MonoBehaviour
+public class DialogueManager : MonoBehaviour
 {
-    private static DialogManager instance;
+    private static DialogueManager instance;
 
     [System.Serializable]
     public class Dialog
@@ -27,7 +27,8 @@ public class DialogManager : MonoBehaviour
     private int currentSentenceIndex;
     private List<Sentence> CurrentSentences;
 
-    [SerializeField] private Animator startDialogueButtonAnim;
+    // [SerializeField] private Animator startDialogueButtonAnim;
+    [SerializeField] private AnimatorToggler buttonTogger, boxTogger;
     [SerializeField] private Animator dialogueBoxAnim;
     [SerializeField] private GameObject dialogBoxGameObject;
     [SerializeField] private Text fieldName;
@@ -35,7 +36,7 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private Transform characterTransform;
     [SerializeField] private List<Dialog> DialogsQueue;
 
-    public static DialogManager Instance
+    public static DialogueManager Instance
     {
         get
         {
@@ -60,24 +61,10 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-
-    public void SetStartDialogueButtonAnimation(bool isOpen)
-    {
-        if (startDialogueButtonAnim != null)
-            startDialogueButtonAnim.SetBool("startDialougueButtonOpen", isOpen);
-    }
-
-    public void SetStartDialogueAnimation(bool isOpen)
-    {
-        if (dialogueBoxAnim != null)
-            dialogueBoxAnim.SetBool("dialogueBoxOpen", isOpen);
-    }
-
     public void StartDialogue(int idDialog)
     {
-        SetStartDialogueButtonAnimation(false);
-        SetStartDialogueAnimation(true);
-        // dialogueBoxAnim.enabled = false;
+        buttonTogger.SetActive(false);
+        boxTogger.SetActive(true);
 
         Dialog currentDialog = DialogsQueue.Find(x => x.id == idDialog);
         if (currentDialog != null)
@@ -139,10 +126,11 @@ public class DialogManager : MonoBehaviour
 
     public static void EndDialogue()
     {
-        if (Instance.dialogueBoxAnim != null)
-        {
-            Instance.dialogueBoxAnim.SetBool("dialogueBoxOpen", false);
-            Instance.dialogueBoxAnim.enabled = true;
-        }
+        if (Instance.dialogueBoxAnim == null) return;
+
+        Instance.buttonTogger.SetActive(false);
+        Instance.boxTogger.SetActive(false);
+        
+        Instance.dialogueBoxAnim.enabled = true;
     }
 }
