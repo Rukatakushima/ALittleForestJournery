@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Rotator : MonoBehaviour
+public class Rotator : RequireTarget<Transform>
 {
     [SerializeField] protected float rotationSpeed = 90f;
     [SerializeField] protected Vector3 rotationDirection = Vector3.forward;
 
-    public virtual void RotateClockwise() => transform.Rotate(rotationDirection, rotationSpeed * Time.deltaTime);
+    public void Rotate() => target.Rotate(rotationDirection, rotationSpeed * Time.deltaTime);
 }

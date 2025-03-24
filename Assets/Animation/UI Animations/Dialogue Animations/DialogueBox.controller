@@ -36,7 +36,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: dialogueBoxOpen
+    m_ConditionEvent: isBoxOpen
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8538858493032099750}
@@ -61,7 +61,7 @@ AnimatorController:
   m_Name: DialogueBox
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: dialogueBoxOpen
+  - m_Name: isBoxOpen
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -141,7 +141,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: dialogueBoxOpen
+    m_ConditionEvent: isBoxOpen
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5875459124364556015}
