@@ -201,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 51940267}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.95755, y: 1.36, z: 0}
+  m_LocalPosition: {x: 12.957544, y: 1.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -781,8 +781,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 683301939}
-        m_TargetAssemblyTypeName: DialogManager, Assembly-CSharp
-        m_MethodName: DisplayNextSentence
+        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
+        m_MethodName: NextSentence
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1065,7 +1065,7 @@ Transform:
   m_GameObject: {fileID: 481661197}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.989392, y: 1.76, z: 0}
+  m_LocalPosition: {x: 12.989393, y: 1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1163,7 +1163,7 @@ Transform:
   m_GameObject: {fileID: 483889923}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.507384, y: 2.88, z: 0}
+  m_LocalPosition: {x: 15.507389, y: 2.88, z: 0}
   m_LocalScale: {x: 1.1791298, y: 1.2285434, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1600,7 +1600,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.479391, y: 1.101608, z: -10}
+  m_LocalPosition: {x: 7.479382, y: 1.1064723, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1736,125 +1736,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f41dcefad5b587d43a1d2282e2ea291b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonTogger: {fileID: 2075232835}
-  boxTogger: {fileID: 1340803414}
-  dialogueBoxAnim: {fileID: 1340803408}
-  dialogBoxGameObject: {fileID: 1340803407}
-  fieldName: {fileID: 1777375248}
-  fieldSentence: {fileID: 1416090228}
-  characterTransform: {fileID: 1129158281}
-  DialogsQueue:
+  buttonToggler: {fileID: 2075232835}
+  boxToggler: {fileID: 1340803414}
+  dialogueBox: {fileID: 1340803411}
+  nameText: {fileID: 1777375248}
+  dialogueText: {fileID: 1416090228}
+  defaultPosition: {x: 0, y: 1.5}
+  screenMargin: 0.35
+  baseTypingSpeed: 0.05
+  speedPresets: []
+  speakers: []
+  dialogues:
   - id: 0
     isRead: 0
-    SentencesList:
-    - CharacterName: Tox
-      Letters: Can you bting me some items?
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: Anything that you'll find here
-      SpeedLetters: 10
-    - CharacterName: Blait
-      Letters: Fine...
-      SpeedLetters: 15
-  - id: 1
-    isRead: 0
-    SentencesList:
-    - CharacterName: Tox
-      Letters: What's it?
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: A hat?
-      SpeedLetters: 3
-    - CharacterName: Tox
-      Letters: I love hats!
-      SpeedLetters: 3
-    - CharacterName: Tox
-      Letters: I mean, thanks... I'll keerp it. That'd suit me!
-      SpeedLetters: 10
-    - CharacterName: Blait
-      Letters: Glad for you.
-      SpeedLetters: 13
-  - id: 2
-    isRead: 0
-    SentencesList:
-    - CharacterName: Blait
-      Letters: Hey, I found that camera here..
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: Oh, yeah, I see.
-      SpeedLetters: 5
-    - CharacterName: Tox
-      Letters: Let's check out the pictures!
-      SpeedLetters: 5
-    - CharacterName: Blait
-      Letters: We can't.
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: Phh, noone would know!
-      SpeedLetters: 7
-    - CharacterName: Blait
-      Letters: The camera is broken.
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: Anyway, let me keep it. Maube, we could do something with it later.
-      SpeedLetters: 7
-    - CharacterName: Tox
-      Letters: Ooooh,,, That's it......
-      SpeedLetters: 16
-  - id: 3
-    isRead: 0
-    SentencesList:
-    - CharacterName: Tox
-      Letters: Some news?
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: Hehe, got it?
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: Cause here is a newspaper
-      SpeedLetters: 5
-    - CharacterName: Tox
-      Letters: Reading paper is boring, you know. Let's just look at the pictures!
-      SpeedLetters: 10
-  - id: 4
-    isRead: 0
-    SentencesList:
-    - CharacterName: Blait
-      Letters: Do you want to look at this picture?
-      SpeedLetters: 10
-    - CharacterName: Blait
-      Letters: Looks like it's your. Who is that gitl with you? You sister?
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: My mom!
-      SpeedLetters: 5
-    - CharacterName: Blait
-      Letters: Wow, she looks young.
-      SpeedLetters: 10
-    - CharacterName: Blait
-      Letters: The camera is broken.
-      SpeedLetters: 10
-  - id: 5
-    isRead: 0
-    SentencesList:
-    - CharacterName: Tox
-      Letters: That's enoght!
-      SpeedLetters: 5
-    - CharacterName: Tox
-      Letters: I think we have enough items.
-      SpeedLetters: 10
-    - CharacterName: Blait
-      Letters: And...?
-      SpeedLetters: 10
-    - CharacterName: Tox
-      Letters: What? You.. Want a reward?
-      SpeedLetters: 6
-    - CharacterName: Tox
-      Letters: Well.. Let's just go somewhere and...um..
-      SpeedLetters: 7
-    - CharacterName: Tox
-      Letters: Have fun and another journery!
-      SpeedLetters: 6
+    sentences:
+    - speaker:
+        name: 
+        transform: {fileID: 0}
+        dialogueOffset: {x: 0, y: 115}
+      text: 
+      speedPreset:
+        name: 
+        speedMultiplier: 1
 --- !u!1 &752505452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,7 +1837,7 @@ Transform:
   m_GameObject: {fileID: 752505452}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.9920635, y: 2.43, z: 0}
+  m_LocalPosition: {x: 12.992064, y: 2.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2301,7 +2204,7 @@ Transform:
   m_GameObject: {fileID: 967478254}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.984053, y: 1.76, z: 0}
+  m_LocalPosition: {x: 12.984048, y: 1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3943,7 +3846,7 @@ Transform:
   m_GameObject: {fileID: 1394747230}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.97879, y: 0.5862951, z: 0}
+  m_LocalPosition: {x: 12.9787855, y: 0.5862951, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4452,7 +4355,7 @@ Transform:
   m_GameObject: {fileID: 1532298977}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.952272, y: 1.76, z: 0}
+  m_LocalPosition: {x: 12.952268, y: 1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4641,7 +4544,7 @@ GameObject:
   - component: {fileID: 1777375247}
   - component: {fileID: 1777375248}
   m_Layer: 5
-  m_Name: NameTxt
+  m_Name: NameText
   m_TagString: Name
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
