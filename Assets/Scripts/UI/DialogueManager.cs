@@ -54,10 +54,10 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private List<Dialog> dialogues;
 
     public int DialoguesCount => dialogues.Count;
-    private List<Sentence> _currentSentences;
-    private int _currentIndex;
-    private Camera _mainCam;
-    private Coroutine _typingRoutine;
+    private List<Sentence> currentSentences;
+    private int currentIndex;
+    private Camera mainCamera;
+    private Coroutine typingCoroutine;
 
     private void Awake()
     {
@@ -69,7 +69,7 @@ public class DialogueManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        _mainCam = Camera.main;
+        mainCamera = Camera.main;
     }
 
     public void StartDialogue(int dialogId)
@@ -91,18 +91,20 @@ public class DialogueManager : MonoBehaviour
         buttonToggler?.SetActive(false);
         boxToggler?.SetActive(true);
 
-        _currentSentences = dialog.sentences;
-        _currentIndex = 0;
+        currentSentences = dialog.sentences;
+        currentIndex = 0;
 
-        StartTyping(_currentSentences[0]);
+        StartTyping(currentSentences[0]);
     }
 
     private void StartTyping(Sentence sentence)
     {
-        if (_typingRoutine != null)
-            StopCoroutine(_typingRoutine);
+        if (sentence == null) return;
 
-        _typingRoutine = StartCoroutine(TypeSentence(sentence));
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        typingCoroutine = StartCoroutine(TypeSentence(sentence));
     }
 
     private IEnumerator TypeSentence(Sentence sentence)
@@ -116,18 +118,18 @@ public class DialogueManager : MonoBehaviour
 
         for (int i = 0; i < text.Length; i++)
         {
-            dialogueText.text = text.Substring(0, i + 1);
+            dialogueText.text = text[..(i + 1)];
             yield return new WaitForSeconds(speed);
         }
     }
 
     private void UpdateDialoguePosition(Speaker speaker)
     {
-        if (dialogueBox == null || _mainCam == null) return;
+        if (dialogueBox == null || mainCamera == null) return;
 
         if (speaker?.transform != null)
         {
-            var screenPos = _mainCam.WorldToScreenPoint(speaker.transform.position) + (Vector3)speaker.dialogueOffset;
+            var screenPos = mainCamera.WorldToScreenPoint(speaker.transform.position) + (Vector3)speaker.dialogueOffset;
             dialogueBox.position = AdjustPosition(screenPos);
         }
         else
@@ -148,8 +150,8 @@ public class DialogueManager : MonoBehaviour
 
     public void NextSentence()
     {
-        if (++_currentIndex < _currentSentences.Count)
-            StartTyping(_currentSentences[_currentIndex]);
+        if (++currentIndex < currentSentences.Count)
+            StartTyping(currentSentences[currentIndex]);
         else
             EndDialogue();
     }
