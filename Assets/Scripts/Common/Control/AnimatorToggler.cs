@@ -3,13 +3,13 @@ using UnityEngine;
 public class AnimatorToggler : RequireTarget<Animator>
 {
     [SerializeField] private string boolParameterName;
-    [SerializeField] private bool isActive = false;
+    [SerializeField] public bool IsActive { get; private set; } = false;
 
-    public void Toggle() => SetActive(!isActive);
+    public void Toggle() => SetActive(!IsActive);
 
     public void SetActive(bool isActive)
     {
-        this.isActive = isActive;
+        IsActive = isActive;
         target.SetBool(boolParameterName, isActive);
     }
 }
