@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
+using static DialogueData;
 using static DialogueSpeakers;
 
 public class DialogueManager : MonoBehaviour
@@ -12,93 +11,83 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager Instance { get; private set; }
 
     [Header("Configuration")]
-    public DialogueSpeakers Characters;
-    public TypingSpeeds TypingSpeeds;
+    [SerializeField] private DialogueView view;
 
-    [System.Serializable]
-    public class Sentence
-    {
-        [ValueDropdown("GetAvailableSpeakers")]
-        public Speaker Speaker;
+    // [SerializeField] private DialogueSpeakers Characters;
+    // [SerializeField] private TypingSpeeds TypingSpeeds;
 
-        [ValueDropdown("GetAvailableSpeeds")]
-        public float Speed = 1f;
+    //     [System.Serializable]
+    //     public class Sentence
+    //     {
+    //         [ValueDropdown("GetAvailableSpeakers")]
+    //         public Speaker Speaker;
 
-        [TextArea] public string Text;
+    //         [ValueDropdown("GetAvailableSpeeds")]
+    //         public float Speed = 1f;
 
-#if UNITY_EDITOR
+    //         [TextArea] public string Text;
 
-        private List<Speaker> GetAvailableSpeakers()
-        {
-            if (Application.isPlaying)
-            {
-                return DialogueManager.Instance?.Characters?.availableSpeakers ?? new List<Speaker>();
-            }
-            else
-            {
-                // В режиме редактирования ищем настройки в сцене или ресурсах
-                var settings = FindObjectOfType<DialogueManager>()?.Characters;
-                if (settings == null)
-                {
-                    settings = Resources.Load<DialogueSpeakers>("Characters");
-                }
-                return settings?.availableSpeakers ?? new List<Speaker>();
-            }
-        }
+    // #if UNITY_EDITOR
 
-        private List<float> GetAvailableSpeeds()
-        {
-            if (Application.isPlaying)
-            {
-                return DialogueManager.Instance?.TypingSpeeds?.availableSpeeds ?? new List<float> { 1f };
-            }
-            else
-            {
-                var settings = FindObjectOfType<DialogueManager>()?.TypingSpeeds;
-                if (settings == null)
-                {
-                    settings = Resources.Load<TypingSpeeds>("TypingSpeeds");
-                }
-                return settings?.availableSpeeds ?? new List<float> { 1f };
-            }
-        }
-#endif
-    }
+    //         private List<Speaker> GetAvailableSpeakers()
+    //         {
+    //             if (Application.isPlaying)
+    //             {
+    //                 return DialogueManager.Instance?.Characters?.availableSpeakers ?? new List<Speaker>();
+    //             }
+    //             else
+    //             {
+    //                 // В режиме редактирования ищем настройки в сцене или ресурсах
+    //                 var settings = FindObjectOfType<DialogueManager>()?.Characters;
+    //                 if (settings == null)
+    //                 {
+    //                     settings = Resources.Load<DialogueSpeakers>("Characters");
+    //                 }
+    //                 return settings?.availableSpeakers ?? new List<Speaker>();
+    //             }
+    //         }
 
-    [System.Serializable]
-    public class Dialogue
-    {
-        public int ID;
-        public bool IsRead;
-        public List<Sentence> Sentences;
-    }
+    //         private List<float> GetAvailableSpeeds()
+    //         {
+    //             if (Application.isPlaying)
+    //             {
+    //                 return DialogueManager.Instance?.TypingSpeeds?.availableSpeeds ?? new List<float> { 1f };
+    //             }
+    //             else
+    //             {
+    //                 var settings = FindObjectOfType<DialogueManager>()?.TypingSpeeds;
+    //                 if (settings == null)
+    //                 {
+    //                     settings = Resources.Load<TypingSpeeds>("TypingSpeeds");
+    //                 }
+    //                 return settings?.availableSpeeds ?? new List<float> { 1f };
+    //             }
+    //         }
+    // #endif
+    //     }
 
-    [Header("References")]
-    [SerializeField] private AnimatorToggler buttonToggler;
-    [SerializeField] private AnimatorToggler boxToggler;
-    [SerializeField] private RectTransform dialogueBox;
-    [SerializeField] private Text nameText;
-    [SerializeField] private Text dialogueText;
+    // [System.Serializable]
+    // public class Dialogue
+    // {
+    //     public int ID;
+    //     public bool IsRead;
+    //     public List<Sentence> Sentences;
+    // }
 
-    [Header("Settings")]
-    [SerializeField] private Vector2 defaultPosition = new Vector2(0, 1.5f);
-    [SerializeField] private Vector2 dialogueOffset = new Vector2(0, 115f);
-    [SerializeField] private float screenMargin = 0.22f;
-    [SerializeField] private List<Dialogue> dialogues;
-
-    public UnityEvent OnDialogueStarted;
-    public UnityEvent OnDialogueEnded;
-    public UnityEvent<Sentence> OnSentenceChanged;
+    // [Header("Dialogues")]
+    // [SerializeField] private List<Dialogue> dialogues;
+    [SerializeField] private DialogueData dialogueData;
+    private List<Dialogue> dialogues;
 
     public int DialoguesCount => dialogues.Count;
     private List<Sentence> currentSentences;
     private int currentIndex;
-    private Camera mainCamera;
     private Coroutine typingCoroutine;
-    private const string MISSING_NAME = "???";
 
-    public bool IsDialogueActive => boxToggler != null && boxToggler.IsActive;
-    public Sentence CurrentSentence => currentIndex >= 0 && currentIndex < currentSentences?.Count ? currentSentences[currentIndex] : null;
+    [Header("Events")]
+    public UnityEvent OnDialogueStarted;
+    public UnityEvent OnDialogueEnded;
+    public UnityEvent<Sentence> OnSentenceChanged;
 
     private void Awake()
     {
@@ -110,12 +99,12 @@ public class DialogueManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Initialize();
-    }
 
-    private void Initialize()
-    {
-        mainCamera = Camera.main;
+        if (view == null)
+            view = GetComponentInChildren<DialogueView>();
+
+        dialogues = dialogueData.dialogues;
+
         ValidateDialogues();
     }
 
@@ -136,7 +125,7 @@ public class DialogueManager : MonoBehaviour
         if (!ValidateDialogue(dialogue)) return;
 
         PrepareDialogue(dialogue);
-        ToggleDialogueBox(true);
+        view.ToggleDialogueBox(true);
         OnDialogueStarted?.Invoke();
         StartTyping(currentSentences[0]);
     }
@@ -167,12 +156,6 @@ public class DialogueManager : MonoBehaviour
         dialogue.IsRead = true;
     }
 
-    private void ToggleDialogueBox(bool isVisible)
-    {
-        buttonToggler?.SetActive(!isVisible);
-        boxToggler?.SetActive(isVisible);
-    }
-
     private void StartTyping(Sentence sentence)
     {
         if (sentence == null) return;
@@ -196,7 +179,7 @@ public class DialogueManager : MonoBehaviour
 
         for (int i = 0; i < fullText.Length; i++)
         {
-            dialogueText.text = fullText.Substring(0, i + 1);
+            view.SetDialogueText(fullText.Substring(0, i + 1));
             yield return new WaitForSeconds(Time.deltaTime * sentence.Speed);
         }
 
@@ -205,33 +188,11 @@ public class DialogueManager : MonoBehaviour
 
     private void SetupDialogueBox(Speaker speaker)
     {
-        nameText.text = string.IsNullOrEmpty(speaker?.Name) ? MISSING_NAME : speaker.Name;
-        dialogueText.text = string.Empty;
-        UpdateDialoguePosition(speaker);
+        if (speaker == null) return;
+
+        view.UpdateView(speaker.Name);
+        view.UpdateDialoguePosition(speaker.Transform);
         OnSentenceChanged?.Invoke(currentSentences[currentIndex]);
-    }
-
-    private void UpdateDialoguePosition(Speaker speaker)
-    {
-        if (dialogueBox == null || mainCamera == null) return;
-
-        if (speaker?.Transform != null)
-        {
-            Vector2 screenPos = (Vector2)mainCamera.WorldToScreenPoint(speaker.Transform.position) + dialogueOffset;
-            dialogueBox.position = ClampPositionToScreen(screenPos);
-        }
-        else
-            dialogueBox.anchoredPosition = defaultPosition;
-    }
-
-    private Vector2 ClampPositionToScreen(Vector2 position)
-    {
-        if (dialogueBox == null) return position;
-
-        Vector2 min = dialogueBox.sizeDelta * screenMargin;
-        Vector2 max = new Vector2(Screen.width, Screen.height) - min;
-
-        return new Vector2(Mathf.Clamp(position.x, min.x, max.x), Mathf.Clamp(position.y, min.y, max.y));
     }
 
     public void NextSentence()
@@ -245,7 +206,7 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         StopTyping();
-        boxToggler?.SetActive(false);
+        view.CloseDialogueBox();
         OnDialogueEnded?.Invoke();
     }
 
@@ -254,7 +215,7 @@ public class DialogueManager : MonoBehaviour
         if (typingCoroutine != null)
         {
             StopTyping();
-            dialogueText.text = currentSentences[currentIndex].Text;
+            view.SetDialogueText(currentSentences[currentIndex].Text);
         }
     }
 }

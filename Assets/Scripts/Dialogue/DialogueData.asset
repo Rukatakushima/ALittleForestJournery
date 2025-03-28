@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab9f365236e4f254aa692ce767994cd7, type: 3}
+  m_Name: DialogueData
+  m_EditorClassIdentifier: 
+  Characters: {fileID: 11400000, guid: 00cfcd3992b7f944986e08bf5fdeea98, type: 2}
+  TypingSpeeds: {fileID: 11400000, guid: 3bdb9f79215c3664aa820e9a21b82bae, type: 2}
+  dialogues:
+  - ID: 0
+    IsRead: 0
+    Sentences:
+    - Speaker:
+        Name: Tox
+        Transform: {fileID: 0}
+      Speed: 10
+      Text: HIIIIIIIIIIIIIIIIII
+    - Speaker:
+        Name: Blait
+        Transform: {fileID: 0}
+      Speed: 15
+      Text: Okay, hello, this is number zero dialogue
+    - Speaker:
+        Name: Tox
+        Transform: {fileID: 0}
+      Speed: 15
+      Text: GOT IIIIT
+    - Speaker:
+        Name: Tox
+        Transform: {fileID: 0}
+      Speed: 10
+      Text: I wonder if we'd have our individual fonts
+    - Speaker:
+        Name: Blait
+        Transform: {fileID: 0}
+      Speed: 5
+      Text: You'll add more work to this....
+  - ID: 1
+    IsRead: 0
+    Sentences:
+    - Speaker:
+        Name: Blait
+        Transform: {fileID: 0}
+      Speed: 5
+      Text: Yep
+    - Speaker:
+        Name: 
+        Transform: {fileID: 0}
+      Speed: 1
+      Text: 'Oups... Unnamed speaker is talking '
