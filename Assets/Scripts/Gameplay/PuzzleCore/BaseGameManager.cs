@@ -9,7 +9,7 @@ public abstract class BaseGameManager<TLevelSpawner, DefaultCameraController, TW
     [SerializeField] protected TLevelSpawner levelSpawner;
     [SerializeField] protected DefaultCameraController cameraController;
     [SerializeField] protected TWinConditionChecker winConditionChecker;
-    [SerializeField] protected SceneLoader sceneLoader;
+    // [SerializeField] protected SceneLoader sceneLoader;
     [SerializeField] protected InputHandler inputHandler;
 
     [Header("Game Settings")]
@@ -30,12 +30,12 @@ public abstract class BaseGameManager<TLevelSpawner, DefaultCameraController, TW
             cameraController = GetComponent<DefaultCameraController>();
         if (winConditionChecker == null)
             winConditionChecker = GetComponent<TWinConditionChecker>();
-        if (sceneLoader == null)
-            sceneLoader = GetComponent<SceneLoader>();
+        // if (sceneLoader == null)
+        //     sceneLoader = GetComponent<SceneLoader>();
         if (inputHandler == null)
             inputHandler = GetComponent<InputHandler>();
 
-        winConditionChecker.OnWin.AddListener(GameFinished);
+        // winConditionChecker.OnWin.AddListener(GameFinished);
 
         CheckComponents();
     }
@@ -46,8 +46,8 @@ public abstract class BaseGameManager<TLevelSpawner, DefaultCameraController, TW
             throw new System.ArgumentNullException(nameof(cameraController));
         if (winConditionChecker == null)
             throw new System.ArgumentNullException(nameof(winConditionChecker));
-        if (sceneLoader == null)
-            throw new System.ArgumentNullException(nameof(sceneLoader));
+        // if (sceneLoader == null)
+        //     throw new System.ArgumentNullException(nameof(sceneLoader));
         if (inputHandler == null)
             throw new System.ArgumentNullException(nameof(inputHandler));
     }
@@ -75,11 +75,11 @@ public abstract class BaseGameManager<TLevelSpawner, DefaultCameraController, TW
             Debug.LogError("WinConditionChecker is not assigned!");
     }
 
-    protected void GameFinished()
-    {
-        if (sceneLoader != null)
-            sceneLoader.ChangeScene();
-        else
-            Debug.LogError("SceneLoader is not assigned!");
-    }
+    // protected void GameFinished()
+    // {
+    //     if (sceneLoader != null)
+    //         sceneLoader.ChangeScene();
+    //     else
+    //         Debug.LogError("SceneLoader is not assigned!");
+    // }
 }

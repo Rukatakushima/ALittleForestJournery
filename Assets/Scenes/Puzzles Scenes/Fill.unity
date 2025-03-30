@@ -223,12 +223,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122757320}
-  - component: {fileID: 2122757319}
-  - component: {fileID: 2122757325}
-  - component: {fileID: 2122757324}
-  - component: {fileID: 2122757323}
-  - component: {fileID: 2122757322}
   - component: {fileID: 2122757321}
+  - component: {fileID: 2122757319}
+  - component: {fileID: 2122757324}
+  - component: {fileID: 2122757325}
+  - component: {fileID: 2122757323}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -251,7 +250,6 @@ MonoBehaviour:
   levelSpawner: {fileID: 2122757324}
   cameraController: {fileID: 2122757325}
   winConditionChecker: {fileID: 2122757323}
-  sceneLoader: {fileID: 2122757322}
   inputHandler: {fileID: 2122757321}
   level: {fileID: 11400000, guid: 848ee0c62948302438e2a9c9de1bf7f3, type: 2}
 --- !u!4 &2122757320
@@ -286,20 +284,6 @@ MonoBehaviour:
   updateKey: 101
   endKey: 113
   targetObject: {fileID: 0}
---- !u!114 &2122757322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2122757318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b79446c30e9b7174fa52d7daf93996b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneLoadDelay: 1
-  loadingSceneNumber: 0
 --- !u!114 &2122757323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +298,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnWin:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3113075923563052176, guid: a632604f8743c854982dd6fa4800c047, type: 3}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2122757324
 MonoBehaviour:
   m_ObjectHideFlags: 0

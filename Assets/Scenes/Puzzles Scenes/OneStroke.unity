@@ -364,12 +364,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1082899050}
+  - component: {fileID: 1082899055}
   - component: {fileID: 1082899051}
   - component: {fileID: 1082899056}
   - component: {fileID: 1082899052}
   - component: {fileID: 1082899054}
-  - component: {fileID: 1082899053}
-  - component: {fileID: 1082899055}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -407,7 +406,6 @@ MonoBehaviour:
   levelSpawner: {fileID: 0}
   cameraController: {fileID: 1082899052}
   winConditionChecker: {fileID: 1082899054}
-  sceneLoader: {fileID: 1082899053}
   inputHandler: {fileID: 1082899055}
   level: {fileID: 11400000, guid: 3bbfd74b2b80b644d9ed39c2593b8455, type: 2}
   mainEdge: {fileID: 1256410787}
@@ -426,20 +424,6 @@ MonoBehaviour:
   cameraSizeController: 0.5
   cameraPositionController: 0.5
   cameraPositionZ: -10
---- !u!114 &1082899053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1082899048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b79446c30e9b7174fa52d7daf93996b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneLoadDelay: 1
-  loadingSceneNumber: 0
 --- !u!114 &1082899054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,7 +438,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnWin:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3113075923563052176, guid: a632604f8743c854982dd6fa4800c047, type: 3}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1082899055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,15 +463,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnMouseDown:
-    m_PersistentCalls:
-      m_Calls: []
-  OnMouseDrag:
-    m_PersistentCalls:
-      m_Calls: []
-  OnMouseUp:
-    m_PersistentCalls:
-      m_Calls: []
+  inputType: 0
+  startKey: 101
+  updateKey: 101
+  endKey: 113
+  targetObject: {fileID: 0}
 --- !u!114 &1082899056
 MonoBehaviour:
   m_ObjectHideFlags: 0

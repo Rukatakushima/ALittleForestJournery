@@ -131,12 +131,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1557158206}
-  - component: {fileID: 1557158205}
-  - component: {fileID: 1557158211}
-  - component: {fileID: 1557158210}
-  - component: {fileID: 1557158209}
-  - component: {fileID: 1557158208}
   - component: {fileID: 1557158207}
+  - component: {fileID: 1557158205}
+  - component: {fileID: 1557158210}
+  - component: {fileID: 1557158211}
+  - component: {fileID: 1557158209}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -159,7 +158,6 @@ MonoBehaviour:
   levelSpawner: {fileID: 0}
   cameraController: {fileID: 0}
   winConditionChecker: {fileID: 0}
-  sceneLoader: {fileID: 0}
   inputHandler: {fileID: 0}
   level: {fileID: 11400000, guid: 8e5c18e758ea4744b98f679243669d72, type: 2}
 --- !u!4 &1557158206
@@ -189,29 +187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnMouseDown:
-    m_PersistentCalls:
-      m_Calls: []
-  OnMouseDrag:
-    m_PersistentCalls:
-      m_Calls: []
-  OnMouseUp:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1557158208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1557158204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b79446c30e9b7174fa52d7daf93996b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneLoadDelay: 1
-  loadingSceneNumber: 0
+  inputType: 0
+  startKey: 101
+  updateKey: 101
+  endKey: 113
+  targetObject: {fileID: 0}
 --- !u!114 &1557158209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +206,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnWin:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3113075923563052176, guid: a632604f8743c854982dd6fa4800c047, type: 3}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1557158210
 MonoBehaviour:
   m_ObjectHideFlags: 0

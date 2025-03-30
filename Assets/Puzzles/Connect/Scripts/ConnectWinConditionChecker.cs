@@ -1,12 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Connect
 {
     public class WinConditionChecker : BaseWinConditionChecker
     {
-        public List<Node> nodes;
+        private List<Node> nodes;
 
         public void Initialize(List<Node> nodes)
         {
