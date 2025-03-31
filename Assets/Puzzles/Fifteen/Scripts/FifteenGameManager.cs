@@ -60,8 +60,9 @@ namespace Fifteen
                     }
                 }
             }
+            
             OnWin?.Invoke();
         }
-        // public void CheckWin() => CheckWinCondition();
+        public void CheckWin() => CheckWinCondition();
     }
 }

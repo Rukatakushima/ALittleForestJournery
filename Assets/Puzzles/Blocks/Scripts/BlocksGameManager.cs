@@ -9,6 +9,7 @@ namespace Blocks
 
         public LevelData level { get; private set; }
         public float defaultBlockSize { get; private set; }
+        [SerializeField] public float backgroundCellPositionRate { get; private set; } = 0.5f;
         public BackgroundCell[,] BGCellGrid;// { get; private set; }
         // [SerializeField] private float  blockHighLightSize, blockPutSize;
         private Blocks currentBlock;

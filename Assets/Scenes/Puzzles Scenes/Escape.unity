@@ -122,6 +122,75 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &1283890077
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: cameraSize
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: cameraPosition.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: cameraPosition.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.9960356
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0213399
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0003213663
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4881908444173231058, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_Name
+      value: CameraSetter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d43c856740993c444a64b41a99336588, type: 3}
 --- !u!1 &1557158204
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,8 +203,6 @@ GameObject:
   - component: {fileID: 1557158207}
   - component: {fileID: 1557158205}
   - component: {fileID: 1557158210}
-  - component: {fileID: 1557158211}
-  - component: {fileID: 1557158209}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -155,6 +222,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ba0996a1f397648b2aad72ceeec106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnWin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3113075923563052176, guid: a632604f8743c854982dd6fa4800c047, type: 3}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1557158206
 Transform:
   m_ObjectHideFlags: 0
@@ -182,6 +264,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputType: 0
+  startKey: 101
+  updateKey: 101
+  endKey: 113
+  targetObject: {fileID: 0}
   OnInputStart:
     m_PersistentCalls:
       m_Calls: []
@@ -191,38 +278,6 @@ MonoBehaviour:
   OnInputEnd:
     m_PersistentCalls:
       m_Calls: []
-  inputType: 0
-  startKey: 101
-  updateKey: 101
-  endKey: 113
-  targetObject: {fileID: 0}
---- !u!114 &1557158209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1557158204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bf939269724a3845b4745817c77a120, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnWin:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3113075923563052176, guid: a632604f8743c854982dd6fa4800c047, type: 3}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1557158210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,10 +293,10 @@ MonoBehaviour:
   OnLevelSpawned:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1557158211}
-        m_TargetAssemblyTypeName: DefaultCameraController, Assembly-CSharp
+      - m_Target: {fileID: 1885188469}
+        m_TargetAssemblyTypeName: CameraSetter, Assembly-CSharp
         m_MethodName: SetupCamera
-        m_Mode: 4
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -254,21 +309,6 @@ MonoBehaviour:
   backgroundPrefab: {fileID: 7478364067053654497, guid: 1b1abe0eb93453245b169137062b4703, type: 3}
   blockPiecePrefab: {fileID: 1301280438395545718, guid: 7cfa2bb892aacdb42918fe360e2679e2, type: 3}
   mainPiecePrefab: {fileID: 244288958732518090, guid: 506100ec6b7592b45a6c980b6dc138da, type: 3}
---- !u!114 &1557158211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1557158204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0340810670b5f5843a75dfec8919a283, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraSizeController: 0.5555556
-  cameraPositionController: 0.5
-  cameraPositionZ: -10
 --- !u!1 &1771441659
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,9 +401,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1885188469 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+  m_PrefabInstance: {fileID: 1283890077}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2632bf5ab4b53ef4583f4910c711e114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1771441662}
   - {fileID: 1557158206}
+  - {fileID: 1283890077}

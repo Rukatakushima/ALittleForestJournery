@@ -13,7 +13,7 @@ namespace Fifteen
         public Vector3 rightPosition;
         public bool isInCorrectPosition = false;
 
-        public UnityEvent winCheck;
+        // public UnityEvent winCheck;
 
         public void Init(int i, int j, int index, Sprite sprite)
         {
@@ -52,14 +52,11 @@ namespace Fifteen
 
             gameObject.transform.position = endPosition;
             UpdateCorrectPosition();
-            winCheck?.Invoke();
-            // GameManager.Instance.CheckWinCondition();
+            // winCheck?.Invoke();
+            GameManager.Instance.CheckWin();
         }
 
-        public void ChangeSprite(Sprite sprite)
-        {
-            GetComponent<SpriteRenderer>().sprite = sprite;
-        }
+        public void ChangeSprite(Sprite sprite) => GetComponent<SpriteRenderer>().sprite = sprite;
 
         public void ClickToSwap()
         {

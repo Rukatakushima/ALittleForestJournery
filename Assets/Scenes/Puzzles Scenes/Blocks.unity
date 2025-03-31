@@ -122,6 +122,75 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &158881182
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: cameraSize
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: cameraPosition.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: cameraPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.9960356
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0213399
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0003213663
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228049255660098645, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4881908444173231058, guid: d43c856740993c444a64b41a99336588, type: 3}
+      propertyPath: m_Name
+      value: CameraSetter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d43c856740993c444a64b41a99336588, type: 3}
 --- !u!1 &1323394103
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,7 +293,7 @@ MonoBehaviour:
   OnLevelSpawned:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+      - m_Target: {fileID: 2063235196}
         m_TargetAssemblyTypeName: CameraSetter, Assembly-CSharp
         m_MethodName: SetupCamera
         m_Mode: 1
@@ -239,14 +308,25 @@ MonoBehaviour:
   level: {fileID: 11400000, guid: 3981321f943988843971d46d008a7775, type: 2}
   backgroundCellPrefab: {fileID: 7532265389834519554, guid: f058e9825b1e8c24081bf1f2df55a3a8, type: 3}
   blockPrefab: {fileID: 4551132339990789417, guid: d8f4ef9b05d52e54baecb380f9b103aa, type: 3}
-  blockSpritePrefab: {fileID: 4232948711527732210, guid: c0d9b6a0e583e3f438d2bb33768b64db, type: 3}
-  blocksSpawnSize: 0.5
-  bgCellPositionRate: 0.5
   blocksColors:
   - {r: 1, g: 0.83516175, b: 0.4575472, a: 0.45490196}
   - {r: 1, g: 0.45882356, b: 0.4723303, a: 0.45490196}
   - {r: 0.45882356, g: 0.5747254, b: 1, a: 0.45490196}
   - {r: 0.45882356, g: 1, b: 0.49616912, a: 0.45490196}
+  blocksSpawnSize: 0.5
+  bgCellPositionRate: 0.5
+  blockSpritePrefab: {fileID: 4232948711527732210, guid: c0d9b6a0e583e3f438d2bb33768b64db, type: 3}
+--- !u!114 &2063235196 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+  m_PrefabInstance: {fileID: 158881182}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2632bf5ab4b53ef4583f4910c711e114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2064103899
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,3 +425,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 2064103902}
   - {fileID: 1323394105}
+  - {fileID: 158881182}

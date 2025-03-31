@@ -67,7 +67,7 @@ namespace Blocks
 
             blockPositions = blocksPositions;
             transform.localScale = Vector2.one * blocksSpawnSize;//new Vector2(blocksSpawnSize, blocksSpawnSize);
-            backgroundCellPositionRate = GameManager.Instance.GetComponent<CameraController>().backgroundCellPositionRate;
+            backgroundCellPositionRate = GameManager.Instance.backgroundCellPositionRate;
 
             blockSpriteRenderers = new List<SpriteRenderer>();
         }
