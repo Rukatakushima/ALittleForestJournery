@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace OneStroke
 {
-    public class LevelSpawner : BaseLevelSpawner
+    public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
-        private LevelData level;
+        // private LevelData level;
 
         [SerializeField] private Point pointPrefab;
         [SerializeField] private Edge edgePrefab;
@@ -50,7 +50,8 @@ namespace OneStroke
                 spawnEdge.SetEmptyEdge(points[normalEdge.x].Position, points[normalEdge.y].Position);
             }
 
-            GameManager.Instance.SetEdges(edges);
+            GameManager.Instance.Initialize(edges);
+            // OnLevelSpawned?.Invoke();
         }
     }
 }

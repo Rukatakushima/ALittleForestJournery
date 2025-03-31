@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace Pipes
 {
-    public class LevelSpawner : BaseLevelSpawner
+    public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
         [SerializeField] private Pipe cellPrefab;
-        private LevelData level;
+        // private LevelData level;
         private Pipe[,] pipes;
 
-        public void Initialize(LevelData level, Pipe[,] pipes)
-        {
-            this.level = level;
-            this.pipes = pipes;
-        }
+        // public void Initialize(LevelData level, Pipe[,] pipes)
+        // {
+        //     this.level = level;
+        //     this.pipes = pipes;
+        // }
 
         public override void SpawnLevel()
         {
@@ -36,7 +36,7 @@ namespace Pipes
                 }
             }
 
-            GameManager.Instance.SetPipes(startPipes, pipes);
+            GameManager.Instance.Initialize(level, startPipes, pipes);
         }
     }
 }

@@ -3,19 +3,19 @@ using UnityEngine;
 
 namespace Escape
 {
-    public class LevelSpawner : BaseLevelSpawner
+    public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
-        private LevelData level;
+        // private LevelData level;
         private GamePiece winPiece;
         [SerializeField] private SpriteRenderer backgroundPrefab;
         [SerializeField] private GamePiece blockPiecePrefab;
         [SerializeField] private GamePiece mainPiecePrefab;
         private List<GamePiece> gamePieces;
 
-        public void Initialize(LevelData level)
-        {
-            this.level = level;
-        }
+        // public void Initialize(LevelData level)
+        // {
+        //     this.level = level;
+        // }
 
         public override void SpawnLevel()
         {
@@ -25,7 +25,7 @@ namespace Escape
             SpawnWinPiece();
             SpawnAllPieces();
 
-            GameManager.Instance.SetPieces(winPiece, gamePieces);
+            GameManager.Instance.Initialize(level, winPiece, gamePieces);
         }
 
         private void SpawnBackground()

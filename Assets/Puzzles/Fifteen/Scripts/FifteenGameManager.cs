@@ -1,13 +1,12 @@
 using UnityEngine;
-using System;
 
 namespace Fifteen
 {
-    public class GameManager : BaseGameManager<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>
+    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
     {
         public static GameManager Instance;
 
-        public Box[,] boxes = new Box[4, 4];
+        public Box[,] boxes { get; private set; } = new Box[4, 4];
         public float boxMoveDuration = 0.2f;
 
         protected override void Awake()
@@ -16,12 +15,12 @@ namespace Fifteen
             base.Awake();
         }
 
-        protected override void SetupManagers()
-        {
-            cameraController.SetupCamera(boxes.Length);
-            levelSpawner.SpawnLevel();
-            winConditionChecker.Initialize(boxes);
-        }
+        // protected override void SetupManagers()
+        // {
+        //     cameraController.SetupCamera(boxes.Length);
+        //     levelSpawner.SpawnLevel();
+        //     winConditionChecker.Initialize(boxes);
+        // }
 
         public void SwapBoxes(int x, int y, int xDirection, int yDirection)
         {
@@ -49,6 +48,20 @@ namespace Fifteen
 
         protected override void HandleInputEnd() { }
 
+        protected override void CheckWinCondition()
+        {
+            for (int i = 0; i < boxes.GetLength(0); i++)
+            {
+                for (int j = 0; j < boxes.GetLength(1); j++)
+                {
+                    if (!boxes[i, j].isInCorrectPosition)
+                    {
+                        return;
+                    }
+                }
+            }
+            OnWin?.Invoke();
+        }
         // public void CheckWin() => CheckWinCondition();
     }
 }

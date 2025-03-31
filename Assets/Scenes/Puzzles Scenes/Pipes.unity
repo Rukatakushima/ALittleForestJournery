@@ -170,11 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8f89d80f5464e4fb1a2ee0470a1ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSpawner: {fileID: 0}
-  cameraController: {fileID: 0}
-  winConditionChecker: {fileID: 0}
-  inputHandler: {fileID: 0}
-  level: {fileID: 11400000, guid: 8033a3661924853469c5a8823fb00356, type: 2}
 --- !u!114 &81534392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +226,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ed5b10e281da124ca5d24b68a865355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnLevelSpawned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 81534396}
+        m_TargetAssemblyTypeName: DefaultCameraController, Assembly-CSharp
+        m_MethodName: SetupCamera
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 4
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  level: {fileID: 11400000, guid: 8033a3661924853469c5a8823fb00356, type: 2}
   cellPrefab: {fileID: -5711112499624335155, guid: aa0deb5ab2ae97d45b0e7a021167099a, type: 3}
 --- !u!114 &81534396
 MonoBehaviour:

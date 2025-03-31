@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Fifteen
 {
-    public class LevelSpawner : BaseLevelSpawner
+    public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
         [SerializeField] private int shuffleTimes = 6;
         private int maxSize = 4;
@@ -22,6 +22,7 @@ namespace Fifteen
         {
             Init();
             ShuffleLevel();
+            // OnLevelSpawned?.Invoke();
         }
 
         private void Init()
@@ -43,6 +44,8 @@ namespace Fifteen
                     }
                 }
             }
+
+            OnLevelSpawned?.Invoke();
         }
 
         private void ShuffleLevel()

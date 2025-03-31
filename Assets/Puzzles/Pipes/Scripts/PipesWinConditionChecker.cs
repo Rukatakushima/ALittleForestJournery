@@ -7,10 +7,10 @@ namespace Pipes
         private LevelData level;
         private Pipe[,] pipes;
 
-        public void Initialize(LevelData level, Pipe[,] pipes)
+        public override void Initialize(/*LevelData level, Pipe[,] pipes*/)
         {
-            this.level = level;
-            this.pipes = pipes;
+            level = GameManager.Instance.level;
+            pipes = GameManager.Instance.pipes;
         }
 
         public override void CheckWinCondition()

@@ -4,10 +4,7 @@ namespace Fifteen
     {
         private Box[,] boxes;
 
-        public void Initialize(Box[,] boxes)
-        {
-            this.boxes = boxes;
-        }
+        public override void Initialize(/*Box[,] boxes*/) => boxes = GameManager.Instance.boxes;
 
         public override void CheckWinCondition()
         {

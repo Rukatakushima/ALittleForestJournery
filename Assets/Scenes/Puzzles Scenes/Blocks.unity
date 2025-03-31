@@ -134,8 +134,6 @@ GameObject:
   - component: {fileID: 1323394108}
   - component: {fileID: 1323394104}
   - component: {fileID: 1323394110}
-  - component: {fileID: 1323394106}
-  - component: {fileID: 1323394109}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -155,14 +153,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525dc18c124cf3a4fa1a568b26a6cdda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSpawner: {fileID: 1323394110}
-  cameraController: {fileID: 1323394106}
-  winConditionChecker: {fileID: 1323394109}
-  inputHandler: {fileID: 1323394108}
-  level: {fileID: 11400000, guid: 3981321f943988843971d46d008a7775, type: 2}
-  blockSpawnSize: 0.5
-  blockHighLightSize: 1
-  blockPutSize: 1
+  OnWin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3113075923563052176, guid: a632604f8743c854982dd6fa4800c047, type: 3}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1323394105
 Transform:
   m_ObjectHideFlags: 0
@@ -178,22 +183,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1323394106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323394103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7676c56e20d63548911cb394923a29d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraSizeController: 0.65
-  cameraPositionController: 0.5
-  cameraPositionZ: -10
-  backgroundCellPositionRate: 0.5
 --- !u!114 &1323394108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,33 +200,15 @@ MonoBehaviour:
   updateKey: 101
   endKey: 113
   targetObject: {fileID: 0}
---- !u!114 &1323394109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323394103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a0512efa82a155499e3a0174865c6dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnWin:
+  OnInputStart:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3113075923563052176, guid: a632604f8743c854982dd6fa4800c047, type: 3}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  OnInputUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1323394110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,14 +221,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c23726cb4da6e114e90b094e89934d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnLevelSpawned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 728631320084291249, guid: d43c856740993c444a64b41a99336588, type: 3}
+        m_TargetAssemblyTypeName: CameraSetter, Assembly-CSharp
+        m_MethodName: SetupCamera
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  level: {fileID: 11400000, guid: 3981321f943988843971d46d008a7775, type: 2}
   backgroundCellPrefab: {fileID: 7532265389834519554, guid: f058e9825b1e8c24081bf1f2df55a3a8, type: 3}
   blockPrefab: {fileID: 4551132339990789417, guid: d8f4ef9b05d52e54baecb380f9b103aa, type: 3}
+  blockSpritePrefab: {fileID: 4232948711527732210, guid: c0d9b6a0e583e3f438d2bb33768b64db, type: 3}
+  blocksSpawnSize: 0.5
+  bgCellPositionRate: 0.5
   blocksColors:
   - {r: 1, g: 0.83516175, b: 0.4575472, a: 0.45490196}
   - {r: 1, g: 0.45882356, b: 0.4723303, a: 0.45490196}
   - {r: 0.45882356, g: 0.5747254, b: 1, a: 0.45490196}
   - {r: 0.45882356, g: 1, b: 0.49616912, a: 0.45490196}
-  blockSpritePrefab: {fileID: 4232948711527732210, guid: c0d9b6a0e583e3f438d2bb33768b64db, type: 3}
 --- !u!1 &2064103899
 GameObject:
   m_ObjectHideFlags: 0

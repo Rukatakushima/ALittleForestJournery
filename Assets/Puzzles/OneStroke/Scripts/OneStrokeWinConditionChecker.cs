@@ -7,7 +7,7 @@ namespace OneStroke
     {
         private Dictionary<Vector2Int, Edge> edges;
 
-        public void Initialize(Dictionary<Vector2Int, Edge> edges) => this.edges = edges;
+        public override void Initialize(/*Dictionary<Vector2Int, Edge> edges*/) => edges = GameManager.Instance.edges;
 
         public override void CheckWinCondition()
         {
@@ -20,7 +20,7 @@ namespace OneStroke
                     return;
                 }
             }
-            
+
             NotifyWin();
         }
     }

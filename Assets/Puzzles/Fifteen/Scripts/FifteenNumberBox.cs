@@ -34,10 +34,7 @@ namespace Fifteen
             StartCoroutine(AnimateNumberBoxMove());
         }
 
-        public void UpdateCorrectPosition()
-        {
-            isInCorrectPosition = rightPosition == gameObject.transform.position;
-        }
+        public void UpdateCorrectPosition() => isInCorrectPosition = rightPosition == gameObject.transform.position;
 
         private IEnumerator AnimateNumberBoxMove()
         {
@@ -56,7 +53,7 @@ namespace Fifteen
             gameObject.transform.position = endPosition;
             UpdateCorrectPosition();
             winCheck?.Invoke();
-            GameManager.Instance.CheckWinCondition();
+            // GameManager.Instance.CheckWinCondition();
         }
 
         public void ChangeSprite(Sprite sprite)

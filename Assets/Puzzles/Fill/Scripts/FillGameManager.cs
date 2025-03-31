@@ -4,40 +4,49 @@ using ObjectsPool;
 
 namespace Fill
 {
-    public class GameManager : BaseGameManager<LevelSpawner, CameraController, WinConditionChecker, LevelData>
+    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
     {
         public static GameManager Instance;
-        
-        private Cell[,] cells;
+        public LevelData level { get; private set; }
+
+        public Cell[,] cells { get; private set; }
         private List<Vector2Int> filledPoints;
         private List<Transform> edges;
         private Vector2Int startPosition, endPosition;
         private List<Vector2Int> directions = new List<Vector2Int>()
-        {Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
+            {Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
         public PoolBase<Transform> edgePrefabObjectPool;
 
         protected override void Awake()
         {
             Instance = this;
 
-            filledPoints = new List<Vector2Int>();
-            cells = new Cell[level.Rows, level.Columns];
-            edges = new List<Transform>();
+            // filledPoints = new List<Vector2Int>();
+            // cells = new Cell[level.Rows, level.Columns];
+            // edges = new List<Transform>();
 
             base.Awake();
         }
 
-        protected override void SetupManagers()
+        // protected override void SetupManagers()
+        // {
+        // cameraController.SetupCamera(level.Columns, level.Rows);
+
+        //     levelSpawner.Initialize(level, cells);
+        //     levelSpawner.SpawnLevel();
+
+        //     winConditionChecker.Initialize(level, cells);
+        // }
+
+        public void Initialize(LevelData level, PoolBase<Transform> edgePrefabObjectPool, Cell[,] cells, List<Vector2Int> filledPoints, List<Transform> edges)
         {
-            cameraController.SetupCamera(level.Columns, level.Rows);
-
-            levelSpawner.Initialize(level, cells);
-            levelSpawner.SpawnLevel();
-
-            winConditionChecker.Initialize(level, cells);
+            this.level = level;
+            this.edgePrefabObjectPool = edgePrefabObjectPool;
+            this.cells = cells;
+            this.filledPoints = filledPoints;
+            this.edges = edges;
+            levelSpawner.OnLevelSpawned?.Invoke();
         }
-
-        public void SetEdges(PoolBase<Transform> edgePrefabObjectPool) => this.edgePrefabObjectPool = edgePrefabObjectPool;
 
         protected override void HandleInputStart(Vector2 mousePosition)
         {
@@ -169,6 +178,20 @@ namespace Fill
 
             cells[filledPoints[0].x, filledPoints[0].y].Remove();
             filledPoints.RemoveAt(0);
+        }
+
+        protected override void CheckWinCondition()
+        {
+            for (int i = 0; i < level.Rows; i++)
+            {
+                for (int j = 0; j < level.Columns; j++)
+                {
+                    if (!cells[i, j].Filled)
+                        return;
+                }
+            }
+
+            OnWin?.Invoke();
         }
     }
 }

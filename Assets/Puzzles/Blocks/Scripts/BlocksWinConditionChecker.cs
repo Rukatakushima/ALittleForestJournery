@@ -5,11 +5,13 @@ namespace Blocks
         private BackgroundCell[,] bgCellGrid;
         private int rows, columns;
 
-        public void Initialize(BackgroundCell[,] grid, int rows, int columns)
+        public override void Initialize(/*BackgroundCell[,] grid, int rows, int columns*/)
         {
-            bgCellGrid = grid;
-            this.rows = rows;
-            this.columns = columns;
+            bgCellGrid = GameManager.Instance.BGCellGrid;
+
+            LevelData level = GameManager.Instance.level;
+            rows = level.GridRows;
+            columns = level.GridColumns;
         }
 
         public override void CheckWinCondition()

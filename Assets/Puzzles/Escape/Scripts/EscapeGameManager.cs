@@ -3,12 +3,13 @@ using UnityEngine;
 
 namespace Escape
 {
-    public class GameManager : BaseGameManager<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>
+    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
     {
         public static GameManager Instance;
+        public LevelData level { get; private set; }
 
         private List<GamePiece> gamePieces;
-        private GamePiece winPiece;
+        public GamePiece winPiece { get; private set; }
         private GamePiece currentPiece;
         private Vector2 currentPosition, previousPosition;
         private List<Vector2> offsets;
@@ -20,20 +21,22 @@ namespace Escape
             base.Awake();
         }
 
-        protected override void SetupManagers()
+        // protected override void SetupManagers()
+        // {
+        //     cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
+
+        //     // levelSpawner.Initialize(level);
+        //     levelSpawner.SpawnLevel();
+
+        //     winConditionChecker.Initialize(winPiece, level.Columns);
+        // }
+
+        public void Initialize(LevelData level, GamePiece winPiece, List<GamePiece> gamePieces)
         {
-            cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
-
-            levelSpawner.Initialize(level);
-            levelSpawner.SpawnLevel();
-
-            winConditionChecker.Initialize(winPiece, level.Columns);
-        }
-
-        public void SetPieces(GamePiece winPiece, List<GamePiece> gamePieces)
-        {
+            this.level = level;
             this.winPiece = winPiece;
             this.gamePieces = gamePieces;
+            levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -58,12 +61,12 @@ namespace Escape
                 Vector2 offset = currentPosition - previousPosition;
                 offsets.Add(offset);
 
-                bool isMovingOpposite = IsMovingOpposite();
+                // bool isMovingOpposite = IsMovingOpposite();
 
                 if (currentPiece.IsVertical)
                 {
                     Vector2 piecePos = currentPiece.CurrentPos;
-                    piecePos.y += (isMovingOpposite ? -0.5f : 0.5f);
+                    piecePos.y += (IsMovingOpposite() ? -0.5f : 0.5f);
                     Vector2Int pieceGridPos = new Vector2Int(
                         Mathf.FloorToInt(piecePos.y),
                         Mathf.FloorToInt(piecePos.x)
@@ -75,7 +78,7 @@ namespace Escape
                 else
                 {
                     Vector2 piecePos = currentPiece.CurrentPos;
-                    piecePos.x += (isMovingOpposite ? -0.5f : 0.5f);
+                    piecePos.x += (IsMovingOpposite() ? -0.5f : 0.5f);
                     Vector2Int pieceGridPos = new Vector2Int(
                         Mathf.FloorToInt(piecePos.y),
                         Mathf.FloorToInt(piecePos.x)
@@ -144,15 +147,13 @@ namespace Escape
             {
                 piecePos.Add(pieceGridPos +
                     (currentPiece.IsVertical ? Vector2Int.right : Vector2Int.up) * i
-                    );
+);
             }
 
             foreach (var pos in piecePos)
             {
                 if (!IsValidPos(pos) || pieceCollision[pos.x, pos.y])
-                {
                     return false;
-                }
             }
 
             return true;
@@ -174,9 +175,14 @@ namespace Escape
             return true;
         }
 
-        private bool IsValidPos(Vector2Int pos)
+        private bool IsValidPos(Vector2Int pos) => pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
+
+        protected override void CheckWinCondition()
         {
-            return pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
+            if (winPiece.CurrentGridPos.y + winPiece.Size < level.Columns)
+                return;
+
+            OnWin?.Invoke();
         }
     }
 }

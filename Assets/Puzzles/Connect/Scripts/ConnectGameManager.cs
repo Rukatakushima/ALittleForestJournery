@@ -3,13 +3,12 @@ using UnityEngine;
 
 namespace Connect
 {
-    public class GameManager : BaseGameManager<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>
+    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
     {
         public static GameManager Instance;
 
-        [SerializeField] private int levelSize = 5;
-        private List<Node> _nodes;
-        public Dictionary<Vector2Int, Node> _nodeGrid;
+        public List<Node> nodes { get; private set; }
+        public Dictionary<Vector2Int, Node> nodeGrid;
         public List<Color> NodeColors;
         private Node startNode;
 
@@ -19,20 +18,21 @@ namespace Connect
             base.Awake();
         }
 
-        protected override void SetupManagers()
+        // protected override void SetupManagers()
+        // {
+        //     cameraController.SetupCamera(levelSize);
+
+        //     levelSpawner.Initialize(levelSize);
+        //     levelSpawner.SpawnLevel();
+
+        //     winConditionChecker.Initialize(nodes);
+        // }
+
+        public void Initialize(List<Node> nodes, Dictionary<Vector2Int, Node> nodeGrid)
         {
-            cameraController.SetupCamera(levelSize);
-
-            levelSpawner.Initialize(levelSize);
-            levelSpawner.SpawnLevel();
-
-            winConditionChecker.Initialize(_nodes);
-        }
-
-        public void SetNodes(List<Node> _nodes, Dictionary<Vector2Int, Node> _nodeGrid)
-        {
-            this._nodes = _nodes;
-            this._nodeGrid = _nodeGrid;
+            this.nodes = nodes;
+            this.nodeGrid = nodeGrid;
+            levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition) => startNode = null;
@@ -61,5 +61,21 @@ namespace Connect
         }
 
         protected override void HandleInputEnd() => startNode = null;
+
+        protected override void CheckWinCondition()
+        {
+            bool IsWinning = true;
+
+            foreach (var item in nodes)
+            {
+                IsWinning &= item.IsWin;
+                if (!IsWinning)
+                {
+                    return;
+                }
+            }
+
+            OnWin?.Invoke();
+        }
     }
 }

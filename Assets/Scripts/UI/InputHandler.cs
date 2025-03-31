@@ -7,11 +7,8 @@ public enum InputType
     Keyboard
 }
 
-public class InputHandler : MonoBehaviour, IInputHandler
+public class InputHandler : MonoBehaviour//, IInputHandler
 {
-    public UnityEvent<Vector2> OnInputStart { get; } = new UnityEvent<Vector2>();
-    public UnityEvent<Vector2> OnInputUpdate { get; } = new UnityEvent<Vector2>();
-    public UnityEvent OnInputEnd { get; } = new UnityEvent();
 
     [SerializeField] private InputType inputType = InputType.Mouse;
 
@@ -20,6 +17,11 @@ public class InputHandler : MonoBehaviour, IInputHandler
     [SerializeField] private KeyCode updateKey = KeyCode.E;
     [SerializeField] private KeyCode endKey = KeyCode.Q;
     [SerializeField] private Transform targetObject;
+
+    [Header("Events")]
+    public UnityEvent<Vector2> OnInputStart = new UnityEvent<Vector2>();
+    public UnityEvent<Vector2> OnInputUpdate = new UnityEvent<Vector2>();
+    public UnityEvent OnInputEnd = new UnityEvent();
 
     private void Update()
     {

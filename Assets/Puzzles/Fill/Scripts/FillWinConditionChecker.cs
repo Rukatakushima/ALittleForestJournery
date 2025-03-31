@@ -5,10 +5,10 @@ namespace Fill
         private LevelData level;
         private Cell[,] cells;
 
-        public void Initialize(LevelData level, Cell[,] cells)
+        public override void Initialize(/*LevelData level, Cell[,] cells*/)
         {
-            this.level = level;
-            this.cells = cells;
+            level = GameManager.Instance.level;
+            cells = GameManager.Instance.cells;
         }
 
         public override void CheckWinCondition()

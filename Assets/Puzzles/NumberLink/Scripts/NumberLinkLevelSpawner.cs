@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace NumberLink
 {
-    public class LevelSpawner : BaseLevelSpawner
+    public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
-        private LevelData level;
+        // private LevelData level;
 
         [SerializeField] private Cell cellPrefab;
         [SerializeField] private SpriteRenderer backgroundSprite;
@@ -20,7 +20,7 @@ namespace NumberLink
 
         public override void SpawnLevel()
         {
-            GameManager.Instance.SetEdgeSize(cellGap + cellSize);
+            // GameManager.Instance.SetEdgeSize(cellGap + cellSize);
 
             int[,] levelGrid = new int[level.Rows, level.Columns];
             FullfillLevelGridData(levelGrid);
@@ -79,7 +79,8 @@ namespace NumberLink
                 }
             }
 
-            GameManager.Instance.SetCellGrid(cellGrid);
+            GameManager.Instance.Initialize(level, cellGrid, cellGap + cellSize);
+            // OnLevelSpawned?.Invoke();
         }
 
 

@@ -4,15 +4,19 @@ namespace Blocks
 {
     public class CameraController : DefaultCameraController
     {
-        public float backgroundCellPositionRate = 0.5f;
+        [SerializeField] public float backgroundCellPositionRate { get; private set; } = 0.5f;
+        [SerializeField] private float rowsOffset = 2f;
 
-        public void SetupCamera(LevelData level, float blockSpawnSize, float blockRows, float blockColumns)
+        public void SetupCamera(/*LevelData level, float blockSpawnSize, float blockRows, float blockColumns*/)
         {
-            float maxColumns = Mathf.Max(level.Columns, blockColumns * blockSpawnSize);
-            float maxRows = level.Rows + 2f + blockRows * blockSpawnSize;
+            LevelData level = GameManager.Instance.level;
+            float blockSpawnSize = GameManager.Instance.defaultBlockSize;
+
+            float maxColumns = Mathf.Max(level.GridColumns, level.BlockColumns * blockSpawnSize);
+            float maxRows = level.GridRows + rowsOffset + level.BlockRows * blockSpawnSize;
 
             Camera.main.orthographicSize = Mathf.Max(maxColumns, maxRows) * cameraSizeController;
-            Camera.main.transform.position = new Vector3(level.Columns * backgroundCellPositionRate, (level.Rows + backgroundCellPositionRate) * backgroundCellPositionRate, cameraPositionZ);
+            Camera.main.transform.position = new Vector3(level.GridColumns * backgroundCellPositionRate, (level.GridRows + backgroundCellPositionRate) * backgroundCellPositionRate, cameraPositionZ);
         }
     }
 }

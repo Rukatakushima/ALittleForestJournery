@@ -9,13 +9,13 @@ namespace Blocks
     [CreateAssetMenu(fileName = "BlocksLevel", menuName = "Levels/BlocksLevel")]
     public class LevelData : ScriptableObject
     {
-        public int Rows, Columns, BlockRows, BlockColumns;
+        public int GridRows, GridColumns, BlockRows, BlockColumns;
         public List<int> Data;
         public List<BlockPiece> Blocks;
 
         private void OnValidate()
         {
-            int newSize = Rows * Columns;
+            int newSize = GridRows * GridColumns;
             if (Data.Count != newSize)
             {
                 while (Data.Count < newSize)
@@ -29,10 +29,7 @@ namespace Blocks
             }
         }
 
-        public int CalculateTotalBlockPositions()
-        {
-            return Blocks.Sum(block => block.BlockPositions.Count);
-        }
+        public int CalculateTotalBlockPositions => Blocks.Sum(block => block.BlockPositions.Count);
     }
 
     [Serializable]

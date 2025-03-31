@@ -2,14 +2,13 @@ namespace Escape
 {
     public class WinConditionChecker : BaseWinConditionChecker
     {
-
         private GamePiece winPiece;
         private int columnsCount;
 
-        public void Initialize(GamePiece winPiece, int columnsCount)
+        public override void Initialize(/*GamePiece winPiece, int columnsCount*/)
         {
-            this.winPiece = winPiece;
-            this.columnsCount = columnsCount;
+            winPiece = GameManager.Instance.winPiece;
+            columnsCount = GameManager.Instance.level.Columns;
         }
 
         public override void CheckWinCondition()

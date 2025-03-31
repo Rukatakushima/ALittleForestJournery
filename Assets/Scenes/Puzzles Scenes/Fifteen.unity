@@ -170,11 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13d1de6b94e6bc49b98fe83026096e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSpawner: {fileID: 0}
-  cameraController: {fileID: 0}
-  winConditionChecker: {fileID: 0}
-  inputHandler: {fileID: 0}
-  level: {fileID: 0}
   boxMoveDuration: 0.2
 --- !u!114 &1082899052
 MonoBehaviour:
@@ -188,6 +183,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34cfbf755fa58dd468d2dea3a204bf25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnLevelSpawned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1082899056}
+        m_TargetAssemblyTypeName: DefaultCameraController, Assembly-CSharp
+        m_MethodName: SetupCamera
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 16
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  level: {fileID: 0}
   shuffleTimes: 2
   boxPrefab: {fileID: 6729374824278753814, guid: 0f262f55f57cbd5479ff9d385a586f5c, type: 3}
   sprites:
@@ -219,6 +230,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnInputStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputEnd:
+    m_PersistentCalls:
+      m_Calls: []
   inputType: 0
   startKey: 101
   updateKey: 101

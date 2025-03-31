@@ -155,6 +155,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnInputStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputEnd:
+    m_PersistentCalls:
+      m_Calls: []
   inputType: 0
   startKey: 101
   updateKey: 101
@@ -199,6 +208,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5d287b830095d2409c8bac28aa38a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnLevelSpawned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 163382222}
+        m_TargetAssemblyTypeName: DefaultCameraController, Assembly-CSharp
+        m_MethodName: SetupCamera
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 9
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  level: {fileID: 11400000, guid: 3fba9e8d8adf6744eaac6587fdb0eb4f, type: 2}
   cellPrefab: {fileID: 2191236806837480749, guid: cb13371bc22027f42bd47d96310f70a2, type: 3}
   backgroundSprite: {fileID: 5523708226535424538, guid: c94e752321f5ff44facb015e075d0331, type: 3}
   cellGap: 2
@@ -232,11 +257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4744671c53fc9bf4ebca7217884f5aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSpawner: {fileID: 0}
-  cameraController: {fileID: 0}
-  winConditionChecker: {fileID: 0}
-  inputHandler: {fileID: 0}
-  level: {fileID: 11400000, guid: 3fba9e8d8adf6744eaac6587fdb0eb4f, type: 2}
   highlightSprite: {fileID: 476829200}
   highlightSize: {x: 0.25, y: 2}
   EdgeSize: 0

@@ -247,12 +247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6aafc07212a02340b32a82bec05d573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSpawner: {fileID: 0}
-  cameraController: {fileID: 0}
-  winConditionChecker: {fileID: 0}
-  inputHandler: {fileID: 0}
-  level: {fileID: 11400000, guid: 42cdfc7ab8da45541831955517340fe0, type: 2}
-  levelSize: 5
   NodeColors:
   - {r: 0.9433962, g: 0.40494838, b: 0.40494838, a: 1}
   - {r: 0.56541973, g: 0.4039216, b: 0.94509804, a: 1}
@@ -293,6 +287,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnInputStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputEnd:
+    m_PersistentCalls:
+      m_Calls: []
   inputType: 0
   startKey: 101
   updateKey: 101
@@ -337,6 +340,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c5b828540ad10429092172caee818f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnLevelSpawned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1784974176}
+        m_TargetAssemblyTypeName: DefaultCameraController, Assembly-CSharp
+        m_MethodName: SetupCamera
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 5
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  level: {fileID: 11400000, guid: 42cdfc7ab8da45541831955517340fe0, type: 2}
+  levelSize: 5
   boardTracingSize: 0.25
   boardPositionController: 2
   boardPrefab: {fileID: 588532347153610255, guid: 61ccf270db7e4e846a46d1f2264917bc, type: 3}

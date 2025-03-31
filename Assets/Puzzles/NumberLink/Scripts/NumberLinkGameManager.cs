@@ -3,15 +3,16 @@ using UnityEngine;
 
 namespace NumberLink
 {
-    public class GameManager : BaseGameManager<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>
+    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
     {
         public static GameManager Instance;
+        public LevelData level { get; private set; }
 
         [SerializeField] private SpriteRenderer highlightSprite;
         [SerializeField] private Vector2 highlightSize;
         [HideInInspector] public float EdgeSize;
 
-        private Cell[,] cellGrid;
+        public Cell[,] cellGrid { get; private set; }
         private Cell startCell;
         private Vector2 startPosition;
 
@@ -32,18 +33,10 @@ namespace NumberLink
             highlightSprite.gameObject.SetActive(false);
         }
 
-        protected override void SetupManagers()
+        public void Initialize(LevelData level, Cell[,] cellGrid, float EdgeSize)
         {
-            cameraController.SetupCamera(level.Columns * level.Rows);
-
-            levelSpawner.Initialize(level);
-            levelSpawner.SpawnLevel();
-
-            winConditionChecker.Initialize(level, cellGrid);
-        }
-
-        public void SetCellGrid(Cell[,] cellGrid)
-        {
+            this.level = level;
+            this.EdgeSize = EdgeSize;
             this.cellGrid = cellGrid;
 
             for (int i = 0; i < level.Rows; i++)
@@ -56,9 +49,9 @@ namespace NumberLink
                     }
                 }
             }
-        }
 
-        public void SetEdgeSize(float EdgeSize) => this.EdgeSize = EdgeSize;
+            levelSpawner.OnLevelSpawned?.Invoke();
+        }
 
         protected override void HandleInputStart(Vector2 mousePosition)
         {
@@ -207,5 +200,18 @@ namespace NumberLink
         }
 
         public bool IsValid(Vector2Int pos) => pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
+
+        protected override void CheckWinCondition()
+        {
+            for (int i = 0; i < level.Rows; i++)
+            {
+                for (int j = 0; j < level.Columns; j++)
+                {
+                    if (cellGrid[i, j] != null && cellGrid[i, j].Number != 0) return;
+                }
+            }
+
+            OnWin?.Invoke();
+        }
     }
 }

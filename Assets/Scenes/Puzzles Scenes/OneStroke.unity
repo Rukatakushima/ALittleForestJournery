@@ -403,11 +403,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd093ed85dd7b545b2175a5b150d427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSpawner: {fileID: 0}
-  cameraController: {fileID: 1082899052}
-  winConditionChecker: {fileID: 1082899054}
-  inputHandler: {fileID: 1082899055}
-  level: {fileID: 11400000, guid: 3bbfd74b2b80b644d9ed39c2593b8455, type: 2}
   mainEdge: {fileID: 1256410787}
 --- !u!114 &1082899052
 MonoBehaviour:
@@ -463,6 +458,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb91e8a65d56bd44817d1183294a9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnInputStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputEnd:
+    m_PersistentCalls:
+      m_Calls: []
   inputType: 0
   startKey: 101
   updateKey: 101
@@ -480,6 +484,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 530ae5eeb26e46449bf6f854349c2fbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnLevelSpawned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1082899052}
+        m_TargetAssemblyTypeName: DefaultCameraController, Assembly-CSharp
+        m_MethodName: SetupCamera
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 3
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  level: {fileID: 11400000, guid: 3bbfd74b2b80b644d9ed39c2593b8455, type: 2}
   pointPrefab: {fileID: 5886321498476403106, guid: b8a8032347f95ed47b19e865108c8c11, type: 3}
   edgePrefab: {fileID: 7797485401775379621, guid: 07bcb2698d737064e9d309b63f761be5, type: 3}
 --- !u!114 &1256410787 stripped

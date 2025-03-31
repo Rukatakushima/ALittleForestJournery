@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace Pipes
 {
-    public class GameManager : BaseGameManager<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>
+    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
     {
         public static GameManager Instance;
+        public LevelData level { get; private set; }
 
-        private Pipe[,] pipes;
+        public Pipe[,] pipes { get; private set; }
         private List<Pipe> startPipes;
         private FillChecker fillChecker;
 
@@ -16,27 +17,30 @@ namespace Pipes
         {
             Instance = this;
             base.Awake();
-        }
-
-        protected override void SetupManagers()
-        {
-            cameraController.SetupCamera(Mathf.Max(level.Row, level.Col));
-
-            startPipes = new List<Pipe>();
-            levelSpawner.Initialize(level, pipes);
-            levelSpawner.SpawnLevel();
-
-            winConditionChecker.Initialize(level, pipes);
-
             fillChecker = new FillChecker(pipes, startPipes);
-
             StartCoroutine(ShowHint());
         }
 
-        public void SetPipes(List<Pipe> startPipes, Pipe[,] pipes)
+        // protected override void SetupManagers()
+        // {
+        //     cameraController.SetupCamera(Mathf.Max(level.Row, level.Col));
+
+        //     // levelSpawner.Initialize(level, pipes);
+        //     levelSpawner.SpawnLevel();
+
+        //     winConditionChecker.Initialize(level, pipes);
+
+        //     fillChecker = new FillChecker(pipes, startPipes);
+
+        //     StartCoroutine(ShowHint());
+        // }
+
+        public void Initialize(LevelData level, List<Pipe> startPipes, Pipe[,] pipes)
         {
+            this.level = level;
             this.startPipes = startPipes;
             this.pipes = pipes;
+            levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -60,6 +64,20 @@ namespace Pipes
             yield return new WaitForSeconds(0.1f);
             fillChecker.CheckFill();
             CheckWinCondition();
+        }
+
+        protected override void CheckWinCondition()
+        {
+            for (int i = 0; i < level.Row; i++)
+            {
+                for (int j = 0; j < level.Col; j++)
+                {
+                    if (!pipes[i, j].IsFilled)
+                        return;
+                }
+            }
+            
+            OnWin?.Invoke();
         }
     }
 }

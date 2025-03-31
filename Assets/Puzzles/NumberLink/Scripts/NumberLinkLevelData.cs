@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace NumberLink
 {
-    [CreateAssetMenu(fileName = "NumberLinkLevel", menuName = "Levels/NumberLinkLevel_0")]
+    [CreateAssetMenu(fileName = "NumberLinkLevel", menuName = "Levels/NumberLinkLevel")]
     public class LevelData : ScriptableObject
     {
         [SerializeField] public int Rows, Columns;

@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace OneStroke
 {
-    public class GameManager : BaseGameManager<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>
+    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
     {
         public static GameManager Instance;
+        // private LevelData level;
 
         [SerializeField] private Edge mainEdge;
 
-        private Dictionary<Vector2Int, Edge> edges;
+        public Dictionary<Vector2Int, Edge> edges { get; private set; }
         private Point startPoint, endPoint;
         private Vector2 previousHit;
         private int currentId;
@@ -22,17 +23,22 @@ namespace OneStroke
             base.Awake();
         }
 
-        protected override void SetupManagers()
+        // protected override void SetupManagers()
+        // {
+        //     cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
+
+        //     levelSpawner.Initialize(level);
+        //     levelSpawner.SpawnLevel();
+
+        //     winConditionChecker.Initialize(edges);
+        // }
+
+        public void Initialize(Dictionary<Vector2Int, Edge> edges)
         {
-            cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
-
-            levelSpawner.Initialize(level);
-            levelSpawner.SpawnLevel();
-            
-            winConditionChecker.Initialize(edges);
+            // this.level = level;
+            this.edges = edges;
+            levelSpawner.OnLevelSpawned?.Invoke();
         }
-
-        public void SetEdges(Dictionary<Vector2Int, Edge> edges) => this.edges = edges;
 
         protected override void HandleInputStart(Vector2 mousePosition)
         {
@@ -88,7 +94,7 @@ namespace OneStroke
 
             CheckWinCondition();
         }
-        
+
         private void FillEdge()
         {
             currentId = endPoint.Id;
@@ -116,6 +122,21 @@ namespace OneStroke
                 return result != null && !result.IsFilled;
             }
             return false;
+        }
+
+        protected override void CheckWinCondition()
+        {
+            if (edges == null) return;
+
+            foreach (var item in edges)
+            {
+                if (!item.Value.IsFilled)
+                {
+                    return;
+                }
+            }
+
+            OnWin?.Invoke();
         }
     }
 }

@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Connect
 {
-    public class LevelSpawner : BaseLevelSpawner
+    public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
-        private int levelSize;
+        [SerializeField] private int levelSize = 5;
         [SerializeField] private float boardTracingSize = 0.1f;
         [SerializeField] private float boardPositionController = 2f;
         [SerializeField] private SpriteRenderer boardPrefab, backgroundCellPrefab;
@@ -13,12 +13,13 @@ namespace Connect
         private List<Node> nodes;
         private Dictionary<Vector2Int, Node> nodeGrid;
 
-        public void Initialize(int levelSize) => this.levelSize = levelSize;
+        // public void Initialize(int levelSize) => this.levelSize = levelSize;
 
         public override void SpawnLevel()
         {
             SpawnBoard();
             SpawnNodes();
+            // OnLevelSpawned?.Invoke();
         }
 
         private void SpawnBoard()
@@ -68,7 +69,7 @@ namespace Connect
                     spawnedNode.Pos2D = new Vector2Int(i, j);
                 }
 
-                GameManager.Instance.SetNodes(nodes, nodeGrid);
+                GameManager.Instance.Initialize(nodes, nodeGrid);
             }
 
             //установка сетки: сетка = nodes, у каждого node есть список offsetPos, т.е. 4 edge (верх, них, лево, право)
@@ -88,7 +89,7 @@ namespace Connect
 
         public int GetColorId(int i, int j)
         {
-            List<Edge> edges = GameManager.Instance.level.Connections;
+            List<Edge> edges = /*GameManager.Instance.*/level.Connections;
             Vector2Int point = new Vector2Int(i, j);
 
             for (int colorId = 0; colorId < edges.Count; colorId++)

@@ -3,12 +3,14 @@ using UnityEngine;
 
 namespace Blocks
 {
-    public class GameManager : BaseGameManager<LevelSpawner, CameraController, WinConditionChecker, LevelData>
+    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
     {
         public static GameManager Instance;
 
-        [SerializeField] private float blockSpawnSize, blockHighLightSize, blockPutSize;
-        private BackgroundCell[,] BGCellGrid;
+        public LevelData level { get; private set; }
+        public float defaultBlockSize { get; private set; }
+        public BackgroundCell[,] BGCellGrid;// { get; private set; }
+        // [SerializeField] private float  blockHighLightSize, blockPutSize;
         private Blocks currentBlock;
         private Vector2 curPos, prevPos;
         private List<Blocks> gridBlocks;
@@ -20,17 +22,16 @@ namespace Blocks
             base.Awake();
         }
 
-        protected override void SetupManagers()
+        // protected override void SetupManagers() => levelSpawner.SpawnLevel();
+
+        public void Initialize(LevelData level, BackgroundCell[,] BGCellGrid, float blockSpawnSize)
         {
-            cameraController.SetupCamera(level, blockSpawnSize, level.BlockRows, level.BlockColumns);
-
-            levelSpawner.Initialize(blockSpawnSize, level, cameraController.backgroundCellPositionRate);
-            levelSpawner.SpawnLevel();
-
-            winConditionChecker.Initialize(BGCellGrid, level.Rows, level.Columns);
+            this.level = level;
+            this.BGCellGrid = BGCellGrid;
+            defaultBlockSize = blockSpawnSize;
+            // cameraController.SetupCamera(/*level, defaultBlockSize, level.BlockRows, level.BlockColumns*/);
+            // winConditionChecker.Initialize(/*BGCellGrid, level.GridRows, level.GridColumns*/);
         }
-
-        public void SetBGCellGrid(BackgroundCell[,] BGCellGrid) => this.BGCellGrid = BGCellGrid;
 
         protected override void HandleInputStart(Vector2 mousePosition)
         {
@@ -44,7 +45,7 @@ namespace Blocks
             prevPos = mousePosition;
 
             currentBlock.ElevateSprites();
-            currentBlock.transform.localScale = Vector3.one * blockHighLightSize;
+            currentBlock.transform.localScale = Vector3.one /** blockHighLightSize*/;
 
             if (gridBlocks.Contains(currentBlock))
             {
@@ -58,9 +59,9 @@ namespace Blocks
 
         private void UpdateFilled()
         {
-            for (int i = 0; i < level.Rows; i++)
+            for (int i = 0; i < level.GridRows; i++)
             {
-                for (int j = 0; j < level.Columns; j++)
+                for (int j = 0; j < level.GridColumns; j++)
                 {
                     if (!BGCellGrid[i, j].isBlocked)
                     {
@@ -83,7 +84,7 @@ namespace Blocks
 
         private bool IsValidPos(Vector2Int pos)
         {
-            return pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
+            return pos.x >= 0 && pos.y >= 0 && pos.x < level.GridRows && pos.y < level.GridColumns;
         }
 
         protected override void HandleInputUpdate(Vector2 mousePosition)
@@ -100,9 +101,9 @@ namespace Blocks
 
         private void ResetHighLight()
         {
-            for (int i = 0; i < level.Rows; i++)
+            for (int i = 0; i < level.GridRows; i++)
             {
-                for (int j = 0; j < level.Columns; j++)
+                for (int j = 0; j < level.GridColumns; j++)
                 {
                     if (!BGCellGrid[i, j].isBlocked)
                     {
@@ -133,13 +134,13 @@ namespace Blocks
             if (IsCorrectMove())
             {
                 currentBlock.UpdateCorrectMove();
-                currentBlock.transform.localScale = Vector3.one * blockPutSize;
+                currentBlock.transform.localScale = Vector3.one /** blockPutSize*/;
                 gridBlocks.Add(currentBlock);
             }
             else if (Input.mousePosition.y < 0)
             {
                 currentBlock.UpdateStartMove();
-                currentBlock.transform.localScale = Vector3.one * blockSpawnSize;
+                currentBlock.transform.localScale = Vector3.one * defaultBlockSize;
             }
             else
             {
@@ -147,11 +148,11 @@ namespace Blocks
                 if (currentBlock.curPos.y > 0)
                 {
                     gridBlocks.Add(currentBlock);
-                    currentBlock.transform.localScale = Vector3.one * blockPutSize;
+                    currentBlock.transform.localScale = Vector3.one /** blockPutSize*/;
                 }
                 else
                 {
-                    currentBlock.transform.localScale = Vector3.one * blockSpawnSize;
+                    currentBlock.transform.localScale = Vector3.one * defaultBlockSize;
                 }
             }
 
@@ -172,6 +173,21 @@ namespace Blocks
                 }
             }
             return true;
+        }
+
+        protected override void CheckWinCondition()
+        {
+            for (int i = 0; i < level.GridRows; i++)
+            {
+                for (int j = 0; j < level.GridColumns; j++)
+                {
+                    if (!BGCellGrid[i, j].isFilled)
+                    {
+                        return;
+                    }
+                }
+            }
+            OnWin?.Invoke();
         }
     }
 }

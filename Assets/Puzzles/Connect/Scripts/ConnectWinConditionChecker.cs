@@ -6,10 +6,7 @@ namespace Connect
     {
         private List<Node> nodes;
 
-        public void Initialize(List<Node> nodes)
-        {
-            this.nodes = nodes;
-        }
+        public override void Initialize(/*List<Node> nodes*/) => this.nodes = GameManager.Instance.nodes;
 
         public override void CheckWinCondition()
         {

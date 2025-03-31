@@ -1,24 +1,34 @@
 using UnityEngine;
+using UnityEngine.Events;
+// using UnityEngine.Events;
 
-public abstract class BaseGameManager<TLevelSpawner, DefaultCameraController, TWinConditionChecker, TLevelData> : MonoBehaviour
-    where TLevelSpawner : BaseLevelSpawner
-    where TWinConditionChecker : BaseWinConditionChecker
+public abstract class BaseGameManager<TLevelSpawner, /*DefaultCameraController, TWinConditionChecker,*/ TLevelData> : MonoBehaviour
+    where TLevelSpawner : BaseLevelSpawner<TLevelData>
+    // where TWinConditionChecker : BaseWinConditionChecker
     where TLevelData : ScriptableObject
 {
-    [Header("Managers")]
-    [SerializeField] protected TLevelSpawner levelSpawner;
-    [SerializeField] protected DefaultCameraController cameraController;
-    [SerializeField] protected TWinConditionChecker winConditionChecker;
-    // [SerializeField] protected SceneLoader sceneLoader;
-    [SerializeField] protected InputHandler inputHandler;
+    // [Header("Managers")]
+    /*[SerializeField]*/
+    protected TLevelSpawner levelSpawner;
+    /*[SerializeField]*/
+    // protected DefaultCameraController cameraController;
+    /*[SerializeField]*/
+    // protected TWinConditionChecker winConditionChecker;
+    /*[SerializeField]*/
+    protected InputHandler inputHandler;
+    public UnityEvent OnWin;
 
-    [Header("Game Settings")]
-    [SerializeField] public TLevelData level;
+    // [Header("Game Settings")]
+    // /*[SerializeField]*/ public TLevelData level;
+
+    // public UnityEvent OnGameInitialized = new();
 
     protected virtual void Awake()
     {
         InitializeComponents();
-        SetupManagers();
+        levelSpawner?.SpawnLevel();
+        // SetupManagers();
+        // OnGameInitialized?.Invoke();
         SetupInputHandlers();
     }
 
@@ -26,33 +36,29 @@ public abstract class BaseGameManager<TLevelSpawner, DefaultCameraController, TW
     {
         if (levelSpawner == null)
             levelSpawner = GetComponent<TLevelSpawner>();
-        if (cameraController == null)
-            cameraController = GetComponent<DefaultCameraController>();
-        if (winConditionChecker == null)
-            winConditionChecker = GetComponent<TWinConditionChecker>();
-        // if (sceneLoader == null)
-        //     sceneLoader = GetComponent<SceneLoader>();
+        // if (cameraController == null)
+        //     cameraController = GetComponent<DefaultCameraController>();
+        // if (winConditionChecker == null)
+        //     winConditionChecker = GetComponent<TWinConditionChecker>();
         if (inputHandler == null)
             inputHandler = GetComponent<InputHandler>();
-
-        // winConditionChecker.OnWin.AddListener(GameFinished);
 
         CheckComponents();
     }
 
     protected void CheckComponents()
     {
-        if (cameraController == null)
-            throw new System.ArgumentNullException(nameof(cameraController));
-        if (winConditionChecker == null)
-            throw new System.ArgumentNullException(nameof(winConditionChecker));
-        // if (sceneLoader == null)
-        //     throw new System.ArgumentNullException(nameof(sceneLoader));
+        if (levelSpawner == null)
+            throw new System.ArgumentNullException(nameof(levelSpawner));
+        // if (cameraController == null)
+        //     throw new System.ArgumentNullException(nameof(cameraController));
+        // if (winConditionChecker == null)
+        //     throw new System.ArgumentNullException(nameof(winConditionChecker));
         if (inputHandler == null)
             throw new System.ArgumentNullException(nameof(inputHandler));
     }
 
-    protected abstract void SetupManagers();
+    // protected abstract void SetupManagers();
 
     protected virtual void SetupInputHandlers()
     {
@@ -67,19 +73,14 @@ public abstract class BaseGameManager<TLevelSpawner, DefaultCameraController, TW
 
     protected abstract void HandleInputEnd();
 
-    public void CheckWinCondition()
-    {
-        if (winConditionChecker != null)
-            winConditionChecker.CheckWinCondition();
-        else
-            Debug.LogError("WinConditionChecker is not assigned!");
-    }
-
-    // protected void GameFinished()
+    // public void CheckWinCondition()
     // {
-    //     if (sceneLoader != null)
-    //         sceneLoader.ChangeScene();
+    //     if (winConditionChecker != null)
+    //         winConditionChecker.CheckWinCondition();
     //     else
-    //         Debug.LogError("SceneLoader is not assigned!");
+    //         Debug.LogError("WinConditionChecker is not assigned!");
     // }
+
+    protected abstract void CheckWinCondition();
+    // protected void NotifyWin() => OnWin?.Invoke();
 }
