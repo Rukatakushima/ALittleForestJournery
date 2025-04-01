@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Fifteen
 {
-    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
+    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
     {
         public static GameManager Instance;
 
@@ -39,16 +39,14 @@ namespace Fifteen
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
             if (hit && hit.collider.gameObject.TryGetComponent(out Box tBox))
-            {
                 tBox.ClickToSwap();
-            }
         }
 
         protected override void HandleInputUpdate(Vector2 mousePosition) { }
 
         protected override void HandleInputEnd() { }
 
-        protected override void CheckWinCondition()
+        public override void CheckWinCondition()
         {
             for (int i = 0; i < boxes.GetLength(0); i++)
             {
@@ -60,9 +58,8 @@ namespace Fifteen
                     }
                 }
             }
-            
+
             OnWin?.Invoke();
         }
-        public void CheckWin() => CheckWinCondition();
     }
 }

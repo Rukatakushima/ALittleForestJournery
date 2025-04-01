@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace NumberLink
 {
-    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
+    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
     {
         public static GameManager Instance;
         public LevelData level { get; private set; }
 
         [SerializeField] private SpriteRenderer highlightSprite;
         [SerializeField] private Vector2 highlightSize;
-        [HideInInspector] public float EdgeSize;
+        [HideInInspector] public float EdgeSize { get; private set; }
 
         public Cell[,] cellGrid { get; private set; }
         private Cell startCell;
@@ -44,13 +44,9 @@ namespace NumberLink
                 for (int j = 0; j < level.Columns; j++)
                 {
                     if (cellGrid[i, j] != null)
-                    {
                         cellGrid[i, j].InitializeCell();
-                    }
                 }
             }
-
-            levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -201,7 +197,7 @@ namespace NumberLink
 
         public bool IsValid(Vector2Int pos) => pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
 
-        protected override void CheckWinCondition()
+        public override void CheckWinCondition()
         {
             for (int i = 0; i < level.Rows; i++)
             {

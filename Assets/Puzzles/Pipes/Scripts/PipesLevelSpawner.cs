@@ -37,6 +37,7 @@ namespace Pipes
             }
 
             GameManager.Instance.Initialize(level, startPipes, pipes);
+            OnLevelSpawned?.Invoke();
         }
     }
 }

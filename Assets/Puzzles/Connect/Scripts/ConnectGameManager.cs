@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Connect
 {
-    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
+    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
     {
         public static GameManager Instance;
 
@@ -32,7 +32,7 @@ namespace Connect
         {
             this.nodes = nodes;
             this.nodeGrid = nodeGrid;
-            levelSpawner.OnLevelSpawned?.Invoke();
+            // levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition) => startNode = null;
@@ -62,7 +62,7 @@ namespace Connect
 
         protected override void HandleInputEnd() => startNode = null;
 
-        protected override void CheckWinCondition()
+        public override void CheckWinCondition()
         {
             bool IsWinning = true;
 

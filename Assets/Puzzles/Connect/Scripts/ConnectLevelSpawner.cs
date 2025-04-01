@@ -19,7 +19,7 @@ namespace Connect
         {
             SpawnBoard();
             SpawnNodes();
-            // OnLevelSpawned?.Invoke();
+            OnLevelSpawned?.Invoke();
         }
 
         private void SpawnBoard()
@@ -69,7 +69,6 @@ namespace Connect
                     spawnedNode.Pos2D = new Vector2Int(i, j);
                 }
 
-                GameManager.Instance.Initialize(nodes, nodeGrid);
             }
 
             //установка сетки: сетка = nodes, у каждого node есть список offsetPos, т.е. 4 edge (верх, них, лево, право)
@@ -85,6 +84,8 @@ namespace Connect
                         item.Value.SetEdge(offset, nodeGrid[checkPos]);
                 }
             }
+
+            GameManager.Instance.Initialize(nodes, nodeGrid);
         }
 
         public int GetColorId(int i, int j)

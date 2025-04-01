@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace NumberLink
@@ -22,14 +21,14 @@ namespace NumberLink
         {
             // GameManager.Instance.SetEdgeSize(cellGap + cellSize);
 
-            int[,] levelGrid = new int[level.Rows, level.Columns];
-            FullfillLevelGridData(levelGrid);
+            CreateLevelGrid();
             CreateBackcround();
-            CreateCells(levelGrid);
+            OnLevelSpawned?.Invoke();
         }
 
-        private void FullfillLevelGridData(int[,] levelGrid)
+        private void CreateLevelGrid()
         {
+            int[,] levelGrid = new int[level.Rows, level.Columns];
             for (int i = 0; i < level.Rows; i++)
             {
                 for (int j = 0; j < level.Columns; j++)
@@ -37,6 +36,8 @@ namespace NumberLink
                     levelGrid[i, j] = level.Data[i * level.Rows + j];
                 }
             }
+
+            CreateCells(levelGrid);
         }
 
         private void CreateBackcround()

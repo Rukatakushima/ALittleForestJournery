@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Pipes
 {
-    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
+    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
     {
         public static GameManager Instance;
         public LevelData level { get; private set; }
@@ -40,7 +40,7 @@ namespace Pipes
             this.level = level;
             this.startPipes = startPipes;
             this.pipes = pipes;
-            levelSpawner.OnLevelSpawned?.Invoke();
+            // levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -66,7 +66,7 @@ namespace Pipes
             CheckWinCondition();
         }
 
-        protected override void CheckWinCondition()
+        public override void CheckWinCondition()
         {
             for (int i = 0; i < level.Row; i++)
             {
@@ -76,7 +76,7 @@ namespace Pipes
                         return;
                 }
             }
-            
+
             OnWin?.Invoke();
         }
     }

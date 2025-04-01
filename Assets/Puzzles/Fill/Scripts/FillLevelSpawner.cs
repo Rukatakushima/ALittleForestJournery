@@ -35,11 +35,11 @@ namespace Fill
 
         public override void SpawnLevel()
         {
+            CreateObjectPools();
+
             filledPoints = new List<Vector2Int>();
             cells = new Cell[level.Rows, level.Columns];
             edges = new List<Transform>();
-
-            CreateObjectPools();
 
             for (int i = 0; i < level.Rows; i++)
             {
@@ -52,7 +52,7 @@ namespace Fill
             }
 
             GameManager.Instance.Initialize(level, edgePrefabObjectPool, cells, filledPoints, edges);
-            // OnLevelSpawned?.Invoke();
+            OnLevelSpawned?.Invoke();
         }
 
         private void CreateObjectPools()

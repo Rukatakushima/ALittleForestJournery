@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OneStroke
 {
-    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
+    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
     {
         public static GameManager Instance;
         // private LevelData level;
@@ -33,12 +33,7 @@ namespace OneStroke
         //     winConditionChecker.Initialize(edges);
         // }
 
-        public void Initialize(Dictionary<Vector2Int, Edge> edges)
-        {
-            // this.level = level;
-            this.edges = edges;
-            levelSpawner.OnLevelSpawned?.Invoke();
-        }
+        public void Initialize(Dictionary<Vector2Int, Edge> edges) => this.edges = edges;
 
         protected override void HandleInputStart(Vector2 mousePosition)
         {
@@ -124,7 +119,7 @@ namespace OneStroke
             return false;
         }
 
-        protected override void CheckWinCondition()
+        public override void CheckWinCondition()
         {
             if (edges == null) return;
 

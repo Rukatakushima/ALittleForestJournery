@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Blocks
 {
-    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
+    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
     {
         public static GameManager Instance;
 
@@ -176,7 +176,7 @@ namespace Blocks
             return true;
         }
 
-        protected override void CheckWinCondition()
+        public override void CheckWinCondition()
         {
             for (int i = 0; i < level.GridRows; i++)
             {

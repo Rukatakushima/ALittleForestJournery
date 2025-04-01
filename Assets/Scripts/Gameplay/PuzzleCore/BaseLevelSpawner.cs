@@ -6,6 +6,6 @@ public abstract class BaseLevelSpawner<TLevelData> : MonoBehaviour
 {
     public UnityEvent OnLevelSpawned = new();
     [SerializeField] protected TLevelData level;
-
+    
     public abstract void SpawnLevel();
 }

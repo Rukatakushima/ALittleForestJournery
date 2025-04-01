@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Escape
 {
-    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
+    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
     {
         public static GameManager Instance;
         public LevelData level { get; private set; }
@@ -36,7 +36,7 @@ namespace Escape
             this.level = level;
             this.winPiece = winPiece;
             this.gamePieces = gamePieces;
-            levelSpawner.OnLevelSpawned?.Invoke();
+            // levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -177,7 +177,7 @@ namespace Escape
 
         private bool IsValidPos(Vector2Int pos) => pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
 
-        protected override void CheckWinCondition()
+        public override void CheckWinCondition()
         {
             if (winPiece.CurrentGridPos.y + winPiece.Size < level.Columns)
                 return;

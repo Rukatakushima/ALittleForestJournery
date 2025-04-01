@@ -22,7 +22,7 @@ namespace Fifteen
         {
             Init();
             ShuffleLevel();
-            // OnLevelSpawned?.Invoke();
+            OnLevelSpawned?.Invoke();
         }
 
         private void Init()
@@ -45,7 +45,7 @@ namespace Fifteen
                 }
             }
 
-            OnLevelSpawned?.Invoke();
+            // OnLevelSpawned?.Invoke();
         }
 
         private void ShuffleLevel()
@@ -94,21 +94,15 @@ namespace Fifteen
                         position = Vector2.down;
                         break;
                 }
-            } while (!(IsValidRange(x + (int)position.x) && IsValidRange(y + (int)position.y)) || isOppositePosition(position));
+            } while (!(IsValidRange(x + (int)position.x) && IsValidRange(y + (int)position.y)) || IsOppositePosition(position));
             // does not exceed the acceptable range
 
             lastPosition = position;
             return position;
         }
 
-        private bool IsValidRange(int randomNumber)
-        {
-            return randomNumber >= minSize + 1 && randomNumber <= maxSize - 1;
-        }
+        private bool IsValidRange(int randomNumber) => randomNumber >= minSize + 1 && randomNumber <= maxSize - 1;
 
-        private bool isOppositePosition(Vector2 position)
-        {
-            return position * -1 == lastPosition;
-        }
+        private bool IsOppositePosition(Vector2 position) => position * -1 == lastPosition;
     }
 }

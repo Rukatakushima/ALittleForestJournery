@@ -26,6 +26,7 @@ namespace Escape
             SpawnAllPieces();
 
             GameManager.Instance.Initialize(level, winPiece, gamePieces);
+            OnLevelSpawned?.Invoke();
         }
 
         private void SpawnBackground()

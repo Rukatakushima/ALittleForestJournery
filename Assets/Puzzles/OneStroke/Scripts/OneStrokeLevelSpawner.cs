@@ -18,6 +18,7 @@ namespace OneStroke
         {
             SpawnPoints();
             SpawnEdges();
+            OnLevelSpawned?.Invoke();
         }
 
         private void SpawnPoints()

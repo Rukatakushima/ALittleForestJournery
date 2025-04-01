@@ -4,7 +4,7 @@ using ObjectsPool;
 
 namespace Fill
 {
-    public class GameManager : BaseGameManager<LevelSpawner, /*DefaultCameraController, WinConditionChecker,*/ LevelData>
+    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
     {
         public static GameManager Instance;
         public LevelData level { get; private set; }
@@ -45,7 +45,7 @@ namespace Fill
             this.cells = cells;
             this.filledPoints = filledPoints;
             this.edges = edges;
-            levelSpawner.OnLevelSpawned?.Invoke();
+            // levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -180,7 +180,7 @@ namespace Fill
             filledPoints.RemoveAt(0);
         }
 
-        protected override void CheckWinCondition()
+        public override void CheckWinCondition()
         {
             for (int i = 0; i < level.Rows; i++)
             {
