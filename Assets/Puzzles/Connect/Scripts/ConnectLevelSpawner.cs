@@ -13,30 +13,26 @@ namespace Connect
         private List<Node> nodes;
         private Dictionary<Vector2Int, Node> nodeGrid;
 
-        // public void Initialize(int levelSize) => this.levelSize = levelSize;
-
         public override void SpawnLevel()
         {
             SpawnBoard();
             SpawnNodes();
+
+            GameManager.Instance.Initialize(nodes);
             OnLevelSpawned?.Invoke();
         }
 
         private void SpawnBoard()
         {
             //инициализация подложки: префаб, положение (делим размер на 2, чтобы разместить в середине), поворот
-            var board = Instantiate(boardPrefab,
-                new Vector2(levelSize / boardPositionController, levelSize / boardPositionController),
-                Quaternion.identity);
+            var board = Instantiate(boardPrefab, new Vector2(levelSize / boardPositionController, levelSize / boardPositionController), Quaternion.identity);
             board.size = new Vector2(levelSize + boardTracingSize, levelSize + boardTracingSize);
 
             for (int i = 0; i < levelSize; i++)
             {
                 for (int j = 0; j < levelSize; j++)
                 {
-                    Instantiate(backgroundCellPrefab,
-                        new Vector2(i + backgroundCellPrefab.transform.localScale.x, j + backgroundCellPrefab.transform.localScale.y),
-                        Quaternion.identity);
+                    Instantiate(backgroundCellPrefab, new Vector2(i + backgroundCellPrefab.transform.localScale.x, j + backgroundCellPrefab.transform.localScale.y), Quaternion.identity);
                 }
             }
         }
@@ -57,8 +53,8 @@ namespace Connect
                     spawnedNode = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
                     spawnedNode.Init();
 
-                    int colorIdForSpawnedNode = GetColorId(i, j);
                     //окрас point в цвет, который будем соединять
+                    int colorIdForSpawnedNode = GetColorId(i, j);
 
                     if (colorIdForSpawnedNode != -1)
                         spawnedNode.SetColorForPoint(colorIdForSpawnedNode);
@@ -84,8 +80,6 @@ namespace Connect
                         item.Value.SetEdge(offset, nodeGrid[checkPos]);
                 }
             }
-
-            GameManager.Instance.Initialize(nodes, nodeGrid);
         }
 
         public int GetColorId(int i, int j)

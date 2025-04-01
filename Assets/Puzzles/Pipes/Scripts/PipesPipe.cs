@@ -27,25 +27,15 @@ namespace Pipes
             PipeType = pipe % 10;
             currentPipe = Instantiate(_pipePrefabs[PipeType], transform);
             currentPipe.transform.localPosition = Vector3.zero;
-            if (PipeType == 1 || PipeType == 2)
-            {
-                rotation = pipe / 10;
-            }
-            else
-            {
-                rotation = Random.Range(minRotation, maxRotation + 1);
-            }
+
+            if (PipeType == 1 || PipeType == 2) rotation = pipe / 10;
+            else rotation = Random.Range(minRotation, maxRotation + 1);
+
             currentPipe.transform.eulerAngles = new Vector3(0, 0, rotation * rotationMultiplier);
 
-            if (PipeType == 0 || PipeType == 1)
-            {
-                IsFilled = true;
-            }
+            if (PipeType == 0 || PipeType == 1) IsFilled = true;
 
-            if (PipeType == 0)
-            {
-                return;
-            }
+            if (PipeType == 0) return;
 
             emptySprite = currentPipe.GetChild(0).GetComponent<SpriteRenderer>();
             emptySprite.gameObject.SetActive(!IsFilled);
@@ -61,10 +51,7 @@ namespace Pipes
 
         public void RotatePipe()
         {
-            if (PipeType == 0 || PipeType == 1 || PipeType == 2)
-            {
-                return;
-            }
+            if (PipeType == 0 || PipeType == 1 || PipeType == 2) return;
 
             rotation = (rotation + 1) % (maxRotation + 1);
             currentPipe.transform.eulerAngles = new Vector3(0, 0, rotation * rotationMultiplier);

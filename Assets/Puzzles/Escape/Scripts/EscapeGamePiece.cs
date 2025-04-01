@@ -4,8 +4,9 @@ namespace Escape
 {
     public class GamePiece : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer _pieceRenderer;
-        [SerializeField] private BoxCollider2D _pieceCollider;
+        [SerializeField] private SpriteRenderer pieceRenderer;
+        [SerializeField] private BoxCollider2D pieceCollider;
+        [SerializeField] public float offsetPosition = 0.5f;
 
         [HideInInspector] public bool IsVertical;
         [HideInInspector] public int Size;
@@ -17,19 +18,19 @@ namespace Escape
             CurrentGridPos = piece.Start;
             IsVertical = piece.IsVertical;
             Size = piece.Size;
-            CurrentPos = new Vector2(CurrentGridPos.y + 0.5f, CurrentGridPos.x + 0.5f);
+            CurrentPos = new Vector2(CurrentGridPos.y + offsetPosition, CurrentGridPos.x + offsetPosition);
 
             if (piece.IsVertical)
             {
-                _pieceRenderer.transform.localPosition = new Vector3(0, Size - 1, 0) * 0.5f;
-                _pieceRenderer.size = new Vector2(1, Size);
-                _pieceCollider.size = new Vector2(1, Size);
+                pieceRenderer.transform.localPosition = new Vector3(0, Size - 1, 0) * offsetPosition;
+                pieceRenderer.size = new Vector2(1, Size);
+                pieceCollider.size = new Vector2(1, Size);
             }
             else
             {
-                _pieceRenderer.transform.localPosition = new Vector3(Size - 1, 0, 0) * 0.5f;
-                _pieceRenderer.size = new Vector2(Size, 1);
-                _pieceCollider.size = new Vector2(Size, 1);
+                pieceRenderer.transform.localPosition = new Vector3(Size - 1, 0, 0) * offsetPosition;
+                pieceRenderer.size = new Vector2(Size, 1);
+                pieceCollider.size = new Vector2(Size, 1);
             }
         }
 

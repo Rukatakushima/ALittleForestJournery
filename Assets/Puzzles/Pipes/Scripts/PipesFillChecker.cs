@@ -21,9 +21,7 @@ namespace Pipes
                 {
                     Pipe tempPipe = pipes[i, j];
                     if (tempPipe.PipeType != 0)
-                    {
                         tempPipe.IsFilled = false;
-                    }
                 }
             }
 
@@ -42,9 +40,7 @@ namespace Pipes
                 foreach (var connectedPipe in connected)
                 {
                     if (!finished.Contains(connectedPipe))
-                    {
                         check.Enqueue(connectedPipe);
-                    }
                 }
             }
 

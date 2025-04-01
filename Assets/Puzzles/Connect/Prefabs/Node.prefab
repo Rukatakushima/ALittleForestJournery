@@ -516,14 +516,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5198ca83564ef5458566ffdeec715ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _point: {fileID: 3906331307147731202}
-  _topEdge: {fileID: 8774747009588842611}
-  _bottomEdge: {fileID: 1562499234100488256}
-  _leftEdge: {fileID: 595413442179661017}
-  _rightEdge: {fileID: 5438812879192950851}
-  _highLight: {fileID: 4777124742822696794}
-  colorId: 0
-  ConnectedNodes: []
+  point: {fileID: 3906331307147731202}
+  topEdge: {fileID: 8774747009588842611}
+  bottomEdge: {fileID: 1562499234100488256}
+  leftEdge: {fileID: 595413442179661017}
+  rightEdge: {fileID: 5438812879192950851}
+  OnNodeConnected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNodeDisconnected:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8774747009588842611
 GameObject:
   m_ObjectHideFlags: 0

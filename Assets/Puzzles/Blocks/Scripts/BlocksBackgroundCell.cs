@@ -12,21 +12,13 @@ namespace Blocks
         public void Init(int blockValue)
         {
             isBlocked = blockValue == -1;
-            if (isBlocked)
-            {
-                isFilled = true;
-            }
+            if (isBlocked) isFilled = true;
+
             bgSprite.color = isBlocked ? blockedColor : emptyColor;
         }
 
-        public void ResetHighLight()
-        {
-            bgSprite.color = emptyColor;
-        }
+        public void ResetHighLight() => bgSprite.color = emptyColor;
 
-        public void UpdateHighlight(bool isCorrect)
-        {
-            bgSprite.color = isCorrect ? correctColor : incorrectColor;
-        }
+        public void UpdateHighlight(bool isCorrect) => bgSprite.color = isCorrect ? correctColor : incorrectColor;
     }
 }

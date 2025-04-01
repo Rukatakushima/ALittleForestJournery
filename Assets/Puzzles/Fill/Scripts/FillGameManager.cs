@@ -4,7 +4,7 @@ using ObjectsPool;
 
 namespace Fill
 {
-    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
+    public class GameManager : BaseGameManager
     {
         public static GameManager Instance;
         public LevelData level { get; private set; }
@@ -20,23 +20,8 @@ namespace Fill
         protected override void Awake()
         {
             Instance = this;
-
-            // filledPoints = new List<Vector2Int>();
-            // cells = new Cell[level.Rows, level.Columns];
-            // edges = new List<Transform>();
-
             base.Awake();
         }
-
-        // protected override void SetupManagers()
-        // {
-        // cameraController.SetupCamera(level.Columns, level.Rows);
-
-        //     levelSpawner.Initialize(level, cells);
-        //     levelSpawner.SpawnLevel();
-
-        //     winConditionChecker.Initialize(level, cells);
-        // }
 
         public void Initialize(LevelData level, PoolBase<Transform> edgePrefabObjectPool, Cell[,] cells, List<Vector2Int> filledPoints, List<Transform> edges)
         {
@@ -45,7 +30,6 @@ namespace Fill
             this.cells = cells;
             this.filledPoints = filledPoints;
             this.edges = edges;
-            // levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -92,9 +76,7 @@ namespace Fill
             }
 
             RemoveEmpty();
-
             CheckWinCondition();
-
             startPosition = endPosition;
         }
 
@@ -125,7 +107,7 @@ namespace Fill
 
         private bool IsValidPosition(Vector2Int pos, Vector2Int curPosition) => cells[curPosition.x, curPosition.y] == cells[pos.x, pos.y];
 
-        private bool IsFilled(Vector2Int curPosition) => cells[curPosition.x, curPosition.y].Filled; //endPosition
+        private bool IsFilled(Vector2Int curPosition) => cells[curPosition.x, curPosition.y].Filled;
 
         private bool ToRemoveFromEnd() => toRemoveFromPosition(filledPoints.Count - 1);
 

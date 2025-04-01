@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Fifteen
 {
-    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
+    public class GameManager : BaseGameManager
     {
         public static GameManager Instance;
 
@@ -14,13 +14,6 @@ namespace Fifteen
             Instance = this;
             base.Awake();
         }
-
-        // protected override void SetupManagers()
-        // {
-        //     cameraController.SetupCamera(boxes.Length);
-        //     levelSpawner.SpawnLevel();
-        //     winConditionChecker.Initialize(boxes);
-        // }
 
         public void SwapBoxes(int x, int y, int xDirection, int yDirection)
         {

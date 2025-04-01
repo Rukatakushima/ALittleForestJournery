@@ -4,43 +4,26 @@ using UnityEngine;
 
 namespace Pipes
 {
-    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
+    public class GameManager : BaseGameManager
     {
         public static GameManager Instance;
         public LevelData level { get; private set; }
 
         public Pipe[,] pipes { get; private set; }
-        private List<Pipe> startPipes;
         private FillChecker fillChecker;
 
         protected override void Awake()
         {
             Instance = this;
             base.Awake();
-            fillChecker = new FillChecker(pipes, startPipes);
             StartCoroutine(ShowHint());
         }
-
-        // protected override void SetupManagers()
-        // {
-        //     cameraController.SetupCamera(Mathf.Max(level.Row, level.Col));
-
-        //     // levelSpawner.Initialize(level, pipes);
-        //     levelSpawner.SpawnLevel();
-
-        //     winConditionChecker.Initialize(level, pipes);
-
-        //     fillChecker = new FillChecker(pipes, startPipes);
-
-        //     StartCoroutine(ShowHint());
-        // }
 
         public void Initialize(LevelData level, List<Pipe> startPipes, Pipe[,] pipes)
         {
             this.level = level;
-            this.startPipes = startPipes;
+            fillChecker = new FillChecker(pipes, startPipes);
             this.pipes = pipes;
-            // levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)

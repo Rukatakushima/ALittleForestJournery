@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34cfbf755fa58dd468d2dea3a204bf25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: {fileID: 11400000, guid: b71926f9d33b9674681c12c6b8b211be, type: 2}
   OnLevelSpawned:
     m_PersistentCalls:
       m_Calls:
@@ -238,8 +239,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  level: {fileID: 0}
-  shuffleTimes: 2
   boxPrefab: {fileID: 6729374824278753814, guid: 0f262f55f57cbd5479ff9d385a586f5c, type: 3}
   sprites:
   - {fileID: 95456177, guid: 3b34e3741747cee48a62d52a71c92abe, type: 3}

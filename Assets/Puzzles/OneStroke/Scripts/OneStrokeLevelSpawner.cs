@@ -5,8 +5,6 @@ namespace OneStroke
 {
     public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
-        // private LevelData level;
-
         [SerializeField] private Point pointPrefab;
         [SerializeField] private Edge edgePrefab;
         private Dictionary<int, Point> points;
@@ -18,6 +16,8 @@ namespace OneStroke
         {
             SpawnPoints();
             SpawnEdges();
+
+            GameManager.Instance.Initialize(edges);
             OnLevelSpawned?.Invoke();
         }
 
@@ -50,9 +50,6 @@ namespace OneStroke
 
                 spawnEdge.SetEmptyEdge(points[normalEdge.x].Position, points[normalEdge.y].Position);
             }
-
-            GameManager.Instance.Initialize(edges);
-            // OnLevelSpawned?.Invoke();
         }
     }
 }

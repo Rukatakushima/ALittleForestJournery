@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Escape
 {
-    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
+    public class GameManager : BaseGameManager
     {
         public static GameManager Instance;
         public LevelData level { get; private set; }
@@ -21,22 +21,11 @@ namespace Escape
             base.Awake();
         }
 
-        // protected override void SetupManagers()
-        // {
-        //     cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
-
-        //     // levelSpawner.Initialize(level);
-        //     levelSpawner.SpawnLevel();
-
-        //     winConditionChecker.Initialize(winPiece, level.Columns);
-        // }
-
         public void Initialize(LevelData level, GamePiece winPiece, List<GamePiece> gamePieces)
         {
             this.level = level;
             this.winPiece = winPiece;
             this.gamePieces = gamePieces;
-            // levelSpawner.OnLevelSpawned?.Invoke();
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -60,8 +49,6 @@ namespace Escape
                 currentPosition = mousePosition;
                 Vector2 offset = currentPosition - previousPosition;
                 offsets.Add(offset);
-
-                // bool isMovingOpposite = IsMovingOpposite();
 
                 if (currentPiece.IsVertical)
                 {
@@ -146,8 +133,7 @@ namespace Escape
             for (int i = 0; i < currentPiece.Size; i++)
             {
                 piecePos.Add(pieceGridPos +
-                    (currentPiece.IsVertical ? Vector2Int.right : Vector2Int.up) * i
-);
+                    (currentPiece.IsVertical ? Vector2Int.right : Vector2Int.up) * i);
             }
 
             foreach (var pos in piecePos)
@@ -166,11 +152,10 @@ namespace Escape
             {
                 result += offsets[i];
             }
+
             float val = currentPiece.IsVertical ? result.y : result.x;
             if (Mathf.Abs(val) > 0.2f)
-            {
                 return val < 0;
-            }
 
             return true;
         }

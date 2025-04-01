@@ -3,14 +3,13 @@ using UnityEngine;
 
 namespace Connect
 {
-    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
+    public class GameManager : BaseGameManager
     {
         public static GameManager Instance;
 
-        public List<Node> nodes { get; private set; }
-        public Dictionary<Vector2Int, Node> nodeGrid;
-        public List<Color> NodeColors;
         private Node startNode;
+        public List<Node> nodes { get; private set; }
+        public List<Color> NodeColors;
 
         protected override void Awake()
         {
@@ -18,22 +17,7 @@ namespace Connect
             base.Awake();
         }
 
-        // protected override void SetupManagers()
-        // {
-        //     cameraController.SetupCamera(levelSize);
-
-        //     levelSpawner.Initialize(levelSize);
-        //     levelSpawner.SpawnLevel();
-
-        //     winConditionChecker.Initialize(nodes);
-        // }
-
-        public void Initialize(List<Node> nodes, Dictionary<Vector2Int, Node> nodeGrid)
-        {
-            this.nodes = nodes;
-            this.nodeGrid = nodeGrid;
-            // levelSpawner.OnLevelSpawned?.Invoke();
-        }
+        public void Initialize(List<Node> nodes) => this.nodes = nodes;
 
         protected override void HandleInputStart(Vector2 mousePosition) => startNode = null;
 
@@ -69,10 +53,7 @@ namespace Connect
             foreach (var item in nodes)
             {
                 IsWinning &= item.IsWin;
-                if (!IsWinning)
-                {
-                    return;
-                }
+                if (!IsWinning) return;
             }
 
             OnWin?.Invoke();

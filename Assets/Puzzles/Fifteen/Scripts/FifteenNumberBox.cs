@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Fifteen
 {
@@ -12,8 +11,6 @@ namespace Fifteen
         public bool isEmpty() => index == GameManager.Instance.boxes.Length;
         public Vector3 rightPosition;
         public bool isInCorrectPosition = false;
-
-        // public UnityEvent winCheck;
 
         public void Init(int i, int j, int index, Sprite sprite)
         {
@@ -52,7 +49,6 @@ namespace Fifteen
 
             gameObject.transform.position = endPosition;
             UpdateCorrectPosition();
-            // winCheck?.Invoke();
             GameManager.Instance.CheckWinCondition();
         }
 
@@ -64,22 +60,16 @@ namespace Fifteen
             int yDirection = GetDirectionY();
 
             if (xDirection != 0 || yDirection != 0)
-            {
                 GameManager.Instance.SwapBoxes(x, y, xDirection, yDirection);
-            }
         }
 
         private int GetDirectionX()
         {
             if ((x < 3) && GameManager.Instance.boxes[x + 1, y].isEmpty())
-            {
                 return 1;
-            }
 
             if ((x > 0) && GameManager.Instance.boxes[x - 1, y].isEmpty())
-            {
                 return -1;
-            }
 
             return 0;
         }
@@ -87,14 +77,10 @@ namespace Fifteen
         private int GetDirectionY()
         {
             if (y < 3 && GameManager.Instance.boxes[x, y + 1].isEmpty())
-            {
                 return 1;
-            }
 
             if (y > 0 && GameManager.Instance.boxes[x, y - 1].isEmpty())
-            {
                 return -1;
-            }
 
             return 0;
         }

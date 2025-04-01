@@ -3,13 +3,11 @@ using UnityEngine;
 
 namespace OneStroke
 {
-    public class GameManager : BaseGameManager/*<LevelSpawner, DefaultCameraController, WinConditionChecker, LevelData>*/
+    public class GameManager : BaseGameManager
     {
         public static GameManager Instance;
-        // private LevelData level;
 
         [SerializeField] private Edge mainEdge;
-
         public Dictionary<Vector2Int, Edge> edges { get; private set; }
         private Point startPoint, endPoint;
         private Vector2 previousHit;
@@ -23,16 +21,6 @@ namespace OneStroke
             base.Awake();
         }
 
-        // protected override void SetupManagers()
-        // {
-        //     cameraController.SetupCamera(Mathf.Max(level.Columns, level.Rows));
-
-        //     levelSpawner.Initialize(level);
-        //     levelSpawner.SpawnLevel();
-
-        //     winConditionChecker.Initialize(edges);
-        // }
-
         public void Initialize(Dictionary<Vector2Int, Edge> edges) => this.edges = edges;
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -44,13 +32,9 @@ namespace OneStroke
             if (!startPoint) return;
 
             if (currentId == startId || (Vector2)hit.transform.position == previousHit)
-            {
                 mainEdge.SetFilledGradient();
-            }
             else
-            {
                 mainEdge.SetWrongGradient();
-            }
 
             mainEdge.SetStartHighlight(startPoint.Position);
         }
@@ -60,19 +44,13 @@ namespace OneStroke
             if (!startPoint) return;
 
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-            if (hit)
-            {
-                endPoint = hit.collider.gameObject.GetComponent<Point>();
-            }
+            if (hit) endPoint = hit.collider.gameObject.GetComponent<Point>();
 
             mainEdge.SetEndPosition(mousePosition);
 
             if (startPoint == endPoint || endPoint == null) return;
 
-            if (IsStartFilled())
-            {
-                FillEdge();
-            }
+            if (IsStartFilled()) FillEdge();
             else if (IsEndFilled())
             {
                 FillEdge();
@@ -113,9 +91,8 @@ namespace OneStroke
 
             Vector2Int edgeId = new Vector2Int(endPoint.Id, startPoint.Id);
             if (edges.TryGetValue(edgeId, out Edge result))
-            {
                 return result != null && !result.IsFilled;
-            }
+
             return false;
         }
 
@@ -125,10 +102,7 @@ namespace OneStroke
 
             foreach (var item in edges)
             {
-                if (!item.Value.IsFilled)
-                {
-                    return;
-                }
+                if (!item.Value.IsFilled) return;
             }
 
             OnWin?.Invoke();

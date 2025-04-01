@@ -5,17 +5,12 @@ namespace Escape
 {
     public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
-        // private LevelData level;
         private GamePiece winPiece;
         [SerializeField] private SpriteRenderer backgroundPrefab;
         [SerializeField] private GamePiece blockPiecePrefab;
         [SerializeField] private GamePiece mainPiecePrefab;
         private List<GamePiece> gamePieces;
-
-        // public void Initialize(LevelData level)
-        // {
-        //     this.level = level;
-        // }
+        [SerializeField] private float offsetPosition = 0.5f;
 
         public override void SpawnLevel()
         {
@@ -33,16 +28,13 @@ namespace Escape
         {
             SpriteRenderer bg = Instantiate(backgroundPrefab);
             bg.size = new Vector2(level.Columns, level.Rows);
-            bg.transform.position = new Vector3(level.Columns, level.Rows, 0) * 0.5f;
+            bg.transform.position = new Vector2(level.Columns, level.Rows) * offsetPosition;
         }
 
         private void SpawnWinPiece()
         {
             winPiece = Instantiate(mainPiecePrefab);
-            Vector3 spawnPos = new Vector3(
-                level.WinPiece.Start.y + 0.5f,
-                level.WinPiece.Start.x + 0.5f,
-                0);
+            Vector2 spawnPos = new Vector2(level.WinPiece.Start.y + winPiece.offsetPosition, level.WinPiece.Start.x + winPiece.offsetPosition);
             winPiece.transform.position = spawnPos;
             winPiece.Init(level.WinPiece);
             gamePieces.Add(winPiece);
@@ -53,10 +45,7 @@ namespace Escape
             foreach (var piece in level.Pieces)
             {
                 GamePiece temp = Instantiate(blockPiecePrefab);
-                Vector3 spawnPos = new Vector3(
-                    piece.Start.y + 0.5f,
-                    piece.Start.x + 0.5f, 0
-                    );
+                Vector2 spawnPos = new Vector2(piece.Start.y + temp.offsetPosition, piece.Start.x + temp.offsetPosition);
                 temp.transform.position = spawnPos;
                 temp.Init(piece);
                 gamePieces.Add(temp);

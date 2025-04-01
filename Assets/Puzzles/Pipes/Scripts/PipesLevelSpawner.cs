@@ -6,14 +6,7 @@ namespace Pipes
     public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
         [SerializeField] private Pipe cellPrefab;
-        // private LevelData level;
         private Pipe[,] pipes;
-
-        // public void Initialize(LevelData level, Pipe[,] pipes)
-        // {
-        //     this.level = level;
-        //     this.pipes = pipes;
-        // }
 
         public override void SpawnLevel()
         {

@@ -5,7 +5,6 @@ namespace Fifteen
 {
     public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
-        [SerializeField] private int shuffleTimes = 6;
         private int maxSize = 4;
         private int minSize = 0;
         private Vector2 lastPosition;
@@ -38,19 +37,17 @@ namespace Fifteen
                     {
                         Box box = boxPrefabObjectPool.GetFromPool();
                         box.gameObject.transform.position = new Vector2(i, j);
-                        box.Init(i, j, index + 1, sprites[index]);//, GameManager.Instance.swapFunc
+                        box.Init(i, j, index + 1, sprites[index]);
                         GameManager.Instance.boxes[i, j] = box;
                         index++;
                     }
                 }
             }
-
-            // OnLevelSpawned?.Invoke();
         }
 
         private void ShuffleLevel()
         {
-            for (int i = 0; i < shuffleTimes; i++)
+            for (int i = 0; i < level.shuffleTimes; i++)
             {
                 Shuffle();
             }
@@ -95,7 +92,6 @@ namespace Fifteen
                         break;
                 }
             } while (!(IsValidRange(x + (int)position.x) && IsValidRange(y + (int)position.y)) || IsOppositePosition(position));
-            // does not exceed the acceptable range
 
             lastPosition = position;
             return position;

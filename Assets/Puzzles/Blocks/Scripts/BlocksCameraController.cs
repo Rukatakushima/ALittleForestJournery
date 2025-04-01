@@ -7,7 +7,7 @@ namespace Blocks
         [SerializeField] public float backgroundCellPositionRate { get; private set; } = 0.5f;
         [SerializeField] private float rowsOffset = 2f;
 
-        public void SetupCamera(/*LevelData level, float blockSpawnSize, float blockRows, float blockColumns*/)
+        public void SetupCamera()
         {
             LevelData level = GameManager.Instance.level;
             float blockSpawnSize = GameManager.Instance.defaultBlockSize;

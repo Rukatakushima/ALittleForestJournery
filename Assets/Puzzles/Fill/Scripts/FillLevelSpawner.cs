@@ -6,9 +6,6 @@ namespace Fill
 {
     public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
-        // private LevelData level;
-
-        // private Cell[,] cells;
         private List<Vector2Int> filledPoints;
         private List<Transform> edges;
         private Cell[,] cells;
@@ -26,12 +23,6 @@ namespace Fill
         public void ReturnAction(Transform edgePrefab) => edgePrefab.gameObject.SetActive(false);
         public PoolBase<Transform> edgePrefabObjectPool;
         [SerializeField] private int edgePrefabPreloadCount = 8;
-
-        // public void Initialize(LevelData level, Cell[,] cells)
-        // {
-        //     this.level = level;
-        //     this.cells = cells;
-        // }
 
         public override void SpawnLevel()
         {
