@@ -22,7 +22,7 @@ public class Quests : MonoBehaviour
         item.Hide();
         itemsPickedUp++;
 
-        if (itemsPickedUp == requiredItemsCount && IsValidDialogueID(specialDialogueID))
+        if (itemsPickedUp == requiredItemsCount)
         {
             StartQuestDialogue(specialDialogueID);
             return;
@@ -31,14 +31,9 @@ public class Quests : MonoBehaviour
         StartQuestDialogue(item.ID);
     }
 
-    private bool IsValidDialogueID(int id) => id >= 0 && id < DialogueManager.Instance.DialoguesCount;
-
     public void StartQuestDialogue(int dialogueID)
     {
-        if (IsValidDialogueID(dialogueID))
-        {
-            startQuestDialogueEvent?.Invoke();
-            DialogueManager.Instance.StartDialogue(dialogueID);
-        }
+        DialogueManager.Instance.StartDialogue(dialogueID);
+        startQuestDialogueEvent?.Invoke();
     }
 }

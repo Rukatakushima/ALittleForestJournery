@@ -16,43 +16,23 @@ MonoBehaviour:
   TypingSpeeds: {fileID: 11400000, guid: 3bdb9f79215c3664aa820e9a21b82bae, type: 2}
   dialogues:
   - ID: 0
-    IsRead: 0
-    Sentences:
+    IsRead: 1
+    DialogueLines:
     - Speaker:
         Name: Tox
-        Transform: {fileID: 0}
-      Speed: 10
-      Text: HIIIIIIIIIIIIIIIIII
-    - Speaker:
-        Name: Blait
-        Transform: {fileID: 0}
-      Speed: 15
-      Text: Okay, hello, this is number zero dialogue
-    - Speaker:
-        Name: Tox
-        Transform: {fileID: 0}
-      Speed: 15
-      Text: GOT IIIIT
-    - Speaker:
-        Name: Tox
-        Transform: {fileID: 0}
-      Speed: 10
-      Text: I wonder if we'd have our individual fonts
-    - Speaker:
-        Name: Blait
         Transform: {fileID: 0}
       Speed: 5
-      Text: You'll add more work to this....
+      Text: HI
+    - Speaker:
+        Name: Blait
+        Transform: {fileID: 0}
+      Speed: 1
+      Text: Bye
   - ID: 1
-    IsRead: 0
-    Sentences:
-    - Speaker:
-        Name: Blait
-        Transform: {fileID: 0}
-      Speed: 5
-      Text: Yep
+    IsRead: 1
+    DialogueLines:
     - Speaker:
         Name: 
         Transform: {fileID: 0}
-      Speed: 1
-      Text: 'Oups... Unnamed speaker is talking '
+      Speed: 15
+      Text: Unnamed Speaker talks

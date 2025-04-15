@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using static DialogueSpeakers;
+using UnityEngine.Events;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -13,27 +16,27 @@ public class DialogueData : ScriptableObject
     [SerializeField] private TypingSpeeds TypingSpeeds;
     public List<Dialogue> dialogues;
 
-    public List<Speaker> AvailableSpeakers => Characters?.availableSpeakers ?? new List<Speaker>();
-    public List<float> AvailableSpeeds => TypingSpeeds?.availableSpeeds ?? new List<float> { 1f };
-
     [System.Serializable]
     public class Dialogue
     {
         public int ID;
         public bool IsRead;
-        public List<Sentence> Sentences;
+        public List<DialogueLine> DialogueLines;
+        public UnityEvent/*<int>*/ OnDialogueEnded;
+
+        public void ActiveEndDialogueEvent() => OnDialogueEnded?.Invoke();
+        // public void EndDialogue() => OnDialogueEnded?.Invoke(ID);
     }
 
     [System.Serializable]
-    public class Sentence
+    public class DialogueLine
     {
-        [ValueDropdown("GetAvailableSpeakers")]
-        public Speaker Speaker;
-
-        [ValueDropdown("GetAvailableSpeeds")]
-        public float Speed = 1f;
-
+        [ValueDropdown("GetAvailableSpeakers")] public Speaker Speaker;
+        [ValueDropdown("GetAvailableSpeeds")] public float Speed = 1f;
         [TextArea] public string Text;
+        public UnityEvent<DialogueLine> OnDialogueLineActive;
+
+        public void ActiveDialogueLineEvent() => OnDialogueLineActive?.Invoke(this);
 
 #if UNITY_EDITOR
         private List<Speaker> GetAvailableSpeakers()
@@ -42,7 +45,6 @@ public class DialogueData : ScriptableObject
             var data = AssetDatabase.LoadAssetAtPath<DialogueData>(path);
             return data?.AvailableSpeakers ?? new List<Speaker>();
         }
-
         private List<float> GetAvailableSpeeds()
         {
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
@@ -51,4 +53,7 @@ public class DialogueData : ScriptableObject
         }
 #endif
     }
+
+    public List<Speaker> AvailableSpeakers => Characters?.availableSpeakers ?? new List<Speaker>();
+    public List<float> AvailableSpeeds => TypingSpeeds?.availableSpeeds ?? new List<float> { 1f };
 }

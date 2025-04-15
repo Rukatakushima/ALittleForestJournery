@@ -33,11 +33,20 @@ public class DialogueView : MonoBehaviour
 
     public void CloseDialogueBox() => boxToggler?.SetActive(false);
 
-    public void UpdateView(string name)
+    public void UpdateDialogueBox(string name, Transform speakerPosition)
     {
+        // UpdateView(name);
+        
         nameText.text = string.IsNullOrEmpty(name) ? MISSING_NAME : name;
         SetDialogueText(string.Empty);
+        UpdateDialoguePosition(speakerPosition);
     }
+
+    // public void UpdateView(string name)
+    // {
+    //     nameText.text = string.IsNullOrEmpty(name) ? MISSING_NAME : name;
+    //     SetDialogueText(string.Empty);
+    // }
 
     public void SetDialogueText(string text)
     {
