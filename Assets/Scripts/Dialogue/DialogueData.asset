@@ -23,24 +23,28 @@ MonoBehaviour:
         CharacterID: Tox
       Speed: 5
       Text: HI
+      Sentences: []
     - Speaker:
         Name: Blait
         CharacterID: Blait
       Speed: 5
       Text: Bye
+      Sentences: []
   - ID: 1
     IsRead: 1
     DialogueLines:
     - Speaker:
-        Name: 
-        CharacterID: 
+        Name: Unknown NPC
+        CharacterID: NPC_1
       Speed: 15
       Text: Unnamed Speaker talks
+      Sentences: []
   - ID: 4
-    IsRead: 0
+    IsRead: 1
     DialogueLines:
     - Speaker:
         Name: Unknown NPC
         CharacterID: NPC_1
       Speed: 1
       Text: 
+      Sentences: []

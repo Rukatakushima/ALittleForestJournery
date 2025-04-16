@@ -12,11 +12,13 @@ public class DialogueManager : MonoBehaviour
     private List<Dialogue> CurrentDialogues;
     public int DialoguesCount => CurrentDialogues.Count;
     private List<DialogueLine> currentDialogueLines;
+    private DialogueLine currentDialogueLine;
     private int currentDialogueLineIndex;
+    [SerializeField] private int currentSentenceIndex;
 
     [Header("Events")]
     public UnityEvent OnDialogueStarted;
-    public UnityEvent<DialogueLine> OnDialogueLineActive;
+    public UnityEvent<DialogueLine, int> OnDialogueLineActive;
     public UnityEvent OnDialogueEnded;
 
     private void Awake()
@@ -39,39 +41,59 @@ public class DialogueManager : MonoBehaviour
     {
         if (!TryGetDialogue(dialogueID, out Dialogue dialogue)) return;
 
-        PrepareDialogue(dialogue);
+        StartDialogueLine(currentDialogueLines[currentDialogueLineIndex]);
         OnDialogueStarted?.Invoke();
-        StartDialogueLine(currentDialogueLines[0]);
+        dialogue.IsRead = true;
     }
 
     private bool TryGetDialogue(int id, out Dialogue dialogue)
     {
         dialogue = CurrentDialogues.Find(d => d.ID == id);
-        bool isValid = dialogue != null && dialogue.DialogueLines?.Count > 0;
-        if (!isValid) Debug.LogWarning($"Dialogue {id} not found or empty");
-        return isValid;
-    }
 
-    private void PrepareDialogue(Dialogue dialogue)
-    {
-        currentDialogueLines = dialogue.DialogueLines;
-        currentDialogueLineIndex = 0;
-        dialogue.IsRead = true;
+        bool isValid = dialogue != null && dialogue.DialogueLines?.Count > 0;
+        if (isValid)
+        {
+            currentDialogueLines = dialogue.DialogueLines;
+            currentDialogueLineIndex = 0;
+
+            isValid = !(currentDialogueLines[currentDialogueLineIndex].Sentences.Count <= 0 || currentSentenceIndex > currentDialogueLines[currentDialogueLineIndex].Sentences.Count);
+        }
+
+        if (!isValid) Debug.LogWarning($"Dialogue {id} not found or empty or Sentence is out of array");
+
+        return isValid;
     }
 
     private void StartDialogueLine(DialogueLine dialogueLine)
     {
         if (dialogueLine == null) return;
 
-        OnDialogueLineActive?.Invoke(dialogueLine);
+        currentDialogueLine = dialogueLine;
+        currentSentenceIndex = 0;
+        OnDialogueLineActive?.Invoke(dialogueLine, currentSentenceIndex);
     }
 
     public void NextDialogueLine()
     {
-        if (++currentDialogueLineIndex < currentDialogueLines.Count)
-            StartDialogueLine(currentDialogueLines[currentDialogueLineIndex]);
+        currentSentenceIndex++;
+
+        if (currentDialogueLine == null ||
+            currentSentenceIndex >= currentDialogueLine.Sentences.Count)
+        {
+            if (++currentDialogueLineIndex < currentDialogueLines.Count)
+            {
+                currentSentenceIndex = 0;
+                StartDialogueLine(currentDialogueLines[currentDialogueLineIndex]);
+            }
+            else
+            {
+                EndDialogue();
+            }
+        }
         else
-            EndDialogue();
+        {
+            OnDialogueLineActive?.Invoke(currentDialogueLine, currentSentenceIndex);
+        }
     }
 
     public void EndDialogue()

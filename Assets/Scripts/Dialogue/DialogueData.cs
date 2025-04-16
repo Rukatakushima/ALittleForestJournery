@@ -28,8 +28,8 @@ public class DialogueData : ScriptableObject
     {
         [ValueDropdown("GetAvailableSpeakers")] public Speaker Speaker;
         [ValueDropdown("GetAvailableSpeeds")] public float Speed = 1f;
-        [TextArea] public string Text;
-        [TextArea] public List<string> Sentences;
+
+        [TextArea(1, 3)] public List<string> Sentences = new();
 
 #if UNITY_EDITOR
         private List<Speaker> GetAvailableSpeakers()

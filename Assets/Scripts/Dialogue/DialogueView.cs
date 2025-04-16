@@ -46,16 +46,17 @@ public class DialogueView : MonoBehaviour
     //     boxToggler?.SetActive(isVisible);
     // }
 
-    public void UpdateDialogueBox(DialogueLine dialogueLine)
+    public void UpdateDialogueBox(DialogueLine dialogueLine, int sentenceIndex)
     {
         StopTyping();
 
-        nameText.text = string.IsNullOrEmpty(dialogueLine.Speaker.Name) ? MISSING_NAME : dialogueLine.Speaker.Name;
+        nameText.text = string.IsNullOrEmpty(dialogueLine.Speaker.Name) ?
+            MISSING_NAME : dialogueLine.Speaker.Name;
 
         var speakerTransform = characterRegistry?.GetCharacterTransform(dialogueLine.Speaker.CharacterID);
         UpdateDialoguePosition(speakerTransform);
 
-        typingCoroutine = StartCoroutine(TypeSentence(dialogueLine.Text, dialogueLine.Speed));
+        typingCoroutine = StartCoroutine(TypeSentence(dialogueLine.Sentences[sentenceIndex], dialogueLine.Speed));
     }
 
     public void SetDialogueText(string text)
