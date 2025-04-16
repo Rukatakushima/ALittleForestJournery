@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableSpeakers:
   - Name: Tox
-    Transform: {fileID: 0}
+    CharacterID: Tox
   - Name: Blait
-    Transform: {fileID: 0}
+    CharacterID: Blait
+  - Name: NPC
+    CharacterID: NPC_1
+  - Name: Unknown NPC
+    CharacterID: NPC_1

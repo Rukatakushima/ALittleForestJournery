@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class AnimatorToggler : RequireTarget<Animator>
 {
     [SerializeField] private string boolParameterName;

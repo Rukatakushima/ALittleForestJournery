@@ -19,20 +19,28 @@ MonoBehaviour:
     IsRead: 1
     DialogueLines:
     - Speaker:
-        Name: Tox
-        Transform: {fileID: 0}
+        Name: Tox11111
+        CharacterID: Tox
       Speed: 5
       Text: HI
     - Speaker:
         Name: Blait
-        Transform: {fileID: 0}
-      Speed: 1
+        CharacterID: Blait
+      Speed: 5
       Text: Bye
   - ID: 1
     IsRead: 1
     DialogueLines:
     - Speaker:
         Name: 
-        Transform: {fileID: 0}
+        CharacterID: 
       Speed: 15
       Text: Unnamed Speaker talks
+  - ID: 4
+    IsRead: 0
+    DialogueLines:
+    - Speaker:
+        Name: Unknown NPC
+        CharacterID: NPC_1
+      Speed: 1
+      Text: 

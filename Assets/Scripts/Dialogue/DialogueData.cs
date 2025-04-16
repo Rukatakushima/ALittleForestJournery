@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using static DialogueSpeakers;
 using UnityEngine.Events;
-
+using static DialogueSpeakers;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,12 +19,8 @@ public class DialogueData : ScriptableObject
     public class Dialogue
     {
         public int ID;
-        public bool IsRead;
+        public bool IsRead = false;
         public List<DialogueLine> DialogueLines;
-        public UnityEvent/*<int>*/ OnDialogueEnded;
-
-        public void ActiveEndDialogueEvent() => OnDialogueEnded?.Invoke();
-        // public void EndDialogue() => OnDialogueEnded?.Invoke(ID);
     }
 
     [System.Serializable]
@@ -34,9 +29,7 @@ public class DialogueData : ScriptableObject
         [ValueDropdown("GetAvailableSpeakers")] public Speaker Speaker;
         [ValueDropdown("GetAvailableSpeeds")] public float Speed = 1f;
         [TextArea] public string Text;
-        public UnityEvent<DialogueLine> OnDialogueLineActive;
-
-        public void ActiveDialogueLineEvent() => OnDialogueLineActive?.Invoke(this);
+        [TextArea] public List<string> Sentences;
 
 #if UNITY_EDITOR
         private List<Speaker> GetAvailableSpeakers()

@@ -1,12 +1,16 @@
+using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using static DialogueData;
 
 public class DialogueView : MonoBehaviour
 {
+    [SerializeField] private DialogueManager dialogueManager;
+    [SerializeField] private CharacterRegistry characterRegistry;
     private Camera mainCamera;
-    [SerializeField] private AnimatorToggler buttonToggler;
-    private AnimatorToggler boxToggler;
+    // [SerializeField] private AnimatorToggler buttonToggler;
+    // private AnimatorToggler boxToggler;
     [SerializeField] private RectTransform dialogueBox;
     [SerializeField] private TextMeshProUGUI nameText;
     private const string MISSING_NAME = "???";
@@ -16,37 +20,43 @@ public class DialogueView : MonoBehaviour
     [SerializeField] private Vector2 dialogueOffset = new Vector2(0, 115f);
     [SerializeField] private float screenMargin = 0.22f;
     private Vector2 screenSize;
+    private Coroutine typingCoroutine;
 
     private void Awake()
     {
-        boxToggler = dialogueBox.gameObject.GetComponent<AnimatorToggler>();
         mainCamera = Camera.main;
+        // boxToggler = dialogueBox.gameObject.GetComponent<AnimatorToggler>();
+
+        dialogueManager ??= DialogueManager.Instance;
+        if (dialogueManager != null)
+            dialogueManager.OnDialogueLineActive.AddListener(UpdateDialogueBox);
+        else
+            Debug.LogWarning("DialogueManager is not found");
+
+        characterRegistry ??= FindObjectOfType<CharacterRegistry>();
+        if (characterRegistry == null)
+            Debug.LogError("CharacterRegistry not found!");
     }
 
     private void Start() => screenSize = new Vector2(Screen.width, Screen.height);
 
-    public void ToggleDialogueBox(bool isVisible)
-    {
-        buttonToggler?.SetActive(!isVisible);
-        boxToggler?.SetActive(isVisible);
-    }
-
-    public void CloseDialogueBox() => boxToggler?.SetActive(false);
-
-    public void UpdateDialogueBox(string name, Transform speakerPosition)
-    {
-        // UpdateView(name);
-        
-        nameText.text = string.IsNullOrEmpty(name) ? MISSING_NAME : name;
-        SetDialogueText(string.Empty);
-        UpdateDialoguePosition(speakerPosition);
-    }
-
-    // public void UpdateView(string name)
+    // public void ToggleDialogueBox(bool isVisible)
     // {
-    //     nameText.text = string.IsNullOrEmpty(name) ? MISSING_NAME : name;
-    //     SetDialogueText(string.Empty);
+    //     buttonToggler?.SetActive(!isVisible);
+    //     boxToggler?.SetActive(isVisible);
     // }
+
+    public void UpdateDialogueBox(DialogueLine dialogueLine)
+    {
+        StopTyping();
+
+        nameText.text = string.IsNullOrEmpty(dialogueLine.Speaker.Name) ? MISSING_NAME : dialogueLine.Speaker.Name;
+
+        var speakerTransform = characterRegistry?.GetCharacterTransform(dialogueLine.Speaker.CharacterID);
+        UpdateDialoguePosition(speakerTransform);
+
+        typingCoroutine = StartCoroutine(TypeSentence(dialogueLine.Text, dialogueLine.Speed));
+    }
 
     public void SetDialogueText(string text)
     {
@@ -76,5 +86,27 @@ public class DialogueView : MonoBehaviour
         Vector2 max = screenSize - min;
 
         return new Vector2(Mathf.Clamp(position.x, min.x, max.x), Mathf.Clamp(position.y, min.y, max.y));
+    }
+
+    private IEnumerator TypeSentence(string text, float speed)
+    {
+        var waitTime = new WaitForSecondsRealtime(Time.deltaTime * speed);
+
+        for (int i = 0; i < text.Length; i++)
+        {
+            SetDialogueText(text.Substring(0, i + 1));
+            yield return waitTime;
+        }
+
+        typingCoroutine = null;
+    }
+
+    private void StopTyping()
+    {
+        if (typingCoroutine == null) return;
+
+        StopCoroutine(typingCoroutine);
+        typingCoroutine = null;
+        SetDialogueText(string.Empty);
     }
 }

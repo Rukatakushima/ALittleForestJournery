@@ -350,6 +350,7 @@ GameObject:
   - component: {fileID: 4350373793597104293}
   - component: {fileID: 1388824472519695035}
   - component: {fileID: 1942846790826719279}
+  - component: {fileID: 3977199034213159116}
   m_Layer: 0
   m_Name: Blait
   m_TagString: Player
@@ -493,6 +494,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3977199034213159116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5085252597534009814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9b2eded980bad44c8d9b9575213a4bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterID: Blait
 --- !u!1 &5293453623983140883
 GameObject:
   m_ObjectHideFlags: 0

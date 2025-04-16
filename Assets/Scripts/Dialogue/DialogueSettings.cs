@@ -8,9 +8,7 @@ public class DialogueSpeakers : ScriptableObject
     public class Speaker
     {
         public string Name;
-        public Transform Transform;
-
-        public override string ToString() => string.IsNullOrEmpty(Name) ? "Unnamed Speaker" : Name;
+        public string CharacterID;
     }
 
     public List<Speaker> availableSpeakers = new List<Speaker>();
