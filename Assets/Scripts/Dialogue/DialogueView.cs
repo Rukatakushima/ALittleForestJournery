@@ -50,10 +50,10 @@ public class DialogueView : MonoBehaviour
     {
         StopTyping();
 
-        nameText.text = string.IsNullOrEmpty(dialogueLine.Speaker.Name) ?
-            MISSING_NAME : dialogueLine.Speaker.Name;
+        nameText.text = string.IsNullOrEmpty(dialogueLine.speaker.Name) ?
+            MISSING_NAME : dialogueLine.speaker.Name;
 
-        var speakerTransform = characterRegistry?.GetCharacterTransform(dialogueLine.Speaker.CharacterID);
+        var speakerTransform = characterRegistry?.GetCharacterTransform(dialogueLine.speaker.SpeakerID);
         UpdateDialoguePosition(speakerTransform);
 
         typingCoroutine = StartCoroutine(TypeSentence(dialogueLine.Sentences[sentenceIndex], dialogueLine.Speed));

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static DialogueSpeakers;
 
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -21,23 +22,45 @@ public class DialogueData : ScriptableObject
         public int ID;
         public bool IsRead = false;
         public List<DialogueLine> DialogueLines;
+        // public UnityEvent<int> OnDialogueEneded;
+
+        // public void EndDialogue()
+        // {
+        //     IsRead = false;
+        //     OnDialogueEneded?.Invoke(ID);
+        // }
     }
 
     [System.Serializable]
     public class DialogueLine
     {
-        [ValueDropdown("GetAvailableSpeakers")] public Speaker Speaker;
-        [ValueDropdown("GetAvailableSpeeds")] public float Speed = 1f;
-
+        [ValueDropdown("GetAvailableSpeakers")] public Speaker speaker;
+        [ValueDropdown("GetAvailableSpeeds")] public float Speed = 5f;
         [TextArea(1, 3)] public List<string> Sentences = new();
 
+
 #if UNITY_EDITOR
-        private List<Speaker> GetAvailableSpeakers()
+        private List<ValueDropdownItem> GetAvailableSpeakers()
         {
+            var speakers = new List<ValueDropdownItem>();
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
             var data = AssetDatabase.LoadAssetAtPath<DialogueData>(path);
-            return data?.AvailableSpeakers ?? new List<Speaker>();
+
+            if (data?.AvailableSpeakers != null)
+            {
+                foreach (var speaker in data.AvailableSpeakers)
+                {
+                    speakers.Add(new ValueDropdownItem(
+                        string.IsNullOrEmpty(speaker.Name) ?
+                            speaker.SpeakerID :
+                            $"{speaker.Name} ({speaker.SpeakerID})",
+                        speaker));
+                }
+            }
+
+            return speakers;
         }
+
         private List<float> GetAvailableSpeeds()
         {
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);

@@ -10,11 +10,11 @@ public class DialogueManager : MonoBehaviour
     [Header("Configuration")]
     [SerializeField] private DialogueData baseDialogueData;
     private List<Dialogue> CurrentDialogues;
-    public int DialoguesCount => CurrentDialogues.Count;
+    // public int DialoguesCount => CurrentDialogues.Count;
     private List<DialogueLine> currentDialogueLines;
     private DialogueLine currentDialogueLine;
     private int currentDialogueLineIndex;
-    [SerializeField] private int currentSentenceIndex;
+    private int currentSentenceIndex;
 
     [Header("Events")]
     public UnityEvent OnDialogueStarted;
