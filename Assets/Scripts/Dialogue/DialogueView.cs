@@ -9,8 +9,6 @@ public class DialogueView : MonoBehaviour
     [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] private CharacterRegistry characterRegistry;
     private Camera mainCamera;
-    // [SerializeField] private AnimatorToggler buttonToggler;
-    // private AnimatorToggler boxToggler;
     [SerializeField] private RectTransform dialogueBox;
     [SerializeField] private TextMeshProUGUI nameText;
     private const string MISSING_NAME = "???";
@@ -25,7 +23,6 @@ public class DialogueView : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
-        // boxToggler = dialogueBox.gameObject.GetComponent<AnimatorToggler>();
 
         dialogueManager ??= DialogueManager.Instance;
         if (dialogueManager != null)
@@ -40,24 +37,20 @@ public class DialogueView : MonoBehaviour
 
     private void Start() => screenSize = new Vector2(Screen.width, Screen.height);
 
-    // public void ToggleDialogueBox(bool isVisible)
-    // {
-    //     buttonToggler?.SetActive(!isVisible);
-    //     boxToggler?.SetActive(isVisible);
-    // }
-
     public void UpdateDialogueBox(DialogueLine dialogueLine, int sentenceIndex)
     {
         StopTyping();
 
-        nameText.text = string.IsNullOrEmpty(dialogueLine.speaker.Name) ?
-            MISSING_NAME : dialogueLine.speaker.Name;
+        SetDialogueName(dialogueLine.speaker.Name);
 
-        var speakerTransform = characterRegistry?.GetCharacterTransform(dialogueLine.speaker.SpeakerID);
+        var speakerTransform = !string.IsNullOrEmpty(dialogueLine.speaker.SpeakerID) ?
+            (characterRegistry?.GetCharacterTransform(dialogueLine.speaker.SpeakerID)) : null;
         UpdateDialoguePosition(speakerTransform);
 
         typingCoroutine = StartCoroutine(TypeSentence(dialogueLine.Sentences[sentenceIndex], dialogueLine.Speed));
     }
+
+    public void SetDialogueName(string name) => nameText.text = string.IsNullOrEmpty(name) ? MISSING_NAME : name;
 
     public void SetDialogueText(string text)
     {
@@ -66,13 +59,13 @@ public class DialogueView : MonoBehaviour
         dialogueText.text = textBuilder.ToString();
     }
 
-    public void UpdateDialoguePosition(Transform speakerTransform)
+    public void UpdateDialoguePosition(Transform transform)
     {
         if (dialogueBox == null || mainCamera == null) return;
 
-        if (speakerTransform != null)
+        if (transform != null)
         {
-            Vector2 screenPos = (Vector2)mainCamera.WorldToScreenPoint(speakerTransform.position) + dialogueOffset;
+            Vector2 screenPos = (Vector2)mainCamera.WorldToScreenPoint(transform.position) + dialogueOffset;
             dialogueBox.position = ClampPositionToScreen(screenPos);
         }
         else

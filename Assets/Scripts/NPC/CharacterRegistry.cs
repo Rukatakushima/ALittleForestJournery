@@ -33,5 +33,5 @@ public class CharacterRegistry : MonoBehaviour
             characters.Remove(characterID);
     }
 
-    public Transform GetCharacterTransform(string characterID) => characters.TryGetValue(characterID, out var transform) ? transform : null;
+    public Transform GetCharacterTransform(string characterID) => !string.IsNullOrEmpty(characterID) && characters.TryGetValue(characterID, out var transform) ? transform : null;
 }

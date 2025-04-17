@@ -7,23 +7,14 @@ public class Movement : MonoBehaviour
     private bool facingLeft = true;
     private bool canMoveForward = true;
     private bool isMoving = true;
-    private Animator animator;
-    // private GameObject player;
+    [SerializeField] private Animator animator;
     [SerializeField] private List<Vector2> wayPoints = new List<Vector2>();
     private int currentWaypointIndex = 0;
-
-    private void Start()
-    {
-        animator = GetComponent<Animator>();
-        // player = GameObject.FindGameObjectWithTag("Player");
-    }
 
     private void FixedUpdate()
     {
         if (isMoving)
-        {
             MoveTowardsCurrentWaypoint();
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -46,10 +37,7 @@ public class Movement : MonoBehaviour
 
     private void MoveTowardsCurrentWaypoint()
     {
-        if (wayPoints.Count == 0) // || currentWaypointIndex >= wayPoints.Count
-        {
-            return;
-        }
+        if (wayPoints.Count == 0) return;
 
         Vector2 targetPosition = wayPoints[currentWaypointIndex];
 
@@ -57,15 +45,10 @@ public class Movement : MonoBehaviour
         UpdateWalkingAnimation(true);
 
         if (Vector2.Distance((Vector2)transform.position, targetPosition) < 0.1f)
-        {
             UpdateWaypointIndex();
-        }
 
-        bool shouldFlip = (transform.position.x > targetPosition.x && !facingLeft) || (transform.position.x < targetPosition.x && facingLeft);
-        if (shouldFlip)
-        {
+        if ((transform.position.x > targetPosition.x && !facingLeft) || (transform.position.x < targetPosition.x && facingLeft))
             Flip();
-        }
     }
 
     private void UpdateWaypointIndex()
@@ -92,8 +75,5 @@ public class Movement : MonoBehaviour
         transform.localScale = scaler;
     }
 
-    private void UpdateWalkingAnimation(bool isWalking)
-    {
-        animator.SetBool("isWalking", isWalking);
-    }
+    private void UpdateWalkingAnimation(bool isWalking) => animator.SetBool("isWalking", isWalking);
 }

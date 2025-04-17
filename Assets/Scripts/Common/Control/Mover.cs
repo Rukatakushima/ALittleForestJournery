@@ -3,34 +3,18 @@ using UnityEngine;
 public class Mover : MonoBehaviour
 {
     [SerializeField] public float speed = 4;
-    [SerializeField] public float jumpForce;
     public Vector2 Velocity => rb.velocity;
-
-    // [SerializeField] private Transform feetPos;
-    // [SerializeField] private LayerMask whatIsGround;
-
     private Rigidbody2D rb;
-    private Animator anim;
+    [SerializeField] private Animator animator;
     public bool isFacingLeft = true;
 
-    // private bool isGrounded;
+    private void Awake() => rb = GetComponent<Rigidbody2D>();
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-    }
-
-    private void FixedUpdate()
-    {
-        Move(Input.GetAxis("Horizontal"));
-        // UpdateRunningAnimation();
-    }
+    private void FixedUpdate() => Move(Input.GetAxis("Horizontal"));
 
     public void Move(float moveInput)
     {
-        // float moveInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+        rb.velocity = new Vector2(moveInput * speed, Velocity.y);
 
         UpdateRunningAnimation();
 
@@ -39,19 +23,7 @@ public class Mover : MonoBehaviour
     }
 
 
-    public void UpdateRunningAnimation() => anim.SetBool("isWalking", Mathf.Abs(rb.velocity.x) > 0);
-
-
-    // private void UpdateAnimation()
-    // {
-    //     anim.SetBool("isRunning", Mathf.Abs(rb.velocity.x) > 0);
-    //     anim.SetBool("isJumping", !isGrounded);
-    // }
-
-    // private void CheckGrounded()
-    // {
-    //     isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-    // }
+    public void UpdateRunningAnimation() => animator.SetBool("isWalking", Mathf.Abs(rb.velocity.x) > 0);
 
     private void Flip()
     {

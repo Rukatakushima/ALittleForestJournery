@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableSpeakers:
   - Name: Tox
-    characterTag: {fileID: 5547869746139632044, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
+    SpeakerID: Tox
   - Name: Blait
-    characterTag: {fileID: 3977199034213159116, guid: 55135a7d816a51f4785abb479e3d9e61, type: 3}
+    SpeakerID: Blait
   - Name: NPC
-    characterTag: {fileID: 3977199034213159116, guid: 55135a7d816a51f4785abb479e3d9e61, type: 3}
+    SpeakerID: Blait
   - Name: Unknown NPC
-    characterTag: {fileID: 5547869746139632044, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
+    SpeakerID: 

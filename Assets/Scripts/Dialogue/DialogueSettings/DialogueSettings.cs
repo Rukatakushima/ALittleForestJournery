@@ -11,8 +11,8 @@ public class DialogueSpeakers : ScriptableObject
 public class Speaker
 {
     public string Name;
-    public CharacterTag characterTag;
-    public string SpeakerID => characterTag.CharacterID;
+    // public CharacterTag characterTag;
+    public string SpeakerID;// => if (characterTag!=null) ? characterTag.CharacterID : Name;
 
     // public override string ToString()
     // {

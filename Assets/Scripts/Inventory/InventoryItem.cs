@@ -4,7 +4,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class InventoryItem : BaseItem
 {
-    [SerializeField] private const float MAX_SPRITE_SIZE = 0.4f;
     private SceneItem linkedSceneItem;
 
     public void Initialize(int id, SceneItem sceneItem, Sprite sprite)
@@ -12,8 +11,9 @@ public class InventoryItem : BaseItem
         ID = id;
         linkedSceneItem = sceneItem;
 
-        GetComponent<Image>().sprite = sprite;
-        GetComponent<RectTransform>().localScale = MAX_SPRITE_SIZE * sprite.bounds.size;
+        Image image = GetComponent<Image>();
+        image.sprite = sprite;
+        image.SetNativeSize();
     }
 
     public override void Spawn()

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class AnimatorToggler : RequireTarget<Animator>
+public class AnimatorBoolController : RequireTarget<Animator>
 {
     [SerializeField] private string boolParameterName;
     [SerializeField] public bool IsActive { get; private set; } = false;
