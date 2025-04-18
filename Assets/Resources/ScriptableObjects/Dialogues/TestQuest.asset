@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Characters: {fileID: 11400000, guid: 00cfcd3992b7f944986e08bf5fdeea98, type: 2}
   TypingSpeeds: {fileID: 11400000, guid: 3bdb9f79215c3664aa820e9a21b82bae, type: 2}
+  dialogueName: TestQuestName_CharaterName
   dialogues:
   - ID: 0
-    IsRead: 0
+    IsRead: 1
     DialogueLines:
     - speaker:
         Name: Tox
@@ -43,7 +44,7 @@ MonoBehaviour:
       Sentences:
       - Speak
   - ID: 1
-    IsRead: 0
+    IsRead: 1
     DialogueLines:
     - speaker:
         Name: Tox 2
@@ -52,7 +53,7 @@ MonoBehaviour:
       Sentences:
       - aarsgrgwwg
   - ID: 3
-    IsRead: 0
+    IsRead: 1
     DialogueLines:
     - speaker:
         Name: Blait
@@ -61,7 +62,7 @@ MonoBehaviour:
       Sentences:
       - mmm
   - ID: 4
-    IsRead: 0
+    IsRead: 1
     DialogueLines:
     - speaker:
         Name: NPC

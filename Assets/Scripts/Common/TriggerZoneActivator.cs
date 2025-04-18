@@ -13,13 +13,10 @@ public class TriggerZoneActivator : MonoBehaviour
         if (other.CompareTag("Player"))
             onTriggerEnterEvent?.Invoke();
     }
-        // DialogueManager.Instance.SetStartDialogueButtonAnimation(true);
 
     public void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
             onTriggerExitEvent?.Invoke();
     }
-    // DialogueManager.Instance.SetStartDialogueButtonAnimation(false);
-    // DialogueManager.EndDialogue();
 }

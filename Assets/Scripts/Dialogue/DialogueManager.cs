@@ -8,9 +8,12 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager Instance { get; private set; }
 
     [Header("Configuration")]
-    [SerializeField] private DialogueData baseDialogueData;
+    [SerializeField] private List<DialogueData> dialogueDatabases = new();
+    private Dictionary<string, DialogueData> dialoguesDictionary = new();
+
+    [Header("Runtime Data")]
+    private string brunchesName;
     private List<Dialogue> CurrentDialogues;
-    // public int DialoguesCount => CurrentDialogues.Count;
     private List<DialogueLine> currentDialogueLines;
     private DialogueLine currentDialogueLine;
     private int currentDialogueLineIndex;
@@ -32,10 +35,37 @@ public class DialogueManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        SetDialogueData(baseDialogueData);
+        InitializeDialoguesDictionary();
     }
 
-    public void SetDialogueData(DialogueData dialogueData) => CurrentDialogues = dialogueData.dialogues;
+    private void InitializeDialoguesDictionary()
+    {
+        dialoguesDictionary.Clear();
+        foreach (DialogueData data in dialogueDatabases)
+        {
+            if (!dialoguesDictionary.ContainsKey(data.DialogueName))
+                dialoguesDictionary.Add(data.DialogueName, data);
+            else
+                Debug.LogWarning($"Duplicate dialogue ID found: {data.DialogueName}");
+        }
+    }
+
+    public void AddDialogueDatabase(DialogueData database)
+    {
+        if (!dialogueDatabases.Contains(database))
+        {
+            dialogueDatabases.Add(database);
+            if (!dialoguesDictionary.ContainsKey(database.DialogueName))
+                dialoguesDictionary.Add(database.DialogueName, database);
+        }
+    }
+
+    public void SetCurrentDialogueData(string dialogueName)
+    {
+        CurrentDialogues = dialoguesDictionary[dialogueName].dialogues;
+        brunchesName = dialogueName;
+        Debug.Log("Setted " + brunchesName);
+    }
 
     public void StartDialogue(int dialogueID)
     {
@@ -43,6 +73,7 @@ public class DialogueManager : MonoBehaviour
 
         StartDialogueLine(currentDialogueLines[currentDialogueLineIndex]);
         OnDialogueStarted?.Invoke();
+
         dialogue.IsRead = true;
     }
 
@@ -50,18 +81,19 @@ public class DialogueManager : MonoBehaviour
     {
         dialogue = CurrentDialogues.Find(d => d.ID == id);
 
-        bool isValid = dialogue != null && dialogue.DialogueLines?.Count > 0;
-        if (isValid)
+        if (dialogue != null && dialogue.DialogueLines?.Count > 0)
         {
             currentDialogueLines = dialogue.DialogueLines;
             currentDialogueLineIndex = 0;
 
-            isValid = !(currentDialogueLines[currentDialogueLineIndex].Sentences.Count <= 0 || currentSentenceIndex > currentDialogueLines[currentDialogueLineIndex].Sentences.Count);
+            return !(currentDialogueLines[currentDialogueLineIndex].Sentences.Count <= 0
+            || currentSentenceIndex > currentDialogueLines[currentDialogueLineIndex].Sentences.Count);
         }
-
-        if (!isValid) Debug.LogWarning($"Dialogue {id} not found or empty or Sentence is out of array");
-
-        return isValid;
+        else
+        {
+            Debug.LogWarning($"Dialogue {id} not found or empty or Sentence is out of array");
+            return false;
+        }
     }
 
     private void StartDialogueLine(DialogueLine dialogueLine)
@@ -102,12 +134,4 @@ public class DialogueManager : MonoBehaviour
         currentDialogueLineIndex = 0;
         OnDialogueEnded?.Invoke();
     }
-
-    // public void FastForward()
-    // {
-    //     if (typingCoroutine == null) return;
-
-    //     StopTyping();
-    //     view.SetDialogueText(currentDialogueLines[currentDialogueLineIndex].Text);
-    // }
 }

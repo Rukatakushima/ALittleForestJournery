@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Events;
-using static DialogueSpeakers;
 
 
 #if UNITY_EDITOR
@@ -14,6 +12,8 @@ public class DialogueData : ScriptableObject
 {
     [SerializeField] private DialogueSpeakers Characters;
     [SerializeField] private TypingSpeeds TypingSpeeds;
+    [SerializeField] private string dialogueName;
+    public string DialogueName => dialogueName;
     public List<Dialogue> dialogues;
 
     [System.Serializable]
@@ -22,13 +22,6 @@ public class DialogueData : ScriptableObject
         public int ID;
         public bool IsRead = false;
         public List<DialogueLine> DialogueLines;
-        // public UnityEvent<int> OnDialogueEneded;
-
-        // public void EndDialogue()
-        // {
-        //     IsRead = false;
-        //     OnDialogueEneded?.Invoke(ID);
-        // }
     }
 
     [System.Serializable]
