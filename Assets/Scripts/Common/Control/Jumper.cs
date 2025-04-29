@@ -1,33 +1,53 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Jumper : MonoBehaviour
 {
-    [SerializeField] public float jumpForce, checkRadius;
+    private GameInput _playerInput;
+    
+    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float checkRadius = 0.2f;
     [SerializeField] private Transform feetPos;
-    [SerializeField] private LayerMask GroundLayer;
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Animator animator;
-    private Rigidbody2D rb;
-    private bool isGrounded;
+    
+    private bool IsGrounded => Physics2D.OverlapCircle(feetPos.position, checkRadius, groundLayer);
+    private Rigidbody2D _rb;
+    
+    private static readonly int IsJumping = Animator.StringToHash("isJumping");
+    private static readonly int TakeOf = Animator.StringToHash("takeOf");
 
-    private void Awake() => rb = GetComponent<Rigidbody2D>();
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+        _playerInput = new GameInput();
+    }
+
+    private void OnEnable()
+    {
+        _playerInput.Player.Jump.performed += OnJumpPerformed;
+        _playerInput.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _playerInput.Player.Jump.performed -= OnJumpPerformed;
+        _playerInput.Disable();
+    }
+
+    private void OnJumpPerformed(InputAction.CallbackContext context)
+    {
+        if (IsGrounded)
+        {
+            _rb.velocity = Vector2.up * jumpForce;
+            animator.SetTrigger(TakeOf);
+        }
+    }
 
     private void Update()
     {
-        CheckGrounded();
-        Jump();
         UpdateAnimation();
     }
 
-    private void UpdateAnimation() => animator.SetBool("isJumping", !isGrounded);
-
-    private void CheckGrounded() => isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, GroundLayer);
-
-    private void Jump()
-    {
-        if (isGrounded && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)))
-        {
-            rb.velocity = Vector2.up * jumpForce;
-            animator.SetTrigger("takeOf");
-        }
-    }
+    private void UpdateAnimation() => animator.SetBool(IsJumping, !IsGrounded);
 }

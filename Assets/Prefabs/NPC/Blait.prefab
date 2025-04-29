@@ -575,10 +575,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3054385152484815904}
-  - component: {fileID: 2213564552326231924}
   - component: {fileID: 7473783277300255672}
-  - component: {fileID: 5633625745322674627}
-  - component: {fileID: 7481887857648099727}
+  - component: {fileID: 9136813417149800895}
+  - component: {fileID: 2213564552326231924}
   - component: {fileID: 2967541110528286702}
   m_Layer: 0
   m_Name: Blait
@@ -605,6 +604,39 @@ Transform:
   - {fileID: 6069998514653047716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7473783277300255672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2702216771765935822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9b2eded980bad44c8d9b9575213a4bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterID: Blait
+--- !u!114 &9136813417149800895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2702216771765935822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41071ce9d2d69f04080c512cf02d3cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 4
+  jumpForce: 4
+  checkRadius: 0.2
+  feetPos: {fileID: 8581103051912573022}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  animator: {fileID: 3842041013524486284}
 --- !u!70 &2213564552326231924
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -640,53 +672,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.18}
   m_Size: {x: 0.6, y: 1.6}
   m_Direction: 0
---- !u!114 &7473783277300255672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2702216771765935822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9b2eded980bad44c8d9b9575213a4bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterID: Blait
---- !u!114 &5633625745322674627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2702216771765935822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a28a772e0075e86479fd029721dcdcf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpForce: 4
-  checkRadius: 0.1
-  feetPos: {fileID: 8581103051912573022}
-  GroundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  animator: {fileID: 3842041013524486284}
---- !u!114 &7481887857648099727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2702216771765935822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 454973a2d58b8fe44acb750fdd69059c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 4
-  animator: {fileID: 3842041013524486284}
-  isFacingLeft: 1
 --- !u!50 &2967541110528286702
 Rigidbody2D:
   serializedVersion: 4

@@ -1,34 +1,36 @@
 using UnityEngine;
 using UnityEngine.Events;
+
 public class SceneItem : BaseItem
 {
     [SerializeField] private InventoryItem inventoryItemPrefab;
-    private InventoryItem linkedInventoryItem;
-    private Mover player;
+    private InventoryItem _linkedInventoryItem;
+    private PlayerMovement _player;
+    // private Mover _player;
 
-    [SerializeField] public UnityEvent OnItemPickedUp;
-    [SerializeField] public UnityEvent OnItemDropped;
+    public UnityEvent onItemPickedUp;
+    public UnityEvent onItemDropped;
 
     private void Awake()
     {
-        linkedInventoryItem = Instantiate(inventoryItemPrefab);
-        linkedInventoryItem.Initialize(ID, this, GetComponent<SpriteRenderer>().sprite);
-        linkedInventoryItem.Hide();
+        _linkedInventoryItem = Instantiate(inventoryItemPrefab);
+        _linkedInventoryItem.Initialize(ID, this, GetComponent<SpriteRenderer>().sprite);
+        _linkedInventoryItem.Hide();
 
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Mover>();
+        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
     }
 
     public void PickUp()
     {
         Hide();
-        OnItemPickedUp?.Invoke();
-        linkedInventoryItem.Spawn();
+        onItemPickedUp?.Invoke();
+        _linkedInventoryItem.Spawn();
     }
 
     public override void Spawn()
     {
-        transform.position = (Vector2)player.transform.position + (player.isFacingLeft ? Vector2.left : Vector2.right);
+        transform.position = (Vector2)_player.transform.position + (_player.IsFacingLeft ? Vector2.left : Vector2.right);
         Show();
-        OnItemDropped?.Invoke();
+        onItemDropped?.Invoke();
     }
 }
