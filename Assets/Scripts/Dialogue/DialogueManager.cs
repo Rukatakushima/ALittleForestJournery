@@ -7,11 +7,6 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
-    // [Header("Configuration")]
-    // [SerializeField] private List<DialogueData> dialogueDatabases = new();
-    // private readonly Dictionary<string, DialogueData> _dialoguesDictionary = new();
-    //
-    // [Header("Runtime Data")]
     private string _brunchesName;
     private List<Dialogue> _currentDialogues;
     private List<DialogueLine> _currentDialogueLines;
@@ -19,7 +14,6 @@ public class DialogueManager : MonoBehaviour
     private int _currentDialogueLineIndex;
     private int _currentSentenceIndex;
 
-    // [Header("Events")]
     public UnityEvent onDialogueStarted;
     public UnityEvent<DialogueLine, int> onDialogueLineActive;
     public UnityEvent onDialogueEnded;
@@ -34,32 +28,9 @@ public class DialogueManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        // InitializeDialoguesDictionary();
     }
 
-    // private void InitializeDialoguesDictionary()
-    // {
-    //     _dialoguesDictionary.Clear();
-    //     foreach (var data in dialogueDatabases.Where(data => !_dialoguesDictionary.TryAdd(data.DialogueName, data)))
-    //     {
-    //         Debug.LogWarning($"Duplicate dialogue ID found: {data.DialogueName}");
-    //     }
-    // }
-
-    // public void AddDialogueDatabase(DialogueData database)
-    // {
-    //     if (dialogueDatabases.Contains(database)) return;
-    //     dialogueDatabases.Add(database);
-    //     _dialoguesDictionary.TryAdd(database.DialogueName, database);
-    // }
-
-    public void SetCurrentDialogueData(List<Dialogue> dialogues)
-    {
-        _currentDialogues = dialogues;
-        // _brunchesName = dialogueName;
-        // Debug.Log("Set " + _brunchesName);
-    }
+    public void SetCurrentDialogueData(List<Dialogue> dialogues) => _currentDialogues = dialogues;
 
     public void StartDialogue(string dialogueID)
     {
@@ -77,7 +48,6 @@ public class DialogueManager : MonoBehaviour
 
         if (dialogue is { DialogueLines: { Count: > 0 } })
         {
-            Debug.Log($"Dialogue {id}");
             _currentDialogueLines = dialogue.DialogueLines;
             _currentDialogueLineIndex = 0;
 
@@ -110,27 +80,20 @@ public class DialogueManager : MonoBehaviour
     {
         _currentSentenceIndex++;
 
-        if (_currentDialogueLine == null || _currentSentenceIndex >= _currentDialogueLine.sentences.Count)
+        if (_currentDialogueLine != null && _currentSentenceIndex < _currentDialogueLine.sentences.Count)
         {
-            if (_currentDialogueLines == null)
-            {
-                Debug.LogWarning("Current Dialogue Lines are null");
-                EndDialogue();
-            }
-            // Debug.Log(currentDialogueLines.Count);
-            else if (/*currentDialogueLines != null &&*/ ++_currentDialogueLineIndex < _currentDialogueLines.Count)
-            {
-                _currentSentenceIndex = 0;
-                StartDialogueLine(_currentDialogueLines[_currentDialogueLineIndex]);
-            }
-            else
-            {
-                EndDialogue();
-            }
-        }
-        else
-        {
+            // Next Sentence
             onDialogueLineActive?.Invoke(_currentDialogueLine, _currentSentenceIndex);
+        }
+        else if (_currentDialogueLine == null || ++_currentDialogueLineIndex >= _currentDialogueLines.Count) 
+        { 
+            EndDialogue(); 
+        }
+        else 
+        {
+            // Next Dialogue Line
+            _currentSentenceIndex = 0;
+            StartDialogueLine(_currentDialogueLines[_currentDialogueLineIndex]);
         }
     }
 
