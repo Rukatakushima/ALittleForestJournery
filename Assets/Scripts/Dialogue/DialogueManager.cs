@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using static DialogueData;
 
 public class DialogueManager : MonoBehaviour
@@ -9,20 +11,20 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Configuration")]
     [SerializeField] private List<DialogueData> dialogueDatabases = new();
-    private Dictionary<string, DialogueData> dialoguesDictionary = new();
+    private readonly Dictionary<string, DialogueData> _dialoguesDictionary = new();
 
     [Header("Runtime Data")]
-    private string brunchesName;
-    private List<Dialogue> CurrentDialogues;
-    private List<DialogueLine> currentDialogueLines;
-    private DialogueLine currentDialogueLine;
-    private int currentDialogueLineIndex;
-    private int currentSentenceIndex;
+    private string _brunchesName;
+    private List<Dialogue> _currentDialogues;
+    private List<DialogueLine> _currentDialogueLines;
+    private DialogueLine _currentDialogueLine;
+    private int _currentDialogueLineIndex;
+    private int _currentSentenceIndex;
 
     [Header("Events")]
-    public UnityEvent OnDialogueStarted;
-    public UnityEvent<DialogueLine, int> OnDialogueLineActive;
-    public UnityEvent OnDialogueEnded;
+    public UnityEvent onDialogueStarted;
+    public UnityEvent<DialogueLine, int> onDialogueLineActive;
+    public UnityEvent onDialogueEnded;
 
     private void Awake()
     {
@@ -40,57 +42,52 @@ public class DialogueManager : MonoBehaviour
 
     private void InitializeDialoguesDictionary()
     {
-        dialoguesDictionary.Clear();
-        foreach (DialogueData data in dialogueDatabases)
+        _dialoguesDictionary.Clear();
+        foreach (var data in dialogueDatabases.Where(data => !_dialoguesDictionary.TryAdd(data.DialogueName, data)))
         {
-            if (!dialoguesDictionary.ContainsKey(data.DialogueName))
-                dialoguesDictionary.Add(data.DialogueName, data);
-            else
-                Debug.LogWarning($"Duplicate dialogue ID found: {data.DialogueName}");
+            Debug.LogWarning($"Duplicate dialogue ID found: {data.DialogueName}");
         }
     }
 
     public void AddDialogueDatabase(DialogueData database)
     {
-        if (!dialogueDatabases.Contains(database))
-        {
-            dialogueDatabases.Add(database);
-            if (!dialoguesDictionary.ContainsKey(database.DialogueName))
-                dialoguesDictionary.Add(database.DialogueName, database);
-        }
+        if (dialogueDatabases.Contains(database)) return;
+        dialogueDatabases.Add(database);
+        _dialoguesDictionary.TryAdd(database.DialogueName, database);
     }
 
     public void SetCurrentDialogueData(string dialogueName)
     {
-        CurrentDialogues = dialoguesDictionary[dialogueName].dialogues;
-        brunchesName = dialogueName;
-        Debug.Log("Setted " + brunchesName);
+        _currentDialogues = _dialoguesDictionary[dialogueName].dialogues;
+        _brunchesName = dialogueName;
+        Debug.Log("Set " + _brunchesName);
     }
 
     public void StartDialogue(int dialogueID)
     {
         if (!TryGetDialogue(dialogueID, out Dialogue dialogue)) return;
 
-        StartDialogueLine(currentDialogueLines[currentDialogueLineIndex]);
-        OnDialogueStarted?.Invoke();
+        StartDialogueLine(_currentDialogueLines[_currentDialogueLineIndex]);
+        onDialogueStarted?.Invoke();
 
-        dialogue.IsRead = true;
+        dialogue.isRead = true;
     }
 
     private bool TryGetDialogue(int id, out Dialogue dialogue)
     {
-        dialogue = CurrentDialogues.Find(d => d.ID == id);
+        dialogue = _currentDialogues.Find(d => d.ID == id);
 
-        if (dialogue != null && dialogue.DialogueLines?.Count > 0)
+        if (dialogue is { DialogueLines: { Count: > 0 } })
         {
-            currentDialogueLines = dialogue.DialogueLines;
-            currentDialogueLineIndex = 0;
+            _currentDialogueLines = dialogue.DialogueLines;
+            _currentDialogueLineIndex = 0;
 
-            return !(currentDialogueLines[currentDialogueLineIndex].Sentences.Count <= 0
-            || currentSentenceIndex > currentDialogueLines[currentDialogueLineIndex].Sentences.Count);
+            return !(_currentDialogueLines[_currentDialogueLineIndex].sentences.Count <= 0
+            || _currentSentenceIndex > _currentDialogueLines[_currentDialogueLineIndex].sentences.Count);
         }
         else
         {
+            EndDialogue();
             Debug.LogWarning($"Dialogue {id} not found or empty or Sentence is out of array");
             return false;
         }
@@ -98,24 +95,34 @@ public class DialogueManager : MonoBehaviour
 
     private void StartDialogueLine(DialogueLine dialogueLine)
     {
-        if (dialogueLine == null) return;
+        if (dialogueLine == null)
+        {
+            EndDialogue();
+            Debug.LogWarning("DialogueLine is null ");
+            return;
+        }
 
-        currentDialogueLine = dialogueLine;
-        currentSentenceIndex = 0;
-        OnDialogueLineActive?.Invoke(dialogueLine, currentSentenceIndex);
+        _currentDialogueLine = dialogueLine;
+        _currentSentenceIndex = 0;
+        onDialogueLineActive?.Invoke(dialogueLine, _currentSentenceIndex);
     }
 
     public void NextDialogueLine()
     {
-        currentSentenceIndex++;
+        _currentSentenceIndex++;
 
-        if (currentDialogueLine == null ||
-            currentSentenceIndex >= currentDialogueLine.Sentences.Count)
+        if (_currentDialogueLine == null || _currentSentenceIndex >= _currentDialogueLine.sentences.Count)
         {
-            if (++currentDialogueLineIndex < currentDialogueLines.Count)
+            if (_currentDialogueLines == null)
             {
-                currentSentenceIndex = 0;
-                StartDialogueLine(currentDialogueLines[currentDialogueLineIndex]);
+                Debug.LogWarning("Current Dialogue Lines are null");
+                EndDialogue();
+            }
+            // Debug.Log(currentDialogueLines.Count);
+            else if (/*currentDialogueLines != null &&*/ ++_currentDialogueLineIndex < _currentDialogueLines.Count)
+            {
+                _currentSentenceIndex = 0;
+                StartDialogueLine(_currentDialogueLines[_currentDialogueLineIndex]);
             }
             else
             {
@@ -124,14 +131,14 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            OnDialogueLineActive?.Invoke(currentDialogueLine, currentSentenceIndex);
+            onDialogueLineActive?.Invoke(_currentDialogueLine, _currentSentenceIndex);
         }
     }
 
     public void EndDialogue()
     {
-        currentDialogueLines = null;
-        currentDialogueLineIndex = 0;
-        OnDialogueEnded?.Invoke();
+        _currentDialogueLines = null;
+        _currentDialogueLineIndex = 0;
+        onDialogueEnded?.Invoke();
     }
 }

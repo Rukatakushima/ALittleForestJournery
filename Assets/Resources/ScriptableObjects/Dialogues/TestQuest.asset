@@ -12,68 +12,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab9f365236e4f254aa692ce767994cd7, type: 3}
   m_Name: TestQuest
   m_EditorClassIdentifier: 
-  Characters: {fileID: 11400000, guid: 00cfcd3992b7f944986e08bf5fdeea98, type: 2}
-  TypingSpeeds: {fileID: 11400000, guid: 3bdb9f79215c3664aa820e9a21b82bae, type: 2}
+  characters: {fileID: 11400000, guid: 00cfcd3992b7f944986e08bf5fdeea98, type: 2}
+  typingSpeeds: {fileID: 11400000, guid: 3bdb9f79215c3664aa820e9a21b82bae, type: 2}
   dialogueName: TestQuestName_CharaterName
   dialogues:
   - ID: 0
-    IsRead: 1
+    isRead: 1
     DialogueLines:
     - speaker:
         Name: Tox
         SpeakerID: Tox
-      Speed: 5
-      Sentences:
-      - dauhfovEJRW
-      - 'okie
-
-        13
-
-        bs[GRVD['
-      - dddddd
+      speed: 5
+      sentences:
+      - TUNHG
     - speaker:
         Name: Blait
         SpeakerID: Blait
-      Speed: 5
-      Sentences:
-      - ok
+      speed: 5
+      sentences:
+      - TUNG
     - speaker:
         Name: Unssetted
         SpeakerID: 
-      Speed: 5
-      Sentences:
-      - Speak
+      speed: 5
+      sentences:
+      - SAHUR
   - ID: 1
-    IsRead: 1
+    isRead: 1
     DialogueLines:
     - speaker:
         Name: Tox 2
         SpeakerID: Tox
-      Speed: 15
-      Sentences:
-      - aarsgrgwwg
+      speed: 5
+      sentences:
+      - TY
+      - YT
   - ID: 3
-    IsRead: 1
+    isRead: 1
     DialogueLines:
     - speaker:
         Name: Blait
         SpeakerID: Blait
-      Speed: 5
-      Sentences:
-      - mmm
+      speed: 15
+      sentences:
+      - HMMM
+      - HMMMMMMMMMM
   - ID: 4
-    IsRead: 1
+    isRead: 0
     DialogueLines:
     - speaker:
         Name: NPC
         SpeakerID: Blait
-      Speed: 1
-      Sentences:
-      - OKAY
-      - MR OR MRS UNKNOWN
+      speed: 5
+      sentences:
+      - OH
     - speaker:
         Name: Unknown NPC
         SpeakerID: 
-      Speed: 5
-      Sentences:
-      - swytujhddfsfdfd
+      speed: 5
+      sentences:
+      - WHOHT

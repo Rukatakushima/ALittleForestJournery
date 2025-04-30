@@ -397,7 +397,7 @@ GameObject:
   - component: {fileID: 219042429}
   - component: {fileID: 219042428}
   m_Layer: 0
-  m_Name: MiniMapCamera
+  m_Name: MiniMap Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -529,7 +529,7 @@ GameObject:
   - component: {fileID: 254512692}
   - component: {fileID: 254512691}
   m_Layer: 0
-  m_Name: DialogueUI
+  m_Name: Dialogue UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1151,7 +1151,7 @@ GameObject:
   - component: {fileID: 683301938}
   - component: {fileID: 683301939}
   m_Layer: 0
-  m_Name: DialogManager
+  m_Name: Dialogue Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1187,11 +1187,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueDatabases:
   - {fileID: 11400000, guid: e4c5fb13e06dcf549b3e77896a646fa4, type: 2}
-  OnDialogueStarted:
+  onDialogueStarted:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 694588174}
-        m_TargetAssemblyTypeName: AnimatorToggler, Assembly-CSharp
+        m_TargetAssemblyTypeName: AnimatorBoolController, Assembly-CSharp
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
@@ -1203,7 +1203,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1340803414}
-        m_TargetAssemblyTypeName: AnimatorToggler, Assembly-CSharp
+        m_TargetAssemblyTypeName: AnimatorBoolController, Assembly-CSharp
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
@@ -1214,26 +1214,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  OnDialogueLineActive:
+  onDialogueLineActive:
     m_PersistentCalls:
       m_Calls: []
-  OnDialogueEnded:
+  onDialogueEnded:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 694588174}
-        m_TargetAssemblyTypeName: AnimatorToggler, Assembly-CSharp
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 0
       - m_Target: {fileID: 1340803414}
-        m_TargetAssemblyTypeName: AnimatorToggler, Assembly-CSharp
+        m_TargetAssemblyTypeName: AnimatorBoolController, Assembly-CSharp
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
@@ -1259,7 +1247,7 @@ GameObject:
   - component: {fileID: 694588175}
   - component: {fileID: 694588174}
   m_Layer: 5
-  m_Name: StartDialogueButton
+  m_Name: Start Dialogue Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1364,10 +1352,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2115680590}
-        m_TargetAssemblyTypeName: ItemCollectionQuest, Assembly-CSharp
-        m_MethodName: Interact
-        m_Mode: 1
+      - m_Target: {fileID: 694588174}
+        m_TargetAssemblyTypeName: AnimatorBoolController, Assembly-CSharp
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1376,9 +1364,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1340803414}
+        m_TargetAssemblyTypeName: AnimatorBoolController, Assembly-CSharp
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 2115680590}
-        m_TargetAssemblyTypeName: Quest, Assembly-CSharp
-        m_MethodName: StartQuest
+        m_TargetAssemblyTypeName: ItemCollectionQuest, Assembly-CSharp
+        m_MethodName: Interact
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1397,33 +1397,9 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: TestQuestName_CharaterName
-          m_BoolArgument: 0
-        m_CallState: 0
-      - m_Target: {fileID: 1340803414}
-        m_TargetAssemblyTypeName: AnimatorToggler, Assembly-CSharp
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 0
-      - m_Target: {fileID: 694588174}
-        m_TargetAssemblyTypeName: AnimatorBoolController, Assembly-CSharp
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
 --- !u!114 &694588177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1675,7 +1651,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2039
 --- !u!114 &904450325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2110,7 +2086,7 @@ GameObject:
   - component: {fileID: 1247013391}
   - component: {fileID: 1247013390}
   m_Layer: 0
-  m_Name: CharacterRegistry
+  m_Name: Character Registry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2156,7 +2132,7 @@ GameObject:
   - component: {fileID: 1306543147}
   - component: {fileID: 1306543146}
   m_Layer: 7
-  m_Name: MiniMapCanvas
+  m_Name: MiniMap Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2348,7 +2324,7 @@ GameObject:
   - component: {fileID: 1340803413}
   - component: {fileID: 1340803414}
   m_Layer: 5
-  m_Name: DialogueBox
+  m_Name: Dialogue Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2677,7 +2653,7 @@ GameObject:
   - component: {fileID: 1401953701}
   - component: {fileID: 1401953700}
   m_Layer: 5
-  m_Name: MiniMapButton
+  m_Name: MiniMap Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3772,6 +3748,10 @@ PrefabInstance:
       value: TestQuestName_CharaterName
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
+      propertyPath: startDialogueButton
+      value: 
+      objectReference: {fileID: 694588176}
+    - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: validItemIDs.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -4568,12 +4548,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 694588174}
     - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
+      propertyPath: quest
+      value: 
+      objectReference: {fileID: 2115680590}
+    - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
+      propertyPath: startDialogueButton
+      value: 
+      objectReference: {fileID: 694588176}
+    - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onTriggerExitEvent.m_PersistentCalls.m_Calls.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onTriggerExitEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -4600,6 +4588,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 683301939}
     - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 0
       objectReference: {fileID: 0}
@@ -4616,12 +4608,20 @@ PrefabInstance:
       value: SetCurrentDialogueData
       objectReference: {fileID: 0}
     - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AnimatorBoolController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: DialogueManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onTriggerExitEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4689102836863522926, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument

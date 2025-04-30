@@ -8,25 +8,25 @@ public class DialogueView : MonoBehaviour
 {
     [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] private CharacterRegistry characterRegistry;
-    private Camera mainCamera;
+    private Camera _mainCamera;
     [SerializeField] private RectTransform dialogueBox;
     [SerializeField] private TextMeshProUGUI nameText;
     private const string MISSING_NAME = "???";
     [SerializeField] private TextMeshProUGUI dialogueText;
-    private readonly StringBuilder textBuilder = new();
+    private readonly StringBuilder _textBuilder = new();
     [SerializeField] private Vector2 defaultPosition = new Vector2(0, 1.5f);
     [SerializeField] private Vector2 dialogueOffset = new Vector2(0, 115f);
     [SerializeField] private float screenMargin = 0.22f;
-    private Vector2 screenSize;
-    private Coroutine typingCoroutine;
+    private Vector2 _screenSize;
+    private Coroutine _typingCoroutine;
 
     private void Awake()
     {
-        mainCamera = Camera.main;
+        _mainCamera = Camera.main;
 
         dialogueManager ??= DialogueManager.Instance;
         if (dialogueManager != null)
-            dialogueManager.OnDialogueLineActive.AddListener(UpdateDialogueBox);
+            dialogueManager.onDialogueLineActive.AddListener(UpdateDialogueBox);
         else
             Debug.LogWarning("DialogueManager is not found");
 
@@ -35,9 +35,9 @@ public class DialogueView : MonoBehaviour
             Debug.LogError("CharacterRegistry not found!");
     }
 
-    private void Start() => screenSize = new Vector2(Screen.width, Screen.height);
+    private void Start() => _screenSize = new Vector2(Screen.width, Screen.height);
 
-    public void UpdateDialogueBox(DialogueLine dialogueLine, int sentenceIndex)
+    private void UpdateDialogueBox(DialogueLine dialogueLine, int sentenceIndex)
     {
         StopTyping();
 
@@ -47,25 +47,25 @@ public class DialogueView : MonoBehaviour
             (characterRegistry?.GetCharacterTransform(dialogueLine.speaker.SpeakerID)) : null;
         UpdateDialoguePosition(speakerTransform);
 
-        typingCoroutine = StartCoroutine(TypeSentence(dialogueLine.Sentences[sentenceIndex], dialogueLine.Speed));
+        _typingCoroutine = StartCoroutine(TypeSentence(dialogueLine.sentences[sentenceIndex], dialogueLine.speed));
     }
 
-    public void SetDialogueName(string name) => nameText.text = string.IsNullOrEmpty(name) ? MISSING_NAME : name;
+    private void SetDialogueName(string dialogueName) => nameText.text = string.IsNullOrEmpty(dialogueName) ? MISSING_NAME : dialogueName;
 
-    public void SetDialogueText(string text)
+    private void SetDialogueText(string text)
     {
-        textBuilder.Clear();
-        textBuilder.Append(text);
-        dialogueText.text = textBuilder.ToString();
+        _textBuilder.Clear();
+        _textBuilder.Append(text);
+        dialogueText.text = _textBuilder.ToString();
     }
 
-    public void UpdateDialoguePosition(Transform transform)
+    private void UpdateDialoguePosition(Transform characterTransform)
     {
-        if (dialogueBox == null || mainCamera == null) return;
+        if (dialogueBox == null || _mainCamera == null) return;
 
-        if (transform != null)
+        if (characterTransform != null)
         {
-            Vector2 screenPos = (Vector2)mainCamera.WorldToScreenPoint(transform.position) + dialogueOffset;
+            Vector2 screenPos = (Vector2)_mainCamera.WorldToScreenPoint(characterTransform.position) + dialogueOffset;
             dialogueBox.position = ClampPositionToScreen(screenPos);
         }
         else
@@ -77,7 +77,7 @@ public class DialogueView : MonoBehaviour
         if (dialogueBox == null) return position;
 
         Vector2 min = dialogueBox.sizeDelta * screenMargin;
-        Vector2 max = screenSize - min;
+        Vector2 max = _screenSize - min;
 
         return new Vector2(Mathf.Clamp(position.x, min.x, max.x), Mathf.Clamp(position.y, min.y, max.y));
     }
@@ -92,15 +92,15 @@ public class DialogueView : MonoBehaviour
             yield return waitTime;
         }
 
-        typingCoroutine = null;
+        _typingCoroutine = null;
     }
 
     private void StopTyping()
     {
-        if (typingCoroutine == null) return;
+        if (_typingCoroutine == null) return;
 
-        StopCoroutine(typingCoroutine);
-        typingCoroutine = null;
+        StopCoroutine(_typingCoroutine);
+        _typingCoroutine = null;
         SetDialogueText(string.Empty);
     }
 }

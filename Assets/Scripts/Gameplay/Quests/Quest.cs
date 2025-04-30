@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public abstract class Quest : MonoBehaviour
 {
@@ -11,7 +12,12 @@ public abstract class Quest : MonoBehaviour
     [SerializeField] public UnityEvent onQuestCompleted;
     [SerializeField] public UnityEvent onQuestAfterCompleted;
 
-    protected bool isActive, isCompleted = false;
+    protected bool IsActive, IsCompleted;
+    
+    [Header("Start Button")]
+    [SerializeField] private Button startDialogueButton;
+    private TriggerZoneActivator _triggerZoneActivator;
+    // [SerializeField] private Quest quest;
 
     #region TEST_MARKS
     protected virtual void Awake()
@@ -22,6 +28,9 @@ public abstract class Quest : MonoBehaviour
         onQuestInProgress.AddListener(() => WriteLog("in progress"));
         onQuestCompleted.AddListener(() => WriteLog("completed"));
         onQuestAfterCompleted.AddListener(() => WriteLog("after wording"));
+        
+        startDialogueButton.onClick.AddListener(OnStartDialogButtonPressed);
+        _triggerZoneActivator =  GetComponent<TriggerZoneActivator>();
     }
 
     private void WriteLog(string words)
@@ -34,27 +43,27 @@ public abstract class Quest : MonoBehaviour
     {
         onInteract?.Invoke();
 
-        if (isCompleted)
+        if (IsCompleted)
             AfterFinishQuest();
-        else if (!isCompleted && isActive)
+        else if (!IsCompleted && IsActive)
             InProgressQuest();
-        else if (!isActive)
+        else if (!IsActive)
             StartQuest();
     }
 
     public void StartQuest()
     {
-        if (isCompleted)
+        if (IsCompleted)
         {
             AfterFinishQuest();
         }
-        else if (isActive && isCompleted)
+        else if (IsActive && IsCompleted)
         {
             InProgressQuest();
         }
         else
         {
-            isActive = true;
+            IsActive = true;
             InitializeQuest();
             onQuestStarted?.Invoke();
         }
@@ -69,10 +78,10 @@ public abstract class Quest : MonoBehaviour
 
     public void CompleteQuest()
     {
-        if (!isActive || isCompleted) return;
+        if (!IsActive || IsCompleted) return;
 
-        isCompleted = true;
-        isActive = false;
+        IsCompleted = true;
+        IsActive = false;
         onQuestCompleted?.Invoke();
         CleanUpQuest();
     }
@@ -82,4 +91,12 @@ public abstract class Quest : MonoBehaviour
     protected virtual void InProgressQuest() { onQuestInProgress?.Invoke(); }
 
     protected virtual void AfterFinishQuest() { onQuestAfterCompleted?.Invoke(); }
+
+    private void OnStartDialogButtonPressed()
+    {
+        if (_triggerZoneActivator.IsPlayerInZone && this != null)
+        {
+            Interact();
+        }
+    }
 }
