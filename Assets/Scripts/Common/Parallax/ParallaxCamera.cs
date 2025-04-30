@@ -1,26 +1,24 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [ExecuteInEditMode]
 public class ParallaxCamera : MonoBehaviour
 {
-	public delegate void ParallaxCameraDelegate(float deltaMovement);
-	public ParallaxCameraDelegate onCameraTranslate;
+	// public delegate void ParallaxCameraDelegate(float deltaMovement);
+	// public ParallaxCameraDelegate OnCameraTranslate;
+	private float _oldPosition;
+	public UnityEvent<float> onCameraTranslate;
 
-	private float oldPosition;
+	private void Start() => _oldPosition = transform.position.x;
 
-    void Start() => oldPosition = transform.position.x;
-
-    void Update()
+	private void Update()
 	{
-		if (transform.position.x != oldPosition)
+		if (Mathf.Approximately(transform.position.x, _oldPosition)) return;
+		if (onCameraTranslate != null)
 		{
-			if (onCameraTranslate != null)
-			{
-				float delta = oldPosition - transform.position.x;
-				onCameraTranslate(delta);
-			}
-
-			oldPosition = transform.position.x;
+			var delta = _oldPosition - transform.position.x;
+			onCameraTranslate?.Invoke(delta);
 		}
+		_oldPosition = transform.position.x;
 	}
 }

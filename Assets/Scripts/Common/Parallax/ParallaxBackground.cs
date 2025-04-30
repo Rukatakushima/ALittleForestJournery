@@ -5,40 +5,40 @@ using UnityEngine;
 public class ParallaxBackground : MonoBehaviour
 {
   public ParallaxCamera parallaxCamera;
-  List<ParallaxLayer> parallaxLayers = new List<ParallaxLayer>();
+  private readonly List<ParallaxLayer> _parallaxLayers = new List<ParallaxLayer>();
 
-  void Start()
+  private void Awake()
   {
     if (parallaxCamera == null)
     {
-      parallaxCamera = Camera.main.GetComponent<ParallaxCamera>();
+      if (Camera.main != null) parallaxCamera = Camera.main.GetComponent<ParallaxCamera>();
     }
-    else
-    {
-      parallaxCamera.onCameraTranslate += Move;
-    }
+  }
 
+  private void Start()
+  {
+    parallaxCamera?.onCameraTranslate.AddListener(Move);
     SetLayers();
   }
 
-  void SetLayers()
+  private void SetLayers()
   {
-    parallaxLayers.Clear();
+    _parallaxLayers.Clear();
 
     for (int i = 0; i < transform.childCount; i++)
     {
-      ParallaxLayer layer = transform.GetChild(i).GetComponent<ParallaxLayer>();
+      var layer = transform.GetChild(i).GetComponent<ParallaxLayer>();
 
       if (layer != null)
       {
-        parallaxLayers.Add(layer);
+        _parallaxLayers.Add(layer);
       }
     }
   }
 
-  void Move(float delta)
+  private void Move(float delta)
   {
-    foreach (ParallaxLayer layer in parallaxLayers)
+    foreach (ParallaxLayer layer in _parallaxLayers)
     {
       layer.Move(delta);
     }
