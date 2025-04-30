@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+// [ExecuteInEditMode]
 public class ParallaxBackground : MonoBehaviour
 {
   public ParallaxCamera parallaxCamera;
@@ -9,10 +9,7 @@ public class ParallaxBackground : MonoBehaviour
 
   private void Awake()
   {
-    if (parallaxCamera == null)
-    {
-      if (Camera.main != null) parallaxCamera = Camera.main.GetComponent<ParallaxCamera>();
-    }
+      parallaxCamera ??= Camera.main?.GetComponent<ParallaxCamera>();
   }
 
   private void Start()

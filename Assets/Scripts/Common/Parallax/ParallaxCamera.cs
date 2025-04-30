@@ -4,8 +4,6 @@ using UnityEngine.Events;
 [ExecuteInEditMode]
 public class ParallaxCamera : MonoBehaviour
 {
-	// public delegate void ParallaxCameraDelegate(float deltaMovement);
-	// public ParallaxCameraDelegate OnCameraTranslate;
 	private float _oldPosition;
 	public UnityEvent<float> onCameraTranslate;
 
