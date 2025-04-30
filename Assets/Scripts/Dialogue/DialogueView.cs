@@ -41,10 +41,10 @@ public class DialogueView : MonoBehaviour
     {
         StopTyping();
 
-        SetDialogueName(dialogueLine.speaker.Name);
+        SetDialogueName(dialogueLine.speaker.speakerName);
 
-        var speakerTransform = !string.IsNullOrEmpty(dialogueLine.speaker.SpeakerID) ?
-            (characterRegistry?.GetCharacterTransform(dialogueLine.speaker.SpeakerID)) : null;
+        var speakerTransform = !string.IsNullOrEmpty(dialogueLine.speaker.speakerID) ?
+            (characterRegistry?.GetCharacterTransform(dialogueLine.speaker.speakerID)) : null;
         UpdateDialoguePosition(speakerTransform);
 
         _typingCoroutine = StartCoroutine(TypeSentence(dialogueLine.sentences[sentenceIndex], dialogueLine.speed));

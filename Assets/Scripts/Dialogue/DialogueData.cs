@@ -11,16 +11,26 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "DialogueData", menuName = "Dialogue/Dialogue")]
 public class DialogueData : ScriptableObject
 {
-    [SerializeField] private DialogueSpeakers characters;
-    [SerializeField] private TypingSpeeds typingSpeeds;
+    [SerializeField] private List<Speaker> speakers;
+    [SerializeField] private List<float> typingSpeeds;
+    public List<Speaker> AvailableSpeakers => speakers ?? new List<Speaker>();
+    public List<float> AvailableSpeeds => typingSpeeds ?? new List<float> { 1f };
+    
     [SerializeField] private string dialogueName;
     public string DialogueName => dialogueName;
     public List<Dialogue> dialogues;
 
+    [System.Serializable]
+    public class Speaker
+    {
+        public string speakerName;
+        public string speakerID;
+    }
+    
     [Serializable]
     public class Dialogue
     {
-        public int ID;
+        public string ID;
         public bool isRead = false;
         public List<DialogueLine> DialogueLines;
     }
@@ -45,9 +55,9 @@ public class DialogueData : ScriptableObject
                 foreach (var speaker in data.AvailableSpeakers)
                 {
                     speakers.Add(new ValueDropdownItem(
-                        string.IsNullOrEmpty(speaker.Name) ?
-                            speaker.SpeakerID :
-                            $"{speaker.Name} ({speaker.SpeakerID})",
+                        string.IsNullOrEmpty(speaker.speakerName) ?
+                            speaker.speakerID :
+                            $"{speaker.speakerName} ({speaker.speakerID})",
                         speaker));
                 }
             }
@@ -63,7 +73,4 @@ public class DialogueData : ScriptableObject
         }
 #endif
     }
-
-    public List<Speaker> AvailableSpeakers => characters?.availableSpeakers ?? new List<Speaker>();
-    public List<float> AvailableSpeeds => typingSpeeds?.availableSpeeds ?? new List<float> { 1f };
 }

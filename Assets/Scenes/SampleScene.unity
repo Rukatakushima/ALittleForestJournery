@@ -1135,6 +1135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bcda8642c4b5344cbdb65d687d959f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onCameraTranslate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &672544090 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7680747871773280273, guid: 621c796f20c481841b431f366c183639, type: 3}
@@ -1185,8 +1188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f41dcefad5b587d43a1d2282e2ea291b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueDatabases:
-  - {fileID: 11400000, guid: e4c5fb13e06dcf549b3e77896a646fa4, type: 2}
   onDialogueStarted:
     m_PersistentCalls:
       m_Calls:
@@ -2988,7 +2989,7 @@ GameObject:
   m_Layer: 0
   m_Name: Items
   m_TagString: Untagged
-  m_Icon: {fileID: 2800000, guid: 4445790c252970d45ae069bd9011b484, type: 3}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3740,6 +3741,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
+      propertyPath: dialogueData
+      value: 
+      objectReference: {fileID: 11400000, guid: e4c5fb13e06dcf549b3e77896a646fa4, type: 2}
+    - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: questDialogueID
       value: FirstItems_Tox
       objectReference: {fileID: 0}
@@ -3773,7 +3778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestStarted.m_PersistentCalls.m_Calls.Array.size
@@ -3801,7 +3806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestAfterCompleted.m_PersistentCalls.m_Calls.Array.size
@@ -3818,14 +3823,14 @@ PrefabInstance:
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 683301939}
+      objectReference: {fileID: 2115680590}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: startQuestDialogueEvent.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestStarted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -3845,11 +3850,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestProgress.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -3873,11 +3878,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: StartDialogue
+      value: SetDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestCompleted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestCompleted.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -3909,7 +3914,7 @@ PrefabInstance:
       objectReference: {fileID: 694588174}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestInProgress.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestInProgress.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -4013,7 +4018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestAfterCompleted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestAfterCompleted.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -4169,7 +4174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: DialogueManager, Assembly-CSharp
+      value: Quest, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: startQuestDialogueEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -4341,7 +4346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestStarted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
@@ -4369,7 +4374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestCompleted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestCompleted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
@@ -4393,7 +4398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestInProgress.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestInProgress.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
@@ -4437,7 +4442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestAfterCompleted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestAfterCompleted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument

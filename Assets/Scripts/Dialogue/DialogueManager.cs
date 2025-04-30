@@ -1,19 +1,17 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using static DialogueData;
 
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
-    [Header("Configuration")]
-    [SerializeField] private List<DialogueData> dialogueDatabases = new();
-    private readonly Dictionary<string, DialogueData> _dialoguesDictionary = new();
-
-    [Header("Runtime Data")]
+    // [Header("Configuration")]
+    // [SerializeField] private List<DialogueData> dialogueDatabases = new();
+    // private readonly Dictionary<string, DialogueData> _dialoguesDictionary = new();
+    //
+    // [Header("Runtime Data")]
     private string _brunchesName;
     private List<Dialogue> _currentDialogues;
     private List<DialogueLine> _currentDialogueLines;
@@ -21,7 +19,7 @@ public class DialogueManager : MonoBehaviour
     private int _currentDialogueLineIndex;
     private int _currentSentenceIndex;
 
-    [Header("Events")]
+    // [Header("Events")]
     public UnityEvent onDialogueStarted;
     public UnityEvent<DialogueLine, int> onDialogueLineActive;
     public UnityEvent onDialogueEnded;
@@ -37,33 +35,33 @@ public class DialogueManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        InitializeDialoguesDictionary();
+        // InitializeDialoguesDictionary();
     }
 
-    private void InitializeDialoguesDictionary()
+    // private void InitializeDialoguesDictionary()
+    // {
+    //     _dialoguesDictionary.Clear();
+    //     foreach (var data in dialogueDatabases.Where(data => !_dialoguesDictionary.TryAdd(data.DialogueName, data)))
+    //     {
+    //         Debug.LogWarning($"Duplicate dialogue ID found: {data.DialogueName}");
+    //     }
+    // }
+
+    // public void AddDialogueDatabase(DialogueData database)
+    // {
+    //     if (dialogueDatabases.Contains(database)) return;
+    //     dialogueDatabases.Add(database);
+    //     _dialoguesDictionary.TryAdd(database.DialogueName, database);
+    // }
+
+    public void SetCurrentDialogueData(List<Dialogue> dialogues)
     {
-        _dialoguesDictionary.Clear();
-        foreach (var data in dialogueDatabases.Where(data => !_dialoguesDictionary.TryAdd(data.DialogueName, data)))
-        {
-            Debug.LogWarning($"Duplicate dialogue ID found: {data.DialogueName}");
-        }
+        _currentDialogues = dialogues;
+        // _brunchesName = dialogueName;
+        // Debug.Log("Set " + _brunchesName);
     }
 
-    public void AddDialogueDatabase(DialogueData database)
-    {
-        if (dialogueDatabases.Contains(database)) return;
-        dialogueDatabases.Add(database);
-        _dialoguesDictionary.TryAdd(database.DialogueName, database);
-    }
-
-    public void SetCurrentDialogueData(string dialogueName)
-    {
-        _currentDialogues = _dialoguesDictionary[dialogueName].dialogues;
-        _brunchesName = dialogueName;
-        Debug.Log("Set " + _brunchesName);
-    }
-
-    public void StartDialogue(int dialogueID)
+    public void StartDialogue(string dialogueID)
     {
         if (!TryGetDialogue(dialogueID, out Dialogue dialogue)) return;
 
@@ -73,12 +71,13 @@ public class DialogueManager : MonoBehaviour
         dialogue.isRead = true;
     }
 
-    private bool TryGetDialogue(int id, out Dialogue dialogue)
+    private bool TryGetDialogue(string id, out Dialogue dialogue)
     {
         dialogue = _currentDialogues.Find(d => d.ID == id);
 
         if (dialogue is { DialogueLines: { Count: > 0 } })
         {
+            Debug.Log($"Dialogue {id}");
             _currentDialogueLines = dialogue.DialogueLines;
             _currentDialogueLineIndex = 0;
 

@@ -16,12 +16,13 @@ public abstract class Quest : MonoBehaviour
     
     [Header("Start Button")]
     [SerializeField] private Button startDialogueButton;
+    [SerializeField] private DialogueData dialogueData;
     private TriggerZoneActivator _triggerZoneActivator;
-    // [SerializeField] private Quest quest;
 
     #region TEST_MARKS
     protected virtual void Awake()
     {
+        onInteract.AddListener(SetDialogueData);
         onInteract.AddListener(() => WriteLog("interacted"));
         onQuestStarted.AddListener(() => WriteLog("started"));
         onQuestProgress.AddListener(() => WriteLog("progressing"));
@@ -49,6 +50,11 @@ public abstract class Quest : MonoBehaviour
             InProgressQuest();
         else if (!IsActive)
             StartQuest();
+    }
+
+    private void SetDialogueData()
+    {
+        DialogueManager.Instance.SetCurrentDialogueData(dialogueData.dialogues);
     }
 
     public void StartQuest()

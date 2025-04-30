@@ -12,28 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab9f365236e4f254aa692ce767994cd7, type: 3}
   m_Name: TestQuest
   m_EditorClassIdentifier: 
-  characters: {fileID: 11400000, guid: 00cfcd3992b7f944986e08bf5fdeea98, type: 2}
-  typingSpeeds: {fileID: 11400000, guid: 3bdb9f79215c3664aa820e9a21b82bae, type: 2}
+  speakers:
+  - speakerName: Tox
+    speakerID: Tox
+  - speakerName: Blait
+    speakerID: Blait
+  typingSpeeds:
+  - 1
+  - 5
+  - 10
   dialogueName: TestQuestName_CharaterName
   dialogues:
   - ID: 0
     isRead: 1
     DialogueLines:
     - speaker:
-        Name: Tox
-        SpeakerID: Tox
+        speakerName: Tox
+        speakerID: Tox
       speed: 5
       sentences:
       - TUNHG
     - speaker:
-        Name: Blait
-        SpeakerID: Blait
-      speed: 5
+        speakerName: Blait
+        speakerID: Blait
+      speed: 3
       sentences:
       - TUNG
     - speaker:
-        Name: Unssetted
-        SpeakerID: 
+        speakerName: Blait
+        speakerID: Blait
       speed: 5
       sentences:
       - SAHUR
@@ -41,9 +48,9 @@ MonoBehaviour:
     isRead: 1
     DialogueLines:
     - speaker:
-        Name: Tox 2
-        SpeakerID: Tox
-      speed: 5
+        speakerName: Tox
+        speakerID: Tox
+      speed: 10
       sentences:
       - TY
       - YT
@@ -51,24 +58,24 @@ MonoBehaviour:
     isRead: 1
     DialogueLines:
     - speaker:
-        Name: Blait
-        SpeakerID: Blait
+        speakerName: Blait
+        speakerID: Blait
       speed: 15
       sentences:
       - HMMM
       - HMMMMMMMMMM
   - ID: 4
-    isRead: 0
+    isRead: 1
     DialogueLines:
     - speaker:
-        Name: NPC
-        SpeakerID: Blait
+        speakerName: Tox
+        speakerID: Tox
       speed: 5
       sentences:
       - OH
     - speaker:
-        Name: Unknown NPC
-        SpeakerID: 
+        speakerName: Blait
+        speakerID: Blait
       speed: 5
       sentences:
       - WHOHT

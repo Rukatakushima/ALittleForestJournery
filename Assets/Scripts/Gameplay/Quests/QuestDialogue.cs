@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestDialogue : MonoBehaviour
 {
     public Quest quest;
     public string questDialogueName;
-    public int startDialogueID;
-    public int[] progressDialogueIDs;
-    public int completeDialogueID;
-    public int afterwordsDialogueID;
-    public int failDialogueID;
+    public string startDialogueID;
+    public string[] progressDialogueIDs;
+    public string completeDialogueID;
+    public string afterwordsDialogueID;
+    public string failDialogueID;
 
     private void Awake()
     {
@@ -23,5 +21,5 @@ public class QuestDialogue : MonoBehaviour
     public void CompleteQuestDialogue() => OpenQuestDialogue(completeDialogueID);
     public void AfterwordsQuestDialogue() => OpenQuestDialogue(afterwordsDialogueID);
     public void FailQuestDialogue() => OpenQuestDialogue(failDialogueID);
-    public void OpenQuestDialogue(int dialogueID) => DialogueManager.Instance.StartDialogue(/*questDialogueName,*/ dialogueID);
+    public void OpenQuestDialogue(string dialogueID) => DialogueManager.Instance.StartDialogue(/*questDialogueName,*/ dialogueID);
 }

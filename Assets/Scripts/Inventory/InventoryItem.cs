@@ -6,7 +6,7 @@ public class InventoryItem : BaseItem
 {
     private SceneItem linkedSceneItem;
 
-    public void Initialize(int id, SceneItem sceneItem, Sprite sprite)
+    public void Initialize(string id, SceneItem sceneItem, Sprite sprite)
     {
         ID = id;
         linkedSceneItem = sceneItem;

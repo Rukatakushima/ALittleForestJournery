@@ -6,7 +6,6 @@ public class SceneItem : BaseItem
     [SerializeField] private InventoryItem inventoryItemPrefab;
     private InventoryItem _linkedInventoryItem;
     private PlayerMovement _player;
-    // private Mover _player;
 
     public UnityEvent onItemPickedUp;
     public UnityEvent onItemDropped;

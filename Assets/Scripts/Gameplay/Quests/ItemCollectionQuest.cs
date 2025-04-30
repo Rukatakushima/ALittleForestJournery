@@ -6,15 +6,10 @@ public class ItemCollectionQuest : Quest
 {
     [Header("Item Collection Settings")]
     [SerializeField] private int requiredItemsCount = 4;
-    [SerializeField] private List<int> validItemIDs = new();
-    // [SerializeField] private string questDialogueName;
-    // [SerializeField] private int startDialogueID = 0;
-    // [SerializeField] private int completionDialogueID = 5;
-    // [SerializeField] private int middleProgressedDialogueID = 6;
-    // [SerializeField] private int afterwordDialogueID = 7;
+    [SerializeField] private List<string> validItemIDs = new();
 
     private int _itemsCollected;
-    [SerializeField] public UnityEvent<int> onItemCollected;
+    [SerializeField] public UnityEvent<string> onItemCollected;
 
     protected override void Awake()
     {
@@ -25,8 +20,6 @@ public class ItemCollectionQuest : Quest
     protected override void InitializeQuest()
     {
         _itemsCollected = 0;
-        // DialogueManager.Instance.SetCurrentDialogueData(questDialogueName);
-        // OpenQuestDialogue(startDialogueID);
     }
 
     public void OnTriggerEnter2D(Collider2D other)
@@ -35,7 +28,6 @@ public class ItemCollectionQuest : Quest
 
         if (IsCompleted)
         {
-            // OpenQuestDialogue(afterwordDialogueID);
             AfterFinishQuest();
             return;
         }
@@ -55,32 +47,17 @@ public class ItemCollectionQuest : Quest
 
         if (_itemsCollected == requiredItemsCount)
         {
-            // OpenQuestDialogue(completionDialogueID);
             CompleteQuest();
         }
         else
         {
-            // OpenQuestDialogue(item.ID);
             UpdateProgress();
             UpdateProgress(item.ID);
         }
     }
 
-    private void UpdateProgress(int itemID)
+    private void UpdateProgress(string itemID)
     {
         onItemCollected?.Invoke(itemID);
     }
-
-    // public void OpenQuestDialogue(int dialogueID)
-    // {
-    //     DialogueManager.Instance.StartDialogue(/*questDialogueName,*/ dialogueID);
-    // }
-
-    // protected override void InProgressQuest()
-    // {
-    //     base.InProgressQuest();
-    //     OpenQuestDialogue(middleProgressedDialogueID);
-    // }
-
-    // protected override void AfterFinishQuest() { base.AfterFinishQuest(); OpenQuestDialogue(afterwordDialogueID); }
 }
