@@ -1043,7 +1043,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.164446, y: 0.8799995, z: -10}
+  m_LocalPosition: {x: 0.7, y: -0.19000006, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1377,30 +1377,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 2115680590}
-        m_TargetAssemblyTypeName: ItemCollectionQuest, Assembly-CSharp
-        m_MethodName: Interact
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
-      - m_Target: {fileID: 683301939}
-        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
-        m_MethodName: StartDialogue
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
 --- !u!114 &694588177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1886,7 +1862,7 @@ Transform:
   m_GameObject: {fileID: 995246947}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.24, y: 1.4599999, z: -10}
+  m_LocalPosition: {x: 0.7, y: -0.19000006, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3778,7 +3754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestStarted.m_PersistentCalls.m_Calls.Array.size
@@ -3802,7 +3778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
@@ -3819,7 +3795,7 @@ PrefabInstance:
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 683301939}
+      objectReference: {fileID: 2115680590}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -3874,7 +3850,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetCurrentDialogueData
+      value: SetDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
@@ -4170,7 +4146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: DialogueManager, Assembly-CSharp
+      value: Quest, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -4194,7 +4170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: TestQuestName_CharaterName
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestStarted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -5000,11 +4976,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3054385152484815904, guid: 55135a7d816a51f4785abb479e3d9e61, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.24
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 3054385152484815904, guid: 55135a7d816a51f4785abb479e3d9e61, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.65
+      value: -2.3
       objectReference: {fileID: 0}
     - target: {fileID: 3054385152484815904, guid: 55135a7d816a51f4785abb479e3d9e61, type: 3}
       propertyPath: m_LocalPosition.z

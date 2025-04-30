@@ -54,6 +54,19 @@ MonoBehaviour:
       sentences:
       - TY
       - YT
+    - speaker:
+        speakerName: Blait
+        speakerID: Blait
+      speed: 10
+      sentences:
+      - Np
+      - NP
+    - speaker:
+        speakerName: 0
+        speakerID: 
+      speed: 5
+      sentences:
+      - Null test
   - ID: 3
     isRead: 1
     DialogueLines:
