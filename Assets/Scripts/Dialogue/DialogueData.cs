@@ -32,10 +32,14 @@ public class DialogueData : ScriptableObject
     {
         public string ID;
         public bool isRead = false;
+        
+        [SerializeReference]
+        [HideReferenceObjectPicker]
         public List<DialogueLine> DialogueLines;
     }
 
     [Serializable]
+    [HideReferenceObjectPicker]
     public class DialogueLine
     {
         [ValueDropdown("GetAvailableSpeakers")] public Speaker speaker;
@@ -73,4 +77,18 @@ public class DialogueData : ScriptableObject
         }
 #endif
     }
+    
+    [Serializable]
+    public class Choice
+    {
+        public string text;
+        public string nextDialogueLineID; // или DialogueLine ID, если ветвление внутри одной ветви
+    }
+
+    [Serializable]
+    public class ChoiceLine : DialogueLine
+    {
+        public List<Choice> choices = new();
+    }
+
 }

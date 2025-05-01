@@ -26,7 +26,10 @@ public class DialogueView : MonoBehaviour
 
         dialogueManager ??= DialogueManager.Instance;
         if (dialogueManager != null)
+        {
+            dialogueManager.onChoiceLineActive.AddListener(UpdateDialogueBox);
             dialogueManager.onDialogueLineActive.AddListener(UpdateDialogueBox);
+        }
         else
             Debug.LogWarning("DialogueManager is not found");
 

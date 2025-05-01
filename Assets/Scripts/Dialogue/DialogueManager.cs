@@ -16,6 +16,7 @@ public class DialogueManager : MonoBehaviour
 
     public UnityEvent onDialogueStarted;
     public UnityEvent<DialogueLine, int> onDialogueLineActive;
+    public UnityEvent<DialogueLine, int> onChoiceLineActive;
     public UnityEvent onDialogueEnded;
 
     private void Awake()
@@ -73,7 +74,17 @@ public class DialogueManager : MonoBehaviour
 
         _currentDialogueLine = dialogueLine;
         _currentSentenceIndex = 0;
-        onDialogueLineActive?.Invoke(dialogueLine, _currentSentenceIndex);
+        
+        if (dialogueLine is ChoiceLine choiceLine)
+        {
+            // Показать выбор игроку
+            onChoiceLineActive?.Invoke(choiceLine, _currentSentenceIndex);
+            // ShowChoiceUI(choiceLine);
+        }
+        else
+        {
+            onDialogueLineActive?.Invoke(dialogueLine, _currentSentenceIndex);
+        }
     }
 
     public void NextDialogueLine()
