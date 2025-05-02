@@ -1,20 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// [ExecuteInEditMode]
 public class ParallaxBackground : MonoBehaviour
 {
-  public ParallaxCamera parallaxCamera;
-  private readonly List<ParallaxLayer> _parallaxLayers = new List<ParallaxLayer>();
+  private readonly List<ParallaxLayer> _parallaxLayers = new();
 
   private void Awake()
   {
-      parallaxCamera ??= Camera.main?.GetComponent<ParallaxCamera>();
+    if (Camera.main != null && Camera.main.TryGetComponent(out CameraMovementTracker parallaxCamera))
+    {
+      parallaxCamera.onCameraMovedOnX.AddListener(Move);
+    }
   }
 
   private void Start()
   {
-    parallaxCamera?.onCameraTranslate.AddListener(Move);
     SetLayers();
   }
 
@@ -35,7 +35,7 @@ public class ParallaxBackground : MonoBehaviour
 
   private void Move(float delta)
   {
-    foreach (ParallaxLayer layer in _parallaxLayers)
+    foreach (var layer in _parallaxLayers)
     {
       layer.Move(delta);
     }
