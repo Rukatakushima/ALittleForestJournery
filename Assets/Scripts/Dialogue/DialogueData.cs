@@ -11,35 +11,37 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "DialogueData", menuName = "Dialogue/Dialogue")]
 public class DialogueData : ScriptableObject
 {
+    [Header("Presets")]
     [SerializeField] private List<Speaker> speakers;
     [SerializeField] private List<float> typingSpeeds;
     public List<Speaker> AvailableSpeakers => speakers ?? new List<Speaker>();
     public List<float> AvailableSpeeds => typingSpeeds ?? new List<float> { 1f };
-    
+
+    [Header("Dialogue")]
     [SerializeField] private string dialogueName;
     public string DialogueName => dialogueName;
     public List<Dialogue> dialogues;
 
-    [System.Serializable]
+    [Serializable]
     public class Speaker
     {
         public string speakerName;
         public string speakerID;
     }
-    
+
     [Serializable]
     public class Dialogue
     {
         public string ID;
         public bool isRead = false;
-        
+
         [SerializeReference]
-        [HideReferenceObjectPicker]
+        // [HideReferenceObjectPicker]
         public List<DialogueLine> DialogueLines;
     }
 
     [Serializable]
-    [HideReferenceObjectPicker]
+    // [HideReferenceObjectPicker]
     public class DialogueLine
     {
         [ValueDropdown("GetAvailableSpeakers")] public Speaker speaker;
@@ -77,18 +79,11 @@ public class DialogueData : ScriptableObject
         }
 #endif
     }
-    
-    [Serializable]
-    public class Choice
-    {
-        public string text;
-        public string nextDialogueLineID; // или DialogueLine ID, если ветвление внутри одной ветви
-    }
 
     [Serializable]
     public class ChoiceLine : DialogueLine
     {
-        public List<Choice> choices = new();
+        public string nextDialogueID; // или DialogueLine ID, если ветвление внутри одной ветви
     }
 
 }

@@ -7,16 +7,20 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
-    private string _brunchesName;
+    // private string _brunchesName;
     private List<Dialogue> _currentDialogues;
     private List<DialogueLine> _currentDialogueLines;
     private DialogueLine _currentDialogueLine;
     private int _currentDialogueLineIndex;
     private int _currentSentenceIndex;
+    
+    private List<ChoiceLine> _currentChoiceLines;
+    private int _currentChoiceIndex;
 
     public UnityEvent onDialogueStarted;
     public UnityEvent<DialogueLine, int> onDialogueLineActive;
     public UnityEvent<DialogueLine, int> onChoiceLineActive;
+    public UnityEvent<string> onChoiceMade;
     public UnityEvent onDialogueEnded;
 
     private void Awake()
@@ -36,10 +40,12 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(string dialogueID)
     {
         if (!TryGetDialogue(dialogueID, out Dialogue dialogue)) return;
+        
+        CacheChoices(dialogue);
 
         StartDialogueLine(_currentDialogueLines[_currentDialogueLineIndex]);
         onDialogueStarted?.Invoke();
-
+        
         dialogue.isRead = true;
     }
 
@@ -63,6 +69,17 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    private void CacheChoices(Dialogue dialogue)
+    {
+        _currentChoiceLines = new List<ChoiceLine>();
+        foreach (var line in dialogue.DialogueLines)
+        {
+            if (line is ChoiceLine choiceLine)
+                _currentChoiceLines.Add(choiceLine);
+        }
+        _currentChoiceIndex = 0;
+    }
+
     private void StartDialogueLine(DialogueLine dialogueLine)
     {
         if (dialogueLine == null)
@@ -74,21 +91,41 @@ public class DialogueManager : MonoBehaviour
 
         _currentDialogueLine = dialogueLine;
         _currentSentenceIndex = 0;
-        
+
         if (dialogueLine is ChoiceLine choiceLine)
         {
-            // Показать выбор игроку
             onChoiceLineActive?.Invoke(choiceLine, _currentSentenceIndex);
-            // ShowChoiceUI(choiceLine);
         }
         else
         {
             onDialogueLineActive?.Invoke(dialogueLine, _currentSentenceIndex);
         }
     }
+    
+    public void ShowNextChoiceLine()
+    {
+        if (++_currentChoiceIndex >= _currentChoiceLines.Count) return;
+
+        StartDialogueLine(_currentChoiceLines[_currentChoiceIndex]);
+    }
+
+    public void ShowPreviousChoiceLine()
+    {
+        if (--_currentChoiceIndex < 0) return;
+        
+        StartDialogueLine(_currentChoiceLines[_currentChoiceIndex]);
+    }
+
 
     public void NextDialogueLine()
     {
+        if (_currentDialogueLine is ChoiceLine choiceLine)
+        {
+            StartDialogue(choiceLine.nextDialogueID);
+            onChoiceMade?.Invoke(choiceLine.nextDialogueID);
+            return;
+        }
+
         _currentSentenceIndex++;
 
         if (_currentDialogueLine != null && _currentSentenceIndex < _currentDialogueLine.sentences.Count)
@@ -96,11 +133,11 @@ public class DialogueManager : MonoBehaviour
             // Next Sentence
             onDialogueLineActive?.Invoke(_currentDialogueLine, _currentSentenceIndex);
         }
-        else if (_currentDialogueLine == null || ++_currentDialogueLineIndex >= _currentDialogueLines.Count) 
-        { 
-            EndDialogue(); 
+        else if (_currentDialogueLine == null || ++_currentDialogueLineIndex >= _currentDialogueLines.Count)
+        {
+            EndDialogue();
         }
-        else 
+        else
         {
             // Next Dialogue Line
             _currentSentenceIndex = 0;
