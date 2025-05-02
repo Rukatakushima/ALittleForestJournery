@@ -20,7 +20,7 @@ public class DialogueData : ScriptableObject
     [Header("Dialogue")]
     [SerializeField] private string dialogueName;
     public string DialogueName => dialogueName;
-    public List<Dialogue> dialogues;
+    public List<DialogueBranch> dialogue;
 
     [Serializable]
     public class Speaker
@@ -30,24 +30,22 @@ public class DialogueData : ScriptableObject
     }
 
     [Serializable]
-    public class Dialogue
+    public class DialogueBranch
     {
-        public string ID;
-        public bool isRead = false;
+        [SerializeField] private string id;
+        public string ID => id;
+        public bool isRead;
 
         [SerializeReference]
-        // [HideReferenceObjectPicker]
-        public List<DialogueLine> DialogueLines;
+        public List<DialogueNode> dialogueNodes;
     }
 
     [Serializable]
-    // [HideReferenceObjectPicker]
-    public class DialogueLine
+    public class DialogueNode
     {
         [ValueDropdown("GetAvailableSpeakers")] public Speaker speaker;
         [ValueDropdown("GetAvailableSpeeds")] public float speed = 5f;
         [TextArea(1, 3)] public List<string> sentences = new();
-
 
 #if UNITY_EDITOR
         private List<ValueDropdownItem> GetAvailableSpeakers()
@@ -81,9 +79,8 @@ public class DialogueData : ScriptableObject
     }
 
     [Serializable]
-    public class ChoiceLine : DialogueLine
+    public class ChoiceNode : DialogueNode
     {
-        public string nextDialogueID; // или DialogueLine ID, если ветвление внутри одной ветви
+        public string nextDialogueBranchID;
     }
-
 }

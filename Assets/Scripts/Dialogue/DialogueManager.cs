@@ -7,21 +7,21 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
-    // private string _brunchesName;
-    private List<Dialogue> _currentDialogues;
-    private List<DialogueLine> _currentDialogueLines;
-    private DialogueLine _currentDialogueLine;
-    private int _currentDialogueLineIndex;
+    private string _dialogueName;
+    private List<DialogueBranch> _dialogue;
+    private List<DialogueNode> _nodes;
+    private DialogueNode _currentNode;
+    private int _currentNodeIndex;
     private int _currentSentenceIndex;
     
-    private List<ChoiceLine> _currentChoiceLines;
+    private List<ChoiceNode> _choices;
     private int _currentChoiceIndex;
 
-    public UnityEvent onDialogueStarted;
-    public UnityEvent<DialogueLine, int> onDialogueLineActive;
-    public UnityEvent<DialogueLine, int> onChoiceLineActive;
+    public UnityEvent<string, string> onDialogueBranchStarted;
+    public UnityEvent<DialogueNode, int> onDialogueNodeActive;
+    public UnityEvent<DialogueNode, int> onChoiceNodeActive;
     public UnityEvent<string> onChoiceMade;
-    public UnityEvent onDialogueEnded;
+    public UnityEvent<string, string> onDialogueBranchEnded;
 
     private void Awake()
     {
@@ -35,120 +35,125 @@ public class DialogueManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SetCurrentDialogueData(List<Dialogue> dialogues) => _currentDialogues = dialogues;
-
-    public void StartDialogue(string dialogueID)
+    public void SetDialogue(DialogueData dialogue)
     {
-        if (!TryGetDialogue(dialogueID, out Dialogue dialogue)) return;
-        
-        CacheChoices(dialogue);
-
-        StartDialogueLine(_currentDialogueLines[_currentDialogueLineIndex]);
-        onDialogueStarted?.Invoke();
-        
-        dialogue.isRead = true;
+        _dialogue = dialogue.dialogue;
+        _dialogueName = dialogue.DialogueName;
     }
 
-    private bool TryGetDialogue(string id, out Dialogue dialogue)
+    public void StartDialogueBranch(string branchID)
     {
-        dialogue = _currentDialogues.Find(d => d.ID == id);
+        if (!TryGetDialogueBranch(branchID, out DialogueBranch branch)) return;
+        
+        CacheChoices(branch);
 
-        if (dialogue is { DialogueLines: { Count: > 0 } })
+        StartDialogueNode(_nodes[_currentNodeIndex]);
+        onDialogueBranchStarted?.Invoke(_dialogueName, branchID);
+        
+        branch.isRead = true;
+    }
+
+    private bool TryGetDialogueBranch(string branchID, out DialogueBranch dialogueBranch)
+    {
+        dialogueBranch = _dialogue.Find(d => d.ID == branchID);
+
+        if (dialogueBranch is { dialogueNodes: { Count: > 0 } })
         {
-            _currentDialogueLines = dialogue.DialogueLines;
-            _currentDialogueLineIndex = 0;
+            _nodes = dialogueBranch.dialogueNodes;
+            _currentNodeIndex = 0;
 
-            return !(_currentDialogueLines[_currentDialogueLineIndex].sentences.Count <= 0
-            || _currentSentenceIndex > _currentDialogueLines[_currentDialogueLineIndex].sentences.Count);
+            return !(_nodes[_currentNodeIndex].sentences.Count <= 0
+            || _currentSentenceIndex > _nodes[_currentNodeIndex].sentences.Count);
         }
         else
         {
-            EndDialogue();
-            Debug.LogWarning($"Dialogue {id} not found or empty or Sentence is out of array");
+            EndDialogueNode();
+            Debug.LogWarning($"Dialogue {branchID} is not found or empty or Sentence is out of array / null");
             return false;
         }
     }
 
-    private void CacheChoices(Dialogue dialogue)
+    private void CacheChoices(DialogueBranch dialogueBranch)
     {
-        _currentChoiceLines = new List<ChoiceLine>();
-        foreach (var line in dialogue.DialogueLines)
+        _choices = new List<ChoiceNode>();
+        foreach (var line in dialogueBranch.dialogueNodes)
         {
-            if (line is ChoiceLine choiceLine)
-                _currentChoiceLines.Add(choiceLine);
+            if (line is ChoiceNode choiceLine)
+                _choices.Add(choiceLine);
         }
         _currentChoiceIndex = 0;
     }
 
-    private void StartDialogueLine(DialogueLine dialogueLine)
+    private void StartDialogueNode(DialogueNode dialogueNode)
     {
-        if (dialogueLine == null)
+        if (dialogueNode == null)
         {
-            EndDialogue();
-            Debug.LogWarning("DialogueLine is null ");
+            EndDialogueNode();
+            Debug.LogWarning("DialogueNode is null ");
             return;
         }
 
-        _currentDialogueLine = dialogueLine;
+        _currentNode = dialogueNode;
         _currentSentenceIndex = 0;
 
-        if (dialogueLine is ChoiceLine choiceLine)
+        if (dialogueNode is ChoiceNode choiceLine)
         {
-            onChoiceLineActive?.Invoke(choiceLine, _currentSentenceIndex);
+            onChoiceNodeActive?.Invoke(choiceLine, _currentSentenceIndex);
         }
         else
         {
-            onDialogueLineActive?.Invoke(dialogueLine, _currentSentenceIndex);
+            onDialogueNodeActive?.Invoke(dialogueNode, _currentSentenceIndex);
         }
     }
     
     public void ShowNextChoiceLine()
     {
-        if (++_currentChoiceIndex >= _currentChoiceLines.Count) return;
+        if (++_currentChoiceIndex >= _choices.Count) return;
 
-        StartDialogueLine(_currentChoiceLines[_currentChoiceIndex]);
+        StartDialogueNode(_choices[_currentChoiceIndex]);
     }
 
     public void ShowPreviousChoiceLine()
     {
         if (--_currentChoiceIndex < 0) return;
         
-        StartDialogueLine(_currentChoiceLines[_currentChoiceIndex]);
+        StartDialogueNode(_choices[_currentChoiceIndex]);
     }
 
 
     public void NextDialogueLine()
     {
-        if (_currentDialogueLine is ChoiceLine choiceLine)
+        if (_currentNode is ChoiceNode choiceLine)
         {
-            StartDialogue(choiceLine.nextDialogueID);
-            onChoiceMade?.Invoke(choiceLine.nextDialogueID);
+            StartDialogueBranch(choiceLine.nextDialogueBranchID);
+            onChoiceMade?.Invoke(choiceLine.nextDialogueBranchID);
             return;
         }
 
         _currentSentenceIndex++;
 
-        if (_currentDialogueLine != null && _currentSentenceIndex < _currentDialogueLine.sentences.Count)
+        if (_currentNode != null && _currentSentenceIndex < _currentNode.sentences.Count)
         {
             // Next Sentence
-            onDialogueLineActive?.Invoke(_currentDialogueLine, _currentSentenceIndex);
+            onDialogueNodeActive?.Invoke(_currentNode, _currentSentenceIndex);
         }
-        else if (_currentDialogueLine == null || ++_currentDialogueLineIndex >= _currentDialogueLines.Count)
+        else if (_currentNode == null || ++_currentNodeIndex >= _nodes.Count)
         {
-            EndDialogue();
+            EndDialogueNode();
         }
         else
         {
             // Next Dialogue Line
             _currentSentenceIndex = 0;
-            StartDialogueLine(_currentDialogueLines[_currentDialogueLineIndex]);
+            StartDialogueNode(_nodes[_currentNodeIndex]);
         }
     }
 
-    public void EndDialogue()
+    public void EndDialogueNode()
     {
-        _currentDialogueLines = null;
-        _currentDialogueLineIndex = 0;
-        onDialogueEnded?.Invoke();
+        onDialogueBranchEnded?.Invoke(_dialogueName, _dialogue[_currentNodeIndex].ID);
+        
+        _nodes = null;
+        _currentNodeIndex = 0;
     }
 }

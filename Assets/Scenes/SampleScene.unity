@@ -3978,7 +3978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestStarted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartDialogue
+      value: StartDialogueBranch
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -4038,7 +4038,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestCompleted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartDialogue
+      value: StartDialogueBranch
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestCompleted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -4086,7 +4086,7 @@ PrefabInstance:
       objectReference: {fileID: 683301939}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestInProgress.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartDialogue
+      value: StartDialogueBranch
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestInProgress.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -4126,7 +4126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestAfterCompleted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartDialogue
+      value: StartDialogueBranch
       objectReference: {fileID: 0}
     - target: {fileID: 2829798217506188428, guid: bb11b7a3c7d3be545bbcc4184c54c662, type: 3}
       propertyPath: onQuestAfterCompleted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName

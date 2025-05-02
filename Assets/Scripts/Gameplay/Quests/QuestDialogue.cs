@@ -21,5 +21,5 @@ public class QuestDialogue : MonoBehaviour
     public void CompleteQuestDialogue() => OpenQuestDialogue(completeDialogueID);
     public void AfterwordsQuestDialogue() => OpenQuestDialogue(afterwordsDialogueID);
     public void FailQuestDialogue() => OpenQuestDialogue(failDialogueID);
-    public void OpenQuestDialogue(string dialogueID) => DialogueManager.Instance.StartDialogue(/*questDialogueName,*/ dialogueID);
+    public void OpenQuestDialogue(string dialogueID) => DialogueManager.Instance.StartDialogueBranch(/*questDialogueName,*/ dialogueID);
 }

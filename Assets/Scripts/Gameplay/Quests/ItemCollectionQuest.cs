@@ -14,7 +14,7 @@ public class ItemCollectionQuest : Quest
     protected override void Awake()
     {
         base.Awake();
-        onItemCollected.AddListener(DialogueManager.Instance.StartDialogue);
+        onItemCollected.AddListener(DialogueManager.Instance.StartDialogueBranch);
     }
 
     protected override void InitializeQuest()

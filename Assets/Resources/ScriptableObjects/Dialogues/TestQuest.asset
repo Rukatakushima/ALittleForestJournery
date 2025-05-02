@@ -21,48 +21,11 @@ MonoBehaviour:
   - 1
   - 5
   - 10
-  dialogueName: TestQuestName_CharaterName
-  dialogues:
-  - ID: 0
-    isRead: 1
-    DialogueLines:
-    - rid: -2
-    - rid: -2
-    - rid: -2
-  - ID: 1
-    isRead: 1
-    DialogueLines:
-    - rid: 6194716724398653440
-    - rid: 6194716724398653441
-  - ID: 3
-    isRead: 1
-    DialogueLines:
-    - rid: -2
-  - ID: 4
-    isRead: 1
-    DialogueLines:
-    - rid: -2
-    - rid: -2
+  dialogueName: 
+  dialogue:
+  - id: 
+    isRead: 0
+    dialogueNodes: []
   references:
     version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 6194716724398653440
-      type: {class: DialogueData/DialogueLine, ns: , asm: Assembly-CSharp}
-      data:
-        speaker:
-          speakerName: 
-          speakerID: 
-        speed: 5
-        sentences: []
-    - rid: 6194716724398653441
-      type: {class: DialogueData/ChoiceLine, ns: , asm: Assembly-CSharp}
-      data:
-        speaker:
-          speakerName: 
-          speakerID: 
-        speed: 5
-        sentences:
-        - "\u0430\u0430\u0430"
-        nextDialogueID: 
+    RefIds: []

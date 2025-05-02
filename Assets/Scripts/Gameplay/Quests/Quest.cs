@@ -54,7 +54,7 @@ public abstract class Quest : MonoBehaviour
 
     private void SetDialogueData()
     {
-        DialogueManager.Instance.SetCurrentDialogueData(dialogueData.dialogues);
+        DialogueManager.Instance.SetDialogue(dialogueData);
     }
 
     public void StartQuest()

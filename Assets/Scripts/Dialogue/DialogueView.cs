@@ -27,8 +27,8 @@ public class DialogueView : MonoBehaviour
         dialogueManager ??= DialogueManager.Instance;
         if (dialogueManager != null)
         {
-            dialogueManager.onChoiceLineActive.AddListener(UpdateDialogueBox);
-            dialogueManager.onDialogueLineActive.AddListener(UpdateDialogueBox);
+            dialogueManager.onChoiceNodeActive.AddListener(UpdateDialogueBox);
+            dialogueManager.onDialogueNodeActive.AddListener(UpdateDialogueBox);
         }
         else
             Debug.LogWarning("DialogueManager is not found");
@@ -40,17 +40,17 @@ public class DialogueView : MonoBehaviour
 
     private void Start() => _screenSize = new Vector2(Screen.width, Screen.height);
 
-    private void UpdateDialogueBox(DialogueLine dialogueLine, int sentenceIndex)
+    private void UpdateDialogueBox(DialogueNode dialogueNode, int sentenceIndex)
     {
         StopTyping();
 
-        SetDialogueName(dialogueLine.speaker.speakerName);
+        SetDialogueName(dialogueNode.speaker.speakerName);
 
-        var speakerTransform = !string.IsNullOrEmpty(dialogueLine.speaker.speakerID) ?
-            (characterRegistry?.GetCharacterTransform(dialogueLine.speaker.speakerID)) : null;
+        var speakerTransform = !string.IsNullOrEmpty(dialogueNode.speaker.speakerID) ?
+            (characterRegistry?.GetCharacterTransform(dialogueNode.speaker.speakerID)) : null;
         UpdateDialoguePosition(speakerTransform);
 
-        _typingCoroutine = StartCoroutine(TypeSentence(dialogueLine.sentences[sentenceIndex], dialogueLine.speed));
+        _typingCoroutine = StartCoroutine(TypeSentence(dialogueNode.sentences[sentenceIndex], dialogueNode.speed));
     }
 
     private void SetDialogueName(string dialogueName) => nameText.text = string.IsNullOrEmpty(dialogueName) ? MISSING_NAME : dialogueName;
