@@ -7,15 +7,12 @@ public class ParallaxBackground : MonoBehaviour
 
   private void Awake()
   {
+    SetLayers();
+
     if (Camera.main != null && Camera.main.TryGetComponent(out CameraMovementTracker parallaxCamera))
     {
       parallaxCamera.onCameraMovedOnX.AddListener(Move);
     }
-  }
-
-  private void Start()
-  {
-    SetLayers();
   }
 
   private void SetLayers()
