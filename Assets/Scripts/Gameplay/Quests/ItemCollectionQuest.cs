@@ -30,10 +30,8 @@ public class ItemCollectionQuest : Quest
         if (IsCompleted)
         {
             AfterFinishQuest();
-            return;
         }
-
-        if (validItemIDs.Contains(item.ID))
+        else if (validItemIDs.Contains(item.ID))
         {
             ItemPickup(item);
         }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class AnimatorBoolController : RequireTarget<Animator>
+public class AnimatorController : RequireTarget<Animator>
 {
     [SerializeField] private string boolParameterName;
     private bool _isActive;
