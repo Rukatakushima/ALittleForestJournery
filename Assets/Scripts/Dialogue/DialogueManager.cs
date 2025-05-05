@@ -108,14 +108,20 @@ public class DialogueManager : MonoBehaviour
     
     public void ShowNextChoiceLine()
     {
-        if (++_currentChoiceIndex >= _choices.Count) return;
+        if (++_currentChoiceIndex >= _choices.Count)
+        {
+            _currentChoiceIndex = 0;
+        }
 
         StartDialogueNode(_choices[_currentChoiceIndex]);
     }
 
     public void ShowPreviousChoiceLine()
     {
-        if (--_currentChoiceIndex < 0) return;
+        if (--_currentChoiceIndex < 0)
+        {
+            _currentChoiceIndex = _choices.Count-1;
+        }
         
         StartDialogueNode(_choices[_currentChoiceIndex]);
     }

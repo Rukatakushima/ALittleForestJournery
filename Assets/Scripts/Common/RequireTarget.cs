@@ -6,10 +6,8 @@ public class RequireTarget<T> : MonoBehaviour where T : Object
 
     protected virtual void Awake()
     {
-        if (target == null)
-        {
-            Debug.LogWarning($"Target objects are not assigned in {GetType().Name}.", this);
-            enabled = false;
-        }
+        if (target != null) return;
+        Debug.LogWarning($"Target objects are not assigned in {GetType().Name}.", this);
+        enabled = false;
     }
 }

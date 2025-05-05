@@ -21,8 +21,14 @@ MonoBehaviour:
   - 1
   - 5
   - 10
-  dialogueName: 
+  dialogueName: Test Quest Items
   dialogue:
+  - id: Start
+    isRead: 0
+    dialogueNodes: []
+  - id: 
+    isRead: 0
+    dialogueNodes: []
   - id: 
     isRead: 0
     dialogueNodes: []

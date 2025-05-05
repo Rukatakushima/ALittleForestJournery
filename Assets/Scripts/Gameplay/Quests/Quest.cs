@@ -4,20 +4,25 @@ using UnityEngine.UI;
 
 public abstract class Quest : MonoBehaviour
 {
-    [Header("Base Quest Settings")]
-    [SerializeField] public UnityEvent onInteract;
-    [SerializeField] public UnityEvent onQuestStarted;
-    [SerializeField] public UnityEvent onQuestProgress;
-    [SerializeField] public UnityEvent onQuestInProgress;
-    [SerializeField] public UnityEvent onQuestCompleted;
-    [SerializeField] public UnityEvent onQuestAfterCompleted;
-
-    protected bool IsActive, IsCompleted;
-    
     [Header("Start Button")]
     [SerializeField] private Button startDialogueButton;
     [SerializeField] private DialogueData dialogueData;
     private TriggerZoneActivator _triggerZoneActivator;
+
+    [Header("Base Quest Settings")]
+    [SerializeField] public UnityEvent onInteract;
+
+    [SerializeField] public UnityEvent onQuestStarted;
+
+    [SerializeField] public UnityEvent onQuestProgress;
+
+    [SerializeField] public UnityEvent onQuestInProgress;
+
+    [SerializeField] public UnityEvent onQuestCompleted;
+
+    [SerializeField] public UnityEvent onQuestAfterCompleted;
+
+    protected bool IsActive, IsCompleted;
 
     #region TEST_MARKS
     protected virtual void Awake()
@@ -30,7 +35,7 @@ public abstract class Quest : MonoBehaviour
         onQuestCompleted.AddListener(() => WriteLog("completed"));
         onQuestAfterCompleted.AddListener(() => WriteLog("after wording"));
         
-        startDialogueButton.onClick.AddListener(OnStartDialogButtonPressed);
+        startDialogueButton.onClick.AddListener(Interact);
         _triggerZoneActivator =  GetComponent<TriggerZoneActivator>();
     }
 
@@ -42,14 +47,25 @@ public abstract class Quest : MonoBehaviour
 
     public void Interact()
     {
+        if (!_triggerZoneActivator.IsPlayerInZone || this == null) return;
+
         onInteract?.Invoke();
 
-        if (IsCompleted)
-            AfterFinishQuest();
-        else if (!IsCompleted && IsActive)
-            InProgressQuest();
-        else if (!IsActive)
-            StartQuest();
+        switch (IsCompleted)
+        {
+            case true:
+                AfterFinishQuest();
+                break;
+            case false when IsActive:
+                InProgressQuest();
+                break;
+            default:
+            {
+                if (!IsActive)
+                    StartQuest();
+                break;
+            }
+        }
     }
 
     private void SetDialogueData()
@@ -75,7 +91,10 @@ public abstract class Quest : MonoBehaviour
         }
     }
 
-    protected abstract void InitializeQuest();
+    protected virtual void InitializeQuest()
+    {
+        SetDialogueData();
+    }
 
     protected virtual void UpdateProgress()
     {
@@ -97,12 +116,4 @@ public abstract class Quest : MonoBehaviour
     protected virtual void InProgressQuest() { onQuestInProgress?.Invoke(); }
 
     protected virtual void AfterFinishQuest() { onQuestAfterCompleted?.Invoke(); }
-
-    private void OnStartDialogButtonPressed()
-    {
-        if (_triggerZoneActivator.IsPlayerInZone && this != null)
-        {
-            Interact();
-        }
-    }
 }

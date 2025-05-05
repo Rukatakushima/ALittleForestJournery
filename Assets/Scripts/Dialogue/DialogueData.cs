@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -35,8 +36,9 @@ public class DialogueData : ScriptableObject
         [SerializeField] private string id;
         public string ID => id;
         public bool isRead;
-
-        [SerializeReference]
+        
+        [SerializeReference] 
+        [HideReferenceObjectPicker]
         public List<DialogueNode> dialogueNodes;
     }
 
@@ -56,14 +58,9 @@ public class DialogueData : ScriptableObject
 
             if (data?.AvailableSpeakers != null)
             {
-                foreach (var speaker in data.AvailableSpeakers)
-                {
-                    speakers.Add(new ValueDropdownItem(
-                        string.IsNullOrEmpty(speaker.speakerName) ?
-                            speaker.speakerID :
-                            $"{speaker.speakerName} ({speaker.speakerID})",
-                        speaker));
-                }
+                speakers.AddRange(data.AvailableSpeakers
+                    .Select(speaker => new ValueDropdownItem(string.IsNullOrEmpty(speaker.speakerName) 
+                        ? speaker.speakerID : $"{speaker.speakerName} ({speaker.speakerID})", speaker)));
             }
 
             return speakers;

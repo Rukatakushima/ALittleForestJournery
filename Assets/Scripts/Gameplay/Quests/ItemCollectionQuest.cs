@@ -19,6 +19,7 @@ public class ItemCollectionQuest : Quest
 
     protected override void InitializeQuest()
     {
+        base.InitializeQuest();
         _itemsCollected = 0;
     }
 

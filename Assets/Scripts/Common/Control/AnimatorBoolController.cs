@@ -4,13 +4,13 @@ using UnityEngine;
 public class AnimatorBoolController : RequireTarget<Animator>
 {
     [SerializeField] private string boolParameterName;
-    [SerializeField] public bool IsActive { get; private set; } = false;
+    private bool _isActive;
 
-    public void Toggle() => SetActive(!IsActive);
+    public void Toggle() => SetActive(!_isActive);
 
     public void SetActive(bool isActive)
     {
-        IsActive = isActive;
+        _isActive = isActive;
         target.SetBool(boolParameterName, isActive);
     }
 }
