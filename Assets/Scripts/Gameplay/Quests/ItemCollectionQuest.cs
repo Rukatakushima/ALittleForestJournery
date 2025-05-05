@@ -43,6 +43,8 @@ public class ItemCollectionQuest : Quest
 
     private void ItemPickup(SceneItem item)
     {
+        Debug.Log(item.ID + " has been picked up.");
+        
         _itemsCollected++;
         item.Hide();
 
@@ -53,12 +55,12 @@ public class ItemCollectionQuest : Quest
         else
         {
             UpdateProgress();
-            UpdateProgress(item.ID);
+            onItemCollected?.Invoke(item.ID);
         }
     }
 
-    private void UpdateProgress(string itemID)
-    {
-        onItemCollected?.Invoke(itemID);
-    }
+    // private void UpdateProgress(string itemID)
+    // {
+    //     onItemCollected?.Invoke(itemID);
+    // }
 }

@@ -11,15 +11,10 @@ public abstract class Quest : MonoBehaviour
 
     [Header("Base Quest Settings")]
     [SerializeField] public UnityEvent onInteract;
-
     [SerializeField] public UnityEvent onQuestStarted;
-
     [SerializeField] public UnityEvent onQuestProgress;
-
     [SerializeField] public UnityEvent onQuestInProgress;
-
     [SerializeField] public UnityEvent onQuestCompleted;
-
     [SerializeField] public UnityEvent onQuestAfterCompleted;
 
     protected bool IsActive, IsCompleted;
@@ -27,7 +22,7 @@ public abstract class Quest : MonoBehaviour
     #region TEST_MARKS
     protected virtual void Awake()
     {
-        onInteract.AddListener(SetDialogueData);
+        // onInteract.AddListener(SetDialogueData);
         onInteract.AddListener(() => WriteLog("interacted"));
         onQuestStarted.AddListener(() => WriteLog("started"));
         onQuestProgress.AddListener(() => WriteLog("progressing"));

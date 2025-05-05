@@ -25,13 +25,126 @@ MonoBehaviour:
   dialogue:
   - id: Start
     isRead: 0
-    dialogueNodes: []
-  - id: 
+    dialogueNodes:
+    - rid: 6194716805993332738
+    - rid: 6194716805993332739
+  - id: InProgress
+    isRead: 0
+    dialogueNodes:
+    - rid: 6194716805993332741
+    - rid: 6194716805993332742
+    - rid: 6194716805993332757
+  - id: Completed
+    isRead: 0
+    dialogueNodes:
+    - rid: 6194716805993332751
+  - id: Photo
     isRead: 0
     dialogueNodes: []
-  - id: 
+  - id: News
+    isRead: 0
+    dialogueNodes: []
+  - id: Camera
+    isRead: 0
+    dialogueNodes: []
+  - id: Hat
+    isRead: 0
+    dialogueNodes:
+    - rid: 6194716805993332758
+    - rid: 6194716805993332759
+    - rid: 6194716805993332760
+  - id: Afterwords
     isRead: 0
     dialogueNodes: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6194716805993332738
+      type: {class: DialogueData/DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        speaker:
+          speakerName: Tox
+          speakerID: Tox
+        speed: 5
+        sentences:
+        - Hi
+        - This is the start of the quest
+        - You have no choice to refuse
+    - rid: 6194716805993332739
+      type: {class: DialogueData/DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        speaker:
+          speakerName: 
+          speakerID: 
+        speed: 10
+        sentences:
+        - You have no choice to refuse
+    - rid: 6194716805993332741
+      type: {class: DialogueData/ChoiceNode, ns: , asm: Assembly-CSharp}
+      data:
+        speaker:
+          speakerName: Blait
+          speakerID: Blait
+        speed: 5
+        sentences:
+        - show start
+        nextDialogueBranchID: Start
+    - rid: 6194716805993332742
+      type: {class: DialogueData/ChoiceNode, ns: , asm: Assembly-CSharp}
+      data:
+        speaker:
+          speakerName: 
+          speakerID: 
+        speed: 5
+        sentences:
+        - show complete
+        nextDialogueBranchID: Completed
+    - rid: 6194716805993332751
+      type: {class: DialogueData/ChoiceNode, ns: , asm: Assembly-CSharp}
+      data:
+        speaker:
+          speakerName: wow
+          speakerID: 
+        speed: 5
+        sentences:
+        - Completed
+        nextDialogueBranchID: 
+    - rid: 6194716805993332757
+      type: {class: DialogueData/ChoiceNode, ns: , asm: Assembly-CSharp}
+      data:
+        speaker:
+          speakerName: Blait
+          speakerID: Blait
+        speed: 5
+        sentences:
+        - Show hat
+        nextDialogueBranchID: Hat
+    - rid: 6194716805993332758
+      type: {class: DialogueData/DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        speaker:
+          speakerName: Tox
+          speakerID: Tox
+        speed: 5
+        sentences:
+        - it's a hat!
+    - rid: 6194716805993332759
+      type: {class: DialogueData/ChoiceNode, ns: , asm: Assembly-CSharp}
+      data:
+        speaker:
+          speakerName: Blait
+          speakerID: Blait
+        speed: 5
+        sentences:
+        - perfect, now afterwords
+        nextDialogueBranchID: Afterwords
+    - rid: 6194716805993332760
+      type: {class: DialogueData/ChoiceNode, ns: , asm: Assembly-CSharp}
+      data:
+        speaker:
+          speakerName: 
+          speakerID: 
+        speed: 5
+        sentences:
+        - or hat again
+        nextDialogueBranchID: Hat

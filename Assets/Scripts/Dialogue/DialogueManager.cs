@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using static DialogueData;
@@ -7,8 +8,8 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
-    private string _dialogueName;
-    private List<DialogueBranch> _dialogue;
+    private string _currentDialogueName;
+    private Dictionary<string, DialogueBranch> _branchesDictionary;
     private List<DialogueNode> _nodes;
     private DialogueNode _currentNode;
     private int _currentNodeIndex;
@@ -35,33 +36,38 @@ public class DialogueManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SetDialogue(DialogueData dialogue)
+    public void SetDialogue(DialogueData dialogueData)
     {
-        _dialogue = dialogue.dialogue;
-        _dialogueName = dialogue.DialogueName;
+        _currentDialogueName = dialogueData.DialogueName;
+        _branchesDictionary = dialogueData.dialogue.ToDictionary(b => b.ID, b => b);
     }
 
     public void StartDialogueBranch(string branchID)
     {
+        Debug.Log(branchID + " - branch id");
         if (!TryGetDialogueBranch(branchID, out DialogueBranch branch)) return;
         
         CacheChoices(branch);
 
         StartDialogueNode(_nodes[_currentNodeIndex]);
-        onDialogueBranchStarted?.Invoke(_dialogueName, branchID);
+        onDialogueBranchStarted?.Invoke(_currentDialogueName, branchID);
         
         branch.isRead = true;
     }
 
     private bool TryGetDialogueBranch(string branchID, out DialogueBranch dialogueBranch)
     {
-        dialogueBranch = _dialogue.Find(d => d.ID == branchID);
+        if (!_branchesDictionary.TryGetValue(branchID, out dialogueBranch))
+        {
+            Debug.LogWarning("Not found dialogue branch" + branchID);
+            return false;
+        }
+        Debug.Log(branchID + " branch id found");
 
         if (dialogueBranch is { dialogueNodes: { Count: > 0 } })
         {
             _nodes = dialogueBranch.dialogueNodes;
-            _currentNodeIndex = 0;
-
+            
             return !(_nodes[_currentNodeIndex].sentences.Count <= 0
             || _currentSentenceIndex > _nodes[_currentNodeIndex].sentences.Count);
         }
@@ -157,7 +163,7 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogueNode()
     {
-        onDialogueBranchEnded?.Invoke(_dialogueName, _dialogue[_currentNodeIndex].ID);
+        onDialogueBranchEnded?.Invoke(_currentDialogueName, _currentDialogueName);
         
         _nodes = null;
         _currentNodeIndex = 0;
