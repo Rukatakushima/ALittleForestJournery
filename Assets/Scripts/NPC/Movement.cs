@@ -3,43 +3,32 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public float speed = 3f;
-    private bool facingLeft = true;
-    private bool canMoveForward = true;
-    private bool isMoving = true;
     [SerializeField] private Animator animator;
+    [SerializeField] private float speed = 3f;
     [SerializeField] private List<Vector2> wayPoints = new List<Vector2>();
-    private int currentWaypointIndex = 0;
+    private bool _facingLeft = true;
+    private bool _canMoveForward = true;
+    private bool _isMoving = true;
+    private int _currentWaypointIndex = 0;
+    private static readonly int IsWalking = Animator.StringToHash("isWalking");
 
     private void FixedUpdate()
     {
-        if (isMoving)
+        if (_isMoving)
             MoveTowardsCurrentWaypoint();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void SetWalking(bool isWalking)
     {
-        if (other.CompareTag("Player"))
-        {
-            isMoving = false;
-            UpdateWalkingAnimation(isMoving);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isMoving = true;
-            UpdateWalkingAnimation(isMoving);
-        }
+        _isMoving = isWalking;
+        UpdateWalkingAnimation(_isMoving);
     }
 
     private void MoveTowardsCurrentWaypoint()
     {
         if (wayPoints.Count == 0) return;
 
-        Vector2 targetPosition = wayPoints[currentWaypointIndex];
+        Vector2 targetPosition = wayPoints[_currentWaypointIndex];
 
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
         UpdateWalkingAnimation(true);
@@ -47,33 +36,33 @@ public class Movement : MonoBehaviour
         if (Vector2.Distance((Vector2)transform.position, targetPosition) < 0.1f)
             UpdateWaypointIndex();
 
-        if ((transform.position.x > targetPosition.x && !facingLeft) || (transform.position.x < targetPosition.x && facingLeft))
+        if ((transform.position.x > targetPosition.x && !_facingLeft) || (transform.position.x < targetPosition.x && _facingLeft))
             Flip();
     }
 
     private void UpdateWaypointIndex()
     {
-        currentWaypointIndex += canMoveForward ? +1 : -1;
+        _currentWaypointIndex += _canMoveForward ? +1 : -1;
 
-        if (currentWaypointIndex >= wayPoints.Count)
+        if (_currentWaypointIndex >= wayPoints.Count)
         {
-            currentWaypointIndex = wayPoints.Count - 1;
-            canMoveForward = false;
+            _currentWaypointIndex = wayPoints.Count - 1;
+            _canMoveForward = false;
         }
-        else if (currentWaypointIndex < 0)
+        else if (_currentWaypointIndex < 0)
         {
-            currentWaypointIndex = 0;
-            canMoveForward = true;
+            _currentWaypointIndex = 0;
+            _canMoveForward = true;
         }
     }
 
     private void Flip()
     {
-        facingLeft = !facingLeft;
+        _facingLeft = !_facingLeft;
         Vector3 scaler = transform.localScale;
         scaler.x *= -1;
         transform.localScale = scaler;
     }
 
-    private void UpdateWalkingAnimation(bool isWalking) => animator.SetBool("isWalking", isWalking);
+    private void UpdateWalkingAnimation(bool isWalking) => animator.SetBool(IsWalking, isWalking);
 }

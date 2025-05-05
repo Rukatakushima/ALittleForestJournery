@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,9 +12,8 @@ public class ItemCollectionQuest : Quest
     private int _itemsCollected;
     [SerializeField] public UnityEvent<string> onItemCollected;
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
         onItemCollected.AddListener(DialogueManager.Instance.StartDialogueBranch);
     }
 
