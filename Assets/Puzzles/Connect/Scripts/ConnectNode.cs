@@ -1,28 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Connect
 {
     public class Node : MonoBehaviour
     {
         [SerializeField] private GameObject point, topEdge, bottomEdge, leftEdge, rightEdge;
-        private Dictionary<Node, GameObject> connectedEdges;
-        private List<Node> connectedNodes;
-        private SpriteRenderer pointRenderer;
+        
+        private Dictionary<Node, GameObject> _connectedEdges;
+        private List<Node> _connectedNodes;
+        private SpriteRenderer _pointRenderer;
 
-        [HideInInspector] public int colorId { get; private set; }
-        public Vector2Int Pos2D { get; set; }
-
-        public bool IsWin => point.activeSelf ? connectedNodes.Count == 1 : connectedNodes.Count == 2;
-        public bool IsClickable => point.activeSelf || connectedNodes.Count > 0;
+        public int ColorId { get; private set; }
+        public bool IsWin => point.activeSelf ? _connectedNodes.Count == 1 : _connectedNodes.Count == 2;
+        public bool IsClickable => point.activeSelf || _connectedNodes.Count > 0;
         public bool IsEndNode => point.activeSelf;
-        public IReadOnlyList<Node> ConnectedNodes => connectedNodes.AsReadOnly();
+        private IReadOnlyList<Node> ConnectedNodes => _connectedNodes.AsReadOnly();
 
-        public UnityEvent<Node> OnNodeConnected;
-        public UnityEvent<Node> OnNodeDisconnected;
-
-        private void Awake() => pointRenderer = point.GetComponent<SpriteRenderer>();
+        private void Awake() => _pointRenderer = point.GetComponent<SpriteRenderer>();
 
         public void Init()
         {
@@ -31,15 +26,15 @@ namespace Connect
             bottomEdge.SetActive(false);
             leftEdge.SetActive(false);
             rightEdge.SetActive(false);
-            connectedEdges = new Dictionary<Node, GameObject>();
-            connectedNodes = new List<Node>();
+            _connectedEdges = new Dictionary<Node, GameObject>();
+            _connectedNodes = new List<Node>();
         }
 
         public void SetColorForPoint(int colorIdForSpawnedNode)
         {
-            colorId = colorIdForSpawnedNode;
+            ColorId = colorIdForSpawnedNode;
             point.SetActive(true);
-            pointRenderer.color = GameManager.Instance.NodeColors[colorId];
+            _pointRenderer.color = GameManager.Instance.nodeColors[ColorId];
         }
 
         public void SetEdge(Vector2Int offset, Node node)
@@ -47,16 +42,16 @@ namespace Connect
             switch ((offset.x, offset.y))
             {
                 case (0, 1):
-                    connectedEdges[node] = topEdge;
+                    _connectedEdges[node] = topEdge;
                     break;
                 case (0, -1):
-                    connectedEdges[node] = bottomEdge;
+                    _connectedEdges[node] = bottomEdge;
                     break;
                 case (1, 0):
-                    connectedEdges[node] = rightEdge;
+                    _connectedEdges[node] = rightEdge;
                     break;
                 case (-1, 0):
-                    connectedEdges[node] = leftEdge;
+                    _connectedEdges[node] = leftEdge;
                     break;
                 default:
                     Debug.Log("Invalid direction vector at SetEdge");
@@ -66,25 +61,27 @@ namespace Connect
 
         public void UpdateInput(Node connectedNode)
         {
-            if (!connectedEdges.ContainsKey(connectedNode)) return;
+            if (!_connectedEdges.ContainsKey(connectedNode)) return;
 
-            if (connectedNodes.Contains(connectedNode))
+            if (_connectedNodes.Contains(connectedNode))
             {
                 DeleteStartingNode(connectedNode);
                 return;
             }
 
-            if (connectedNodes.Count == 2)
+            if (_connectedNodes.Count == 2)
                 HandleStartingNodeWithTwoEdges();
 
-            if (connectedNode.ConnectedNodes.Count == 2)
-                DeleteConnectedNode(connectedNode);
+            switch (connectedNode.ConnectedNodes.Count)
+            {
+                case 2:
+                case 1 when connectedNode.ColorId != ColorId:
+                    DeleteConnectedNode(connectedNode);
+                    break;
+            }
 
-            if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.colorId != colorId)
-                DeleteConnectedNode(connectedNode);
-
-            if (connectedNodes.Count == 1 && IsEndNode)
-                DeleteStartingNode(connectedNodes[0]);
+            if (_connectedNodes.Count == 1 && IsEndNode)
+                DeleteStartingNode(_connectedNodes[0]);
 
             if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.IsEndNode)
                 DeleteConnectedNode(connectedNode);
@@ -94,9 +91,9 @@ namespace Connect
 
         private void HandleStartingNodeWithTwoEdges()
         {
-            Node tempNode = connectedNodes[0];
+            Node tempNode = _connectedNodes[0];
             if (tempNode.IsConnectedToEndNode())
-                tempNode = connectedNodes[1];
+                tempNode = _connectedNodes[1];
 
             DeleteStartingNode(tempNode);
         }
@@ -105,22 +102,17 @@ namespace Connect
         {
             if (isStartingNode)
             {
-                connectedNodes.Remove(node);
+                _connectedNodes.Remove(node);
                 node.RemoveConnectedNode(this);
                 RemoveEdge(node);
+                node.DeleteNode();
             }
             else
             {
-                Node tempNode = node.ConnectedNodes[0];
-                node.RemoveConnectedNode(tempNode);
-                tempNode.RemoveConnectedNode(node);
-                node.RemoveEdge(tempNode);
+                node._connectedNodes.Remove(this);
+                RemoveEdge(node);
+                DeleteNode();
             }
-
-            DeleteNode();
-
-            if (!isStartingNode)
-                node.DeleteNode();
         }
 
         private void DeleteStartingNode(Node connectedNode) => DeleteNodeConnection(connectedNode, true);
@@ -129,65 +121,55 @@ namespace Connect
 
         private void AddEdge(Node connectedNode)
         {
-            connectedNode.colorId = colorId;
+            connectedNode.ColorId = ColorId;
             connectedNode.AddConnectedNode(this);
             AddConnectedNode(connectedNode);
 
-            GameObject connectedEdge = connectedEdges[connectedNode];
+            GameObject connectedEdge = _connectedEdges[connectedNode];
             connectedEdge.SetActive(true);
-            connectedEdge.GetComponent<SpriteRenderer>().color = GameManager.Instance.NodeColors[colorId];
-
-            OnNodeConnected?.Invoke(connectedNode);
+            connectedEdge.GetComponent<SpriteRenderer>().color = GameManager.Instance.nodeColors[ColorId];
         }
 
         private void RemoveEdge(Node node)
         {
-            GameObject edge = connectedEdges[node];
+            GameObject edge = _connectedEdges[node];
             edge.SetActive(false);
-            edge = node.connectedEdges[this];
+            
+            edge = node._connectedEdges[this];
             edge.SetActive(false);
-
-            OnNodeDisconnected?.Invoke(node);
         }
 
-        private void DeleteNode()
+        private void DeleteNode(HashSet<Node> visitedNodes = null)
         {
-            Node startNode = this;
+            visitedNodes ??= new HashSet<Node>();
 
-            if (startNode.IsConnectedToEndNode()) return;
+            if (!visitedNodes.Add(this)) return;
 
-            while (startNode != null)
+            foreach (var connected in new List<Node>(_connectedNodes)) // Копия, чтобы избежать модификации во время итерации
             {
-                Node tempNode = null;
-                if (startNode.connectedNodes.Count != 0)
-                {
-                    tempNode = startNode.connectedNodes[0];
-                    startNode.connectedNodes.Clear();
-                    tempNode.RemoveConnectedNode(startNode);
-                    startNode.RemoveEdge(tempNode);
-                }
-                startNode = tempNode;
+                connected.RemoveConnectedNode(this);
+                RemoveEdge(connected);
+                connected.DeleteNode(visitedNodes);
             }
+
+            _connectedNodes.Clear();
         }
 
-        public void AddConnectedNode(Node node) => connectedNodes.Add(node);
+        private void AddConnectedNode(Node node) => _connectedNodes.Add(node);
 
-        public void RemoveConnectedNode(Node node) => connectedNodes.Remove(node);
+        private void RemoveConnectedNode(Node node) => _connectedNodes.Remove(node);
 
-        public bool IsConnectedToEndNode(List<Node> checkedNode = null)
+        private bool IsConnectedToEndNode(List<Node> checkedNode = null)
         {
-            if (checkedNode == null)
-                checkedNode = new List<Node>();
+            checkedNode ??= new List<Node>();
 
             if (IsEndNode) return true;
 
             foreach (var item in ConnectedNodes)
             {
-                if (!checkedNode.Contains(item))
-                {
-                    checkedNode.Add(item);
-                    return item.IsConnectedToEndNode(checkedNode);
-                }
+                if (checkedNode.Contains(item)) continue;
+                checkedNode.Add(item);
+                return item.IsConnectedToEndNode(checkedNode);
             }
 
             return false;

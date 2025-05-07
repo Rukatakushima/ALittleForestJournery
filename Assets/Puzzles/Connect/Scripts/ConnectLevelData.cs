@@ -6,35 +6,16 @@ namespace Connect
     [CreateAssetMenu(fileName = "ConnectLevel", menuName = "Levels/ConnectLevel")]
     public class LevelData : ScriptableObject
     {
-        public List<Edge> Connections;
+        public List<Edge> connections;
     }
 
     [System.Serializable]
     public struct Edge
     {
-        public List<Vector2Int> Points;
-        public Vector2Int StartPoint
-        {
-            get
-            {
-                // если в списке уже есть точки, то возвращаем самую первую(как старт)
-                if (Points != null && Points.Count > 0)
-                    return Points[0];
-
-                return new Vector2Int(-1, -1);
-            }
-        }
-        public Vector2Int EndPoint
-        {
-            get
-            {
-                // если в списке уже есть точки, то возвращаем поселднюю(как конец)
-                if (Points != null && Points.Count > 0)
-                    return Points[Points.Count - 1];
-
-                return new Vector2Int(-1, -1);
-            }
-        }
+        public List<Vector2Int> points;
+        // если в списке уже есть точки, то возвращаем самую первую(как старт)
+        public Vector2Int StartPoint => points is { Count: > 0 } ? points[0] : new Vector2Int(-1, -1);
+        // если в списке уже есть точки, то возвращаем поселднюю(как конец)
+        public Vector2Int EndPoint => points is { Count: > 0 } ? points[^1] : new Vector2Int(-1, -1);
     }
-
 }

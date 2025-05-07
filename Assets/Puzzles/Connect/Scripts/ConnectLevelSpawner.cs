@@ -10,15 +10,16 @@ namespace Connect
         [SerializeField] private float boardPositionController = 2f;
         [SerializeField] private SpriteRenderer boardPrefab, backgroundCellPrefab;
         [SerializeField] private Node nodePrefab;
-        private List<Node> nodes;
-        private Dictionary<Vector2Int, Node> nodeGrid;
+        
+        private List<Node> _nodes;
+        private Dictionary<Vector2Int, Node> _nodeGrid;
 
         public override void SpawnLevel()
         {
             SpawnBoard();
             SpawnNodes();
 
-            GameManager.Instance.Initialize(nodes);
+            GameManager.Instance.Initialize(_nodes);
             OnLevelSpawned?.Invoke();
         }
 
@@ -39,18 +40,15 @@ namespace Connect
 
         private void SpawnNodes()
         {
-            nodes = new List<Node>();
-            nodeGrid = new Dictionary<Vector2Int, Node>();
-
-            Node spawnedNode;
-            Vector3 spawnPos;
+            _nodes = new List<Node>();
+            _nodeGrid = new Dictionary<Vector2Int, Node>();
 
             for (int i = 0; i < levelSize; i++)
             {
                 for (int j = 0; j < levelSize; j++)
                 {
-                    spawnPos = new Vector2(i + nodePrefab.transform.localScale.x, j + nodePrefab.transform.localScale.y);
-                    spawnedNode = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
+                    Vector3 spawnPos = new Vector2(i + nodePrefab.transform.localScale.x, j + nodePrefab.transform.localScale.y);
+                    var spawnedNode = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
                     spawnedNode.Init();
 
                     //окрас point в цвет, который будем соединять
@@ -59,32 +57,29 @@ namespace Connect
                     if (colorIdForSpawnedNode != -1)
                         spawnedNode.SetColorForPoint(colorIdForSpawnedNode);
 
-                    nodes.Add(spawnedNode);
-                    nodeGrid.Add(new Vector2Int(i, j), spawnedNode);
-                    spawnedNode.gameObject.name = i.ToString() + j.ToString();
-                    spawnedNode.Pos2D = new Vector2Int(i, j);
+                    _nodes.Add(spawnedNode);
+                    _nodeGrid.Add(new Vector2Int(i, j), spawnedNode);
                 }
-
             }
 
             //установка сетки: сетка = nodes, у каждого node есть список offsetPos, т.е. 4 edge (верх, них, лево, право)
             List<Vector2Int> offsetPos = new List<Vector2Int>()
             { Vector2Int.up, Vector2Int.down,Vector2Int.left, Vector2Int.right};
 
-            foreach (var item in nodeGrid)
+            foreach (var item in _nodeGrid)
             {
                 foreach (var offset in offsetPos)
                 {
                     var checkPos = item.Key + offset;
-                    if (nodeGrid.ContainsKey(checkPos))
-                        item.Value.SetEdge(offset, nodeGrid[checkPos]);
+                    if (_nodeGrid.TryGetValue(checkPos, out var node))
+                        item.Value.SetEdge(offset, node);
                 }
             }
         }
 
-        public int GetColorId(int i, int j)
+        private int GetColorId(int i, int j)
         {
-            List<Edge> edges = /*GameManager.Instance.*/level.Connections;
+            List<Edge> edges = level.connections;
             Vector2Int point = new Vector2Int(i, j);
 
             for (int colorId = 0; colorId < edges.Count; colorId++)

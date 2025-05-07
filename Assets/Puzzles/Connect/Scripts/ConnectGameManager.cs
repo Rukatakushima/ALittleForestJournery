@@ -7,9 +7,9 @@ namespace Connect
     {
         public static GameManager Instance;
 
-        private Node startNode;
-        public List<Node> nodes { get; private set; }
-        public List<Color> NodeColors;
+        public List<Color> nodeColors;
+        private List<Node> _nodes;
+        private Node _startNode;
 
         protected override void Awake()
         {
@@ -17,43 +17,47 @@ namespace Connect
             base.Awake();
         }
 
-        public void Initialize(List<Node> nodes) => this.nodes = nodes;
+        public void Initialize(List<Node> nodes) => _nodes = nodes;
 
-        protected override void HandleInputStart(Vector2 mousePosition) => startNode = null;
+        protected override void HandleInputStart(Vector2 mousePosition) => _startNode = null;
 
         protected override void HandleInputUpdate(Vector2 mousePosition)
         {
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
-            if (startNode == null)
+            if (_startNode == null)
             {
                 if (hit && hit.collider.gameObject.TryGetComponent(out Node tNode) && tNode.IsClickable)
-                    startNode = tNode;
-
+                    _startNode = tNode;
+                Debug.Log("startNode == null");
                 return;
             }
 
-            if (hit && hit.collider.gameObject.TryGetComponent(out Node tempNode) && startNode != tempNode)
+            if (!hit || !hit.collider.gameObject.TryGetComponent(out Node tempNode) || _startNode == tempNode)
             {
-                if (startNode.colorId != tempNode.colorId && tempNode.IsEndNode)
-                    return;
-
-                startNode.UpdateInput(tempNode);
-                CheckWinCondition();
-                startNode = null;
+                return;
             }
+
+            if (_startNode.ColorId != tempNode.ColorId && tempNode.IsEndNode)
+            {
+                return;
+            }
+
+            _startNode.UpdateInput(tempNode);
+            CheckWinCondition();
+            _startNode = null;
         }
 
-        protected override void HandleInputEnd() => startNode = null;
+        protected override void HandleInputEnd() => _startNode = null;
 
         public override void CheckWinCondition()
         {
-            bool IsWinning = true;
+            bool isWinning = true;
 
-            foreach (var item in nodes)
+            foreach (var item in _nodes)
             {
-                IsWinning &= item.IsWin;
-                if (!IsWinning) return;
+                isWinning &= item.IsWin;
+                if (!isWinning) return;
             }
 
             OnWin?.Invoke();
