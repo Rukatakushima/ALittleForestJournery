@@ -14,7 +14,7 @@ public class DialogueManager : MonoBehaviour
     private DialogueNode _currentNode;
     private int _currentNodeIndex;
     private int _currentSentenceIndex;
-    
+
     private List<ChoiceNode> _choices;
     private int _currentChoiceIndex;
 
@@ -38,20 +38,21 @@ public class DialogueManager : MonoBehaviour
 
     public void SetDialogue(DialogueData dialogueData)
     {
-        _currentDialogueName = dialogueData.DialogueName;
+        if (_currentDialogueName == dialogueData.DialogueName) return;
         _branchesDictionary = dialogueData.dialogue.ToDictionary(b => b.ID, b => b);
+        _currentDialogueName = dialogueData.DialogueName;
     }
 
     public void StartDialogueBranch(string branchID)
     {
         Debug.Log(branchID + " - branch id");
         if (!TryGetDialogueBranch(branchID, out DialogueBranch branch)) return;
-        
+
         CacheChoices(branch);
 
         StartDialogueNode(_nodes[_currentNodeIndex]);
         onDialogueBranchStarted?.Invoke(_currentDialogueName, branchID);
-        
+
         branch.isRead = true;
     }
 
@@ -67,7 +68,7 @@ public class DialogueManager : MonoBehaviour
         if (dialogueBranch is { dialogueNodes: { Count: > 0 } })
         {
             _nodes = dialogueBranch.dialogueNodes;
-            
+
             return !(_nodes[_currentNodeIndex].sentences.Count <= 0
             || _currentSentenceIndex > _nodes[_currentNodeIndex].sentences.Count);
         }
@@ -111,7 +112,7 @@ public class DialogueManager : MonoBehaviour
             onDialogueNodeActive?.Invoke(dialogueNode, _currentSentenceIndex);
         }
     }
-    
+
     public void ShowNextChoiceLine()
     {
         if (++_currentChoiceIndex >= _choices.Count)
@@ -126,9 +127,9 @@ public class DialogueManager : MonoBehaviour
     {
         if (--_currentChoiceIndex < 0)
         {
-            _currentChoiceIndex = _choices.Count-1;
+            _currentChoiceIndex = _choices.Count - 1;
         }
-        
+
         StartDialogueNode(_choices[_currentChoiceIndex]);
     }
 
@@ -164,7 +165,7 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogueNode()
     {
         onDialogueBranchEnded?.Invoke(_currentDialogueName, _currentDialogueName);
-        
+
         _nodes = null;
         _currentNodeIndex = 0;
     }
