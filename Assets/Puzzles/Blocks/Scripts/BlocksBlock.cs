@@ -8,12 +8,12 @@ namespace Blocks
         public Vector2 startPos, prevPos, curPos;
         public List<SpriteRenderer> blockSpriteRenderers;
         public List<Vector2Int> blockPositions;
-        private float backgroundCellPositionRate;
+        private float _backgroundCellPositionRate;
 
         private const int TOP = 1;
         private const int BUTTON = 1;
 
-        public void SetStartParametrs(Vector2 start, List<Vector2Int> blocksPositions, float blocksSpawnSize)
+        public void SetStartParameters(Vector2 start, List<Vector2Int> blocksPositions, float blocksSpawnSize)
         {
             startPos = start;
             prevPos = start;
@@ -21,7 +21,7 @@ namespace Blocks
 
             blockPositions = blocksPositions;
             transform.localScale = Vector2.one * blocksSpawnSize;
-            backgroundCellPositionRate = GameManager.Instance.backgroundCellPositionRate;
+            _backgroundCellPositionRate = GameManager.Instance.backgroundCellPositionRate;
 
             blockSpriteRenderers = new List<SpriteRenderer>();
         }
@@ -57,12 +57,12 @@ namespace Blocks
 
         public void UpdateCorrectMove()
         {
-            curPos.x = Mathf.FloorToInt(curPos.x) + backgroundCellPositionRate;
-            curPos.y = Mathf.FloorToInt(curPos.y) + backgroundCellPositionRate;
+            curPos.x = Mathf.FloorToInt(curPos.x) + _backgroundCellPositionRate;
+            curPos.y = Mathf.FloorToInt(curPos.y) + _backgroundCellPositionRate;
             prevPos = curPos;
             UpdatePosition();
         }
 
-        public void UpdatePosition() => transform.position = curPos;
+        private void UpdatePosition() => transform.position = curPos;
     }
 }

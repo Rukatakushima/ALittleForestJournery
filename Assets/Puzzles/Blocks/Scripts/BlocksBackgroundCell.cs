@@ -4,21 +4,39 @@ namespace Blocks
 {
     public class BackgroundCell : MonoBehaviour
     {
-        [HideInInspector] public bool isBlocked, isFilled;
-
         [SerializeField] private SpriteRenderer bgSprite;
-        [SerializeField] private Color emptyColor, blockedColor, correctColor, incorrectColor;
+        public Color emptyColor, blockedColor, correctColor, incorrectColor;
+        
+        public bool IsBlocked { get; private set; }
+        public bool IsFilled { get; private set; }
 
-        public void Init(int blockValue)
+        public void Init(int blockValue, Color empty, Color blocked, Color correct, Color incorrect)
         {
-            isBlocked = blockValue == -1;
-            if (isBlocked) isFilled = true;
-
-            bgSprite.color = isBlocked ? blockedColor : emptyColor;
+            emptyColor = empty;
+            blockedColor = blocked; 
+            correctColor = correct;
+            incorrectColor = incorrect;
+            
+            IsBlocked = blockValue == -1;
+            SetFilled(IsBlocked);
         }
 
-        public void ResetHighLight() => bgSprite.color = emptyColor;
+        public void SetFilled(bool isFilled)
+        {
+            IsFilled = isFilled;
+            bgSprite.color = IsFilled ? blockedColor : emptyColor;
+        }
 
-        public void UpdateHighlight(bool isCorrect) => bgSprite.color = isCorrect ? correctColor : incorrectColor;
+        public void ResetHighLight()
+        {
+            if (IsFilled || IsBlocked) return;
+            bgSprite.color = emptyColor;
+        }
+
+        public void UpdateHighlight(bool isCorrect)
+        {
+            if (IsFilled || IsBlocked) return;
+            bgSprite.color = isCorrect ? correctColor : incorrectColor;
+        }
     }
 }

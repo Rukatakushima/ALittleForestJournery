@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Blocks
@@ -7,28 +8,29 @@ namespace Blocks
     {
         public static GameManager Instance;
 
-        public LevelData level { get; private set; }
-        public float defaultBlockSize { get; private set; }
-        [SerializeField] public float backgroundCellPositionRate { get; private set; } = 0.5f;
-        public BackgroundCell[,] BGCellGrid { get; private set; }
-        private Blocks currentBlock;
-        private Vector2 curPos, prevPos;
-        private List<Blocks> gridBlocks;
+        public LevelData Level { get; private set; }
+        public float DefaultBlockSize { get; private set; }
+        [SerializeField] public float backgroundCellPositionRate = 0.5f;
         [SerializeField] private float blockPutSize = 1f;
         [SerializeField] private float blockHighLightSize = 1f;
+        
+        private BackgroundCell[,] _bgCellGrid;
+        private Blocks _currentBlock;
+        private Vector2 _curPos, _prevPos;
+        private List<Blocks> _gridBlocks;
 
         protected override void Awake()
         {
             Instance = this;
-            gridBlocks = new List<Blocks>();
+            _gridBlocks = new List<Blocks>();
             base.Awake();
         }
 
-        public void Initialize(LevelData level, BackgroundCell[,] BGCellGrid, float blockSpawnSize)
+        public void Initialize(LevelData level, BackgroundCell[,] bgCellGrid, float blockSpawnSize)
         {
-            this.level = level;
-            this.BGCellGrid = BGCellGrid;
-            defaultBlockSize = blockSpawnSize;
+            Level = level;
+            _bgCellGrid = bgCellGrid;
+            DefaultBlockSize = blockSpawnSize;
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -36,17 +38,17 @@ namespace Blocks
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
             if (!hit) return;
 
-            currentBlock = hit.collider.transform.parent.GetComponent<Blocks>();
-            if (currentBlock == null) return;
+            _currentBlock = hit.collider.transform.parent.GetComponent<Blocks>();
+            if (_currentBlock == null) return;
 
-            curPos = mousePosition;
-            prevPos = mousePosition;
+            _curPos = mousePosition;
+            _prevPos = mousePosition;
 
-            currentBlock.ElevateSprites();
+            _currentBlock.ElevateSprites();
             ChangeCurrentBlockScale(blockHighLightSize);
 
-            if (gridBlocks.Contains(currentBlock))
-                gridBlocks.Remove(currentBlock);
+            if (_gridBlocks.Contains(_currentBlock))
+                _gridBlocks.Remove(_currentBlock);
 
             UpdateFilled();
             ResetHighLight();
@@ -55,34 +57,30 @@ namespace Blocks
 
         private void UpdateFilled()
         {
-            for (int i = 0; i < level.GridRows; i++)
+            for (int i = 0; i < Level.gridRows; i++)
             {
-                for (int j = 0; j < level.GridColumns; j++)
+                for (int j = 0; j < Level.gridColumns; j++)
                 {
-                    if (!BGCellGrid[i, j].isBlocked)
-                        BGCellGrid[i, j].isFilled = false;
+                    if (!_bgCellGrid[i, j].IsBlocked)
+                        _bgCellGrid[i, j].SetFilled(false);
                 }
             }
 
-            foreach (var block in gridBlocks)
+            foreach (var pos in from block in _gridBlocks from pos in block.BlockPositions where IsValidPos(pos) select pos)
             {
-                foreach (var pos in block.BlockPositions)
-                {
-                    if (IsValidPos(pos))
-                        BGCellGrid[pos.x, pos.y].isFilled = true;
-                }
+                _bgCellGrid[pos.x, pos.y].SetFilled(true);
             }
         }
-
-        private bool IsValidPos(Vector2Int pos) => pos.x >= 0 && pos.y >= 0 && pos.x < level.GridRows && pos.y < level.GridColumns;
+        
+        private bool IsValidPos(Vector2Int pos) => pos is { x: >= 0, y: >= 0 } && pos.x < Level.gridRows && pos.y < Level.gridColumns;
 
         protected override void HandleInputUpdate(Vector2 mousePosition)
         {
-            if (currentBlock == null) return;
+            if (_currentBlock == null) return;
 
-            curPos = mousePosition;
-            currentBlock.UpdatePos(curPos - prevPos);
-            prevPos = curPos;
+            _curPos = mousePosition;
+            _currentBlock.UpdatePos(_curPos - _prevPos);
+            _prevPos = _curPos;
 
             ResetHighLight();
             UpdateHighLight();
@@ -90,12 +88,12 @@ namespace Blocks
 
         private void ResetHighLight()
         {
-            for (int i = 0; i < level.GridRows; i++)
+            for (int i = 0; i < Level.gridRows; i++)
             {
-                for (int j = 0; j < level.GridColumns; j++)
+                for (int j = 0; j < Level.gridColumns; j++)
                 {
-                    if (!BGCellGrid[i, j].isBlocked)
-                        BGCellGrid[i, j].ResetHighLight();
+                    if (!_bgCellGrid[i, j].IsBlocked)
+                        _bgCellGrid[i, j].ResetHighLight();
                 }
             }
         }
@@ -103,70 +101,59 @@ namespace Blocks
         private void UpdateHighLight()
         {
             bool isCorrect = IsCorrectMove();
-            foreach (var pos in currentBlock.BlockPositions)
+            foreach (var pos in _currentBlock.BlockPositions.Where(IsValidPos))
             {
-                if (IsValidPos(pos))
-                    BGCellGrid[pos.x, pos.y].UpdateHighlight(isCorrect);
+                _bgCellGrid[pos.x, pos.y].UpdateHighlight(isCorrect);
             }
         }
 
         protected override void HandleInputEnd()
         {
-            if (currentBlock == null) return;
+            if (_currentBlock == null) return;
 
-            currentBlock.ElevateSprites(true);
+            _currentBlock.ElevateSprites(true);
 
             if (IsCorrectMove())
             {
-                currentBlock.UpdateCorrectMove();
+                _currentBlock.UpdateCorrectMove();
                 ChangeCurrentBlockScale(blockPutSize);
-                gridBlocks.Add(currentBlock);
+                _gridBlocks.Add(_currentBlock);
             }
             else if (Input.mousePosition.y < 0)
             {
-                currentBlock.UpdateStartMove();
-                ChangeCurrentBlockScale(defaultBlockSize);
+                _currentBlock.UpdateStartMove();
+                ChangeCurrentBlockScale(DefaultBlockSize);
             }
             else
             {
-                currentBlock.UpdateIncorrectMove();
-                if (currentBlock.curPos.y > 0)
+                _currentBlock.UpdateIncorrectMove();
+                if (_currentBlock.curPos.y > 0)
                 {
-                    gridBlocks.Add(currentBlock);
+                    _gridBlocks.Add(_currentBlock);
                     ChangeCurrentBlockScale(blockPutSize);
                 }
                 else
-                    ChangeCurrentBlockScale(defaultBlockSize);
+                    ChangeCurrentBlockScale(DefaultBlockSize);
             }
 
-            currentBlock = null;
+            _currentBlock = null;
             ResetHighLight();
             UpdateFilled();
 
             CheckWinCondition();
         }
 
-        private bool IsCorrectMove()
-        {
-            foreach (var pos in currentBlock.BlockPositions)
-            {
-                if (!IsValidPos(pos) || BGCellGrid[pos.x, pos.y].isFilled)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+        private bool IsCorrectMove() => _currentBlock.BlockPositions.All(pos => IsValidPos(pos) && !_bgCellGrid[pos.x, pos.y].IsFilled);
 
-        private void ChangeCurrentBlockScale(float size) => currentBlock.transform.localScale = Vector3.one * size;
+        private void ChangeCurrentBlockScale(float size) => _currentBlock.transform.localScale = Vector3.one * size;
 
         public override void CheckWinCondition()
         {
-            for (int i = 0; i < level.GridRows; i++)
+            for (int i = 0; i < Level.gridRows; i++)
             {
-                for (int j = 0; j < level.GridColumns; j++)
+                for (int j = 0; j < Level.gridColumns; j++)
                 {
-                    if (!BGCellGrid[i, j].isFilled)
+                    if (!_bgCellGrid[i, j].IsFilled)
                     {
                         return;
                     }

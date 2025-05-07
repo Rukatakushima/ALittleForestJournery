@@ -1,42 +1,37 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Blocks
 {
-
     [CreateAssetMenu(fileName = "BlocksLevel", menuName = "Levels/BlocksLevel")]
     public class LevelData : ScriptableObject
     {
-        public int GridRows, GridColumns, BlockRows, BlockColumns;
-        public List<int> Data;
-        public List<BlockPiece> Blocks;
+        public int gridRows, gridColumns;
+        public int blockRows, blockColumns;
+        public List<int> data;
+        public List<BlockPiece> blocks;
 
         private void OnValidate()
         {
-            int newSize = GridRows * GridColumns;
-            if (Data.Count != newSize)
+            int newSize = gridRows * gridColumns;
+            if (data.Count == newSize) return;
+            
+            while (data.Count < newSize)
             {
-                while (Data.Count < newSize)
-                {
-                    Data.Add(0);
-                }
-                if (Data.Count > newSize)
-                {
-                    Data.RemoveRange(newSize, Data.Count - newSize);
-                }
+                data.Add(0);
+            }
+            if (data.Count > newSize)
+            {
+                data.RemoveRange(newSize, data.Count - newSize);
             }
         }
-
-        public int CalculateTotalBlockPositions => Blocks.Sum(block => block.BlockPositions.Count);
     }
 
     [Serializable]
     public struct BlockPiece
     {
-        public int Id;
-        public Vector2Int StartPosition, CenterPosition;
-        public List<Vector2Int> BlockPositions;
+        public Vector2Int startPosition;
+        public List<Vector2Int> blockPositions;
     }
 }
