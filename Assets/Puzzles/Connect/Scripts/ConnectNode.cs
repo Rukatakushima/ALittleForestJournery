@@ -58,46 +58,80 @@ namespace Connect
                     break;
             }
         }
-
+        
         public void UpdateInput(Node connectedNode)
         {
-            if (!_connectedEdges.ContainsKey(connectedNode)) return;
-
+            if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.IsEndNode)
+            {
+                Debug.Log("Удаление, если соединяемый узел — конечный, но уже связан");
+                DeleteConnectedNode(connectedNode);
+            }
+            
+            if (connectedNode.ConnectedNodes.Count > 0 && connectedNode.ColorId != ColorId)
+            {
+                // Debug.Log("Проверка несовместимости цветов");
+                return;
+            }
+            
+            if (!_connectedEdges.ContainsKey(connectedNode))
+            {
+                // Debug.Log("Нельзя соединять, если нет edge в нужном направлении");
+                return;
+            }
+            
             if (_connectedNodes.Contains(connectedNode))
             {
+                // Debug.Log("Клик на уже соединённый, но не последний — сброс");
                 DeleteStartingNode(connectedNode);
                 return;
             }
-
-            if (_connectedNodes.Count == 2)
-                HandleStartingNodeWithTwoEdges();
-
-            switch (connectedNode.ConnectedNodes.Count)
+            
+            if (_connectedNodes.Count > 0 && connectedNode == _connectedNodes[^1])
             {
-                case 2:
-                case 1 when connectedNode.ColorId != ColorId:
-                    DeleteConnectedNode(connectedNode);
-                    break;
+                // Debug.Log("Шаг назад — удаляем только последнюю связь");
+                RemoveLastConnection(connectedNode);
+                return;
             }
-
+            
+            if (_connectedNodes.Count == 2)
+            {
+                // Debug.Log("Удаление соединения, если текущий узел уже имеет 2 связи");
+                HandleStartingNodeWithTwoEdges();
+            }
+            
             if (_connectedNodes.Count == 1 && IsEndNode)
+            {
+                // Debug.Log("Удаление старого соединения с конца, если текущее — конечный узел");
                 DeleteStartingNode(_connectedNodes[0]);
-
-            if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.IsEndNode)
-                DeleteConnectedNode(connectedNode);
-
+            }
+            
+            if (connectedNode.ConnectedNodes.Count == 2)
+            {
+                // Debug.Log("Удаление соединения у подключаемого узла, если он уже имеет 2 связи");
+                connectedNode.DeleteNode();
+            }
+        
+            // Debug.Log("Добавляем новое соединение");
             AddEdge(connectedNode);
+        }
+        
+        private void RemoveLastConnection(Node node)
+        {
+            _connectedNodes.RemoveAt(_connectedNodes.Count - 1);
+            node.RemoveConnectedNode(this);
+            RemoveEdge(node);
         }
 
         private void HandleStartingNodeWithTwoEdges()
         {
             Node tempNode = _connectedNodes[0];
+            if (tempNode == null) return;
             if (tempNode.IsConnectedToEndNode())
                 tempNode = _connectedNodes[1];
 
             DeleteStartingNode(tempNode);
         }
-
+        
         private void DeleteNodeConnection(Node node, bool isStartingNode)
         {
             if (isStartingNode)
@@ -118,14 +152,14 @@ namespace Connect
         private void DeleteStartingNode(Node connectedNode) => DeleteNodeConnection(connectedNode, true);
 
         private void DeleteConnectedNode(Node connectedNode) => DeleteNodeConnection(connectedNode, false);
-
+        
         private void AddEdge(Node connectedNode)
         {
             connectedNode.ColorId = ColorId;
             connectedNode.AddConnectedNode(this);
             AddConnectedNode(connectedNode);
 
-            GameObject connectedEdge = _connectedEdges[connectedNode];
+            var connectedEdge = _connectedEdges[connectedNode];
             connectedEdge.SetActive(true);
             connectedEdge.GetComponent<SpriteRenderer>().color = GameManager.Instance.nodeColors[ColorId];
         }
@@ -142,19 +176,20 @@ namespace Connect
         private void DeleteNode(HashSet<Node> visitedNodes = null)
         {
             visitedNodes ??= new HashSet<Node>();
-
+        
             if (!visitedNodes.Add(this)) return;
-
-            foreach (var connected in new List<Node>(_connectedNodes)) // Копия, чтобы избежать модификации во время итерации
+        
+            // Копия, чтобы избежать модификации во время итерации
+            foreach (var connected in new List<Node>(_connectedNodes)) 
             {
                 connected.RemoveConnectedNode(this);
                 RemoveEdge(connected);
                 connected.DeleteNode(visitedNodes);
             }
-
+        
             _connectedNodes.Clear();
         }
-
+        
         private void AddConnectedNode(Node node) => _connectedNodes.Add(node);
 
         private void RemoveConnectedNode(Node node) => _connectedNodes.Remove(node);

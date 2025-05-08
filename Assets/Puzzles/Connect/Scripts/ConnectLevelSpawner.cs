@@ -5,11 +5,11 @@ namespace Connect
 {
     public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
+        [SerializeField] private SpriteRenderer boardPrefab, backgroundCellPrefab;
+        [SerializeField] private Node nodePrefab;
         [SerializeField] private int levelSize = 5;
         [SerializeField] private float boardTracingSize = 0.1f;
         [SerializeField] private float boardPositionController = 2f;
-        [SerializeField] private SpriteRenderer boardPrefab, backgroundCellPrefab;
-        [SerializeField] private Node nodePrefab;
         
         private List<Node> _nodes;
         private Dictionary<Vector2Int, Node> _nodeGrid;

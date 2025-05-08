@@ -29,7 +29,6 @@ namespace Connect
             {
                 if (hit && hit.collider.gameObject.TryGetComponent(out Node tNode) && tNode.IsClickable)
                     _startNode = tNode;
-                Debug.Log("startNode == null");
                 return;
             }
 

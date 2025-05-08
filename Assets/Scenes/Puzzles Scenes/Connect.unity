@@ -356,12 +356,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  NodeColors:
-  - {r: 0.8018868, g: 0.33339018, b: 0.3063813, a: 1}
-  - {r: 0.4493592, g: 0.63749146, b: 0.9622642, a: 1}
-  - {r: 0.6584753, g: 0.28324133, b: 0.8962264, a: 1}
-  - {r: 0.8490566, g: 0.3724635, b: 0.73483706, a: 1}
-  - {r: 0.26480907, g: 0.23891956, b: 0.8584906, a: 1}
+  nodeColors:
+  - {r: 0.5377611, g: 0.43921566, b: 1, a: 1}
+  - {r: 0.12830265, g: 0.015574936, b: 0.6603774, a: 1}
+  - {r: 0.4336733, g: 0.27901387, b: 0.6226415, a: 1}
+  - {r: 1, g: 0.7311321, b: 0.94667286, a: 1}
+  - {r: 0.33045566, g: 0.69519365, b: 0.8867924, a: 1}
 --- !u!4 &1784974171
 Transform:
   m_ObjectHideFlags: 0
@@ -431,12 +431,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  levelSize: 5
-  boardTracingSize: 0.25
-  boardPositionController: 2
   boardPrefab: {fileID: 588532347153610255, guid: 61ccf270db7e4e846a46d1f2264917bc, type: 3}
   backgroundCellPrefab: {fileID: 6514445496831475100, guid: ff887c635710f9e4194003463d80485e, type: 3}
   nodePrefab: {fileID: 5456855244353127478, guid: dfc875fb2c189b549bba871904981424, type: 3}
+  levelSize: 5
+  boardTracingSize: 0.25
+  boardPositionController: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
