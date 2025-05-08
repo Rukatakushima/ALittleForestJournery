@@ -26,16 +26,18 @@ namespace Pipes
             _pipes = pipes;
         }
 
+        private Coroutine _hintCoroutine;
+
         protected override void HandleInputStart(Vector2 mousePosition)
         {
             int row = Mathf.FloorToInt(mousePosition.y);
             int col = Mathf.FloorToInt(mousePosition.x);
-            if (row < 0 || col < 0) return;
-            if (row >= _level.row) return;
-            if (col >= _level.col) return;
+            if (row < 0 || col < 0 || row >= _level.row || col >= _level.col) return;
 
             _pipes[row, col].RotatePipe();
-            StartCoroutine(ShowHint());
+
+            if (_hintCoroutine != null) StopCoroutine(_hintCoroutine);
+            _hintCoroutine = StartCoroutine(ShowHint());
         }
 
         protected override void HandleInputUpdate(Vector2 mousePosition) { }

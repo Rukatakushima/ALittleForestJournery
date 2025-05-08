@@ -16,16 +16,12 @@ namespace Pipes
 
         public void CheckFill()
         {
-            for (int i = 0; i < _pipes.GetLength(0); i++)
+            foreach (var pipe in _pipes)
             {
-                for (int j = 0; j < _pipes.GetLength(1); j++)
-                {
-                    Pipe tempPipe = _pipes[i, j];
-                    if (tempPipe.pipeType != 0)
-                        tempPipe.isFilled = false;
-                }
+                if (pipe.pipeType != 0)
+                    pipe.isFilled = false;
             }
-
+            
             Queue<Pipe> check = new Queue<Pipe>();
             HashSet<Pipe> finished = new HashSet<Pipe>();
             foreach (var pipe in _startPipes)
