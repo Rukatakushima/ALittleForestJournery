@@ -7,48 +7,45 @@ namespace OneStroke
     {
         [SerializeField] private Point pointPrefab;
         [SerializeField] private Edge edgePrefab;
-        private Dictionary<int, Point> points;
-        private Dictionary<Vector2Int, Edge> edges;
-
-        public void Initialize(LevelData level) => this.level = level;
+        
+        private Dictionary<int, Point> _points;
+        private Dictionary<Vector2Int, Edge> _edges;
 
         public override void SpawnLevel()
         {
             SpawnPoints();
             SpawnEdges();
 
-            GameManager.Instance.Initialize(edges);
+            GameManager.Instance.Initialize(_edges);
             OnLevelSpawned?.Invoke();
         }
 
         private void SpawnPoints()
         {
-            points = new Dictionary<int, Point>();
+            _points = new Dictionary<int, Point>();
 
-            for (int i = 0; i < level.Points.Count; i++)
+            foreach (var positionData in level.points)
             {
-                Vector3 positionData = level.Points[i];
                 Vector2 spawnPosition = new Vector2(positionData.x, positionData.y);
                 int id = (int)positionData.z;
-                points[id] = Instantiate(pointPrefab);
-                points[id].SetPoint(id, spawnPosition);
+                _points[id] = Instantiate(pointPrefab);
+                _points[id].SetPoint(id, spawnPosition);
             }
         }
 
         private void SpawnEdges()
         {
-            edges = new Dictionary<Vector2Int, Edge>();
+            _edges = new Dictionary<Vector2Int, Edge>();
 
-            for (int i = 0; i < level.Edges.Count; i++)
+            foreach (var normalEdge in level.edges)
             {
-                Vector2Int normalEdge = level.Edges[i];
                 Vector2Int reversedEdge = new Vector2Int(normalEdge.y, normalEdge.x);
 
                 Edge spawnEdge = Instantiate(edgePrefab);
-                edges[normalEdge] = spawnEdge;
-                edges[reversedEdge] = spawnEdge;
+                _edges[normalEdge] = spawnEdge;
+                _edges[reversedEdge] = spawnEdge;
 
-                spawnEdge.SetEmptyEdge(points[normalEdge.x].Position, points[normalEdge.y].Position);
+                spawnEdge.SetEmptyEdge(_points[normalEdge.x].Position, _points[normalEdge.y].Position);
             }
         }
     }

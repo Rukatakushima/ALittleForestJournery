@@ -12,7 +12,6 @@ namespace OneStroke
             Id = id;
             Position = position;
             transform.position = Position;
-            name = id.ToString();
         }
     }
 }
