@@ -5,20 +5,18 @@ namespace Fifteen
 {
     public class Box : MonoBehaviour
     {
-        public int index = 0;
-        public int x = 0;
-        public int y = 0;
-        public bool isEmpty() => index == GameManager.Instance.boxes.Length;
-        public Vector3 rightPosition;
-        public bool isInCorrectPosition = false;
+        [SerializeField] private int index,x,y;
+        [SerializeField] private Vector3 rightPosition;
+        
+        public bool IsInCorrectPosition { get; private set; }
+        public bool IsEmpty() => index == GameManager.Instance.Boxes.Length;
 
-        public void Init(int i, int j, int index, Sprite sprite)
+        public void Init(int i, int j, int id, Sprite sprite)
         {
-            this.index = index;
+            index = id;
             x = i;
             y = j;
             ChangeSprite(sprite);
-            name = index.ToString();
             rightPosition = transform.position;
             UpdateCorrectPosition();
         }
@@ -27,11 +25,10 @@ namespace Fifteen
         {
             x = i;
             y = j;
-
             StartCoroutine(AnimateNumberBoxMove());
         }
 
-        public void UpdateCorrectPosition() => isInCorrectPosition = rightPosition == gameObject.transform.position;
+        private void UpdateCorrectPosition() => IsInCorrectPosition = rightPosition == gameObject.transform.position;
 
         private IEnumerator AnimateNumberBoxMove()
         {
@@ -52,9 +49,9 @@ namespace Fifteen
             GameManager.Instance.CheckWinCondition();
         }
 
-        public void ChangeSprite(Sprite sprite) => GetComponent<SpriteRenderer>().sprite = sprite;
+        private void ChangeSprite(Sprite sprite) => GetComponent<SpriteRenderer>().sprite = sprite;
 
-        public void ClickToSwap()
+        public void Swap()
         {
             int xDirection = GetDirectionX();
             int yDirection = GetDirectionY();
@@ -65,24 +62,22 @@ namespace Fifteen
 
         private int GetDirectionX()
         {
-            if ((x < 3) && GameManager.Instance.boxes[x + 1, y].isEmpty())
-                return 1;
-
-            if ((x > 0) && GameManager.Instance.boxes[x - 1, y].isEmpty())
-                return -1;
-
-            return 0;
+            return x switch
+            {
+                < 3 when GameManager.Instance.Boxes[x + 1, y].IsEmpty() => 1,
+                > 0 when GameManager.Instance.Boxes[x - 1, y].IsEmpty() => -1,
+                _ => 0
+            };
         }
 
         private int GetDirectionY()
         {
-            if (y < 3 && GameManager.Instance.boxes[x, y + 1].isEmpty())
-                return 1;
-
-            if (y > 0 && GameManager.Instance.boxes[x, y - 1].isEmpty())
-                return -1;
-
-            return 0;
+            return y switch
+            {
+                < 3 when GameManager.Instance.Boxes[x, y + 1].IsEmpty() => 1,
+                > 0 when GameManager.Instance.Boxes[x, y - 1].IsEmpty() => -1,
+                _ => 0
+            };
         }
     }
 }
