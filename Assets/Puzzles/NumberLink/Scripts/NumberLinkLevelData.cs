@@ -6,22 +6,21 @@ namespace NumberLink
     [CreateAssetMenu(fileName = "NumberLinkLevel", menuName = "Levels/NumberLinkLevel")]
     public class LevelData : ScriptableObject
     {
-        [SerializeField] public int Rows, Columns;
-        [SerializeField] public List<int> Data;
+        [SerializeField] public int rows, columns;
+        [SerializeField] public List<int> data;
 
         private void OnValidate()
         {
-            int newSize = Rows * Columns;
-            if (Data.Count != newSize)
+            int newSize = rows * columns;
+            if (data.Count == newSize) return;
+            
+            while (data.Count < newSize)
             {
-                while (Data.Count < newSize)
-                {
-                    Data.Add(0);
-                }
-
-                if (Data.Count > newSize)
-                    Data.RemoveRange(newSize, Data.Count - newSize);
+                data.Add(0);
             }
+
+            if (data.Count > newSize)
+                data.RemoveRange(newSize, data.Count - newSize);
         }
     }
 }

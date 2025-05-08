@@ -8,46 +8,23 @@ namespace NumberLink
     {
         [SerializeField] private TMP_Text numberText;
         [SerializeField] private SpriteRenderer cellSprite;
-
-        [HideInInspector]
-        public int Number
-        {
-            get => number;
-            set
-            {
-                number = value;
-                numberText.text = number.ToString();
-                if (number == 0)
-                {
-                    cellSprite.color = solvedColor;
-                    numberText.gameObject.SetActive(false);
-                }
-                else if (number < 0)
-                {
-                    cellSprite.color = overloadedColor;
-                    numberText.gameObject.SetActive(false);
-                }
-                else
-                {
-                    cellSprite.color = defaultColor;
-                    numberText.gameObject.SetActive(true);
-                }
-            }
-        }
-
-        [HideInInspector] public int rowCoordinate;
-        [HideInInspector] public int columnCoordinate;
-
         [SerializeField] private Color defaultColor, solvedColor, overloadedColor;
-
         [SerializeField] private GameObject rightOneLink, rightTwoLinks, topOneLink, topTwoLinks, leftOneLink, leftTwoLinks, bottomOneLink, bottomTwoLinks;
 
-        private int number;
-        private Dictionary<int, Dictionary<int, GameObject>> links;
-        private Dictionary<int, int> linksCounts;
-        private Dictionary<int, Cell> linkedCell;
-
-        public const int LINK_DIRECTIONS = 4;
+        public readonly Dictionary<int, int> OppositeDirections = new()
+        {
+            { RIGHT_DIRECTION_ID, LEFT_DIRECTION_ID },
+            { TOP_DIRECTION_ID, BOTTOM_DIRECTION_ID },
+            { LEFT_DIRECTION_ID, RIGHT_DIRECTION_ID },
+            { BOTTOM_DIRECTION_ID, TOP_DIRECTION_ID }
+        };
+        
+        private int _rowCoordinate, _columnCoordinate, _number;
+        private Dictionary<int, Dictionary<int, GameObject>> _links;
+        private Dictionary<int, int> _linksCounts;
+        private Dictionary<int, Cell> _linkedCell;
+        
+        private const int LINK_DIRECTIONS = 4;
         private const int RIGHT_DIRECTION_ID = 0;
         private const int TOP_DIRECTION_ID = 1;
         private const int LEFT_DIRECTION_ID = 2;
@@ -57,22 +34,41 @@ namespace NumberLink
         private const int ONE_LINK = 1;
         private const int TWO_LINKS = 2;
         private const int THREE_LINKS = 3;
-
-        public Dictionary<int, int> OppositeDirections = new()
+        
+        public int Number
         {
-            { RIGHT_DIRECTION_ID, LEFT_DIRECTION_ID },
-            { TOP_DIRECTION_ID, BOTTOM_DIRECTION_ID },
-            { LEFT_DIRECTION_ID, RIGHT_DIRECTION_ID },
-            { BOTTOM_DIRECTION_ID, TOP_DIRECTION_ID }
-        };
+            get => _number;
+            private set
+            {
+                _number = value;
+                numberText.text = _number.ToString();
+                switch (_number)
+                {
+                    case 0:
+                        cellSprite.color = solvedColor;
+                        numberText.gameObject.SetActive(false);
+                        break;
+                    case < 0:
+                        cellSprite.color = overloadedColor;
+                        numberText.gameObject.SetActive(false);
+                        break;
+                    default:
+                        cellSprite.color = defaultColor;
+                        numberText.gameObject.SetActive(true);
+                        break;
+                }
+            }
+        }
+        
+        public bool IsValidCell(Cell cell, int direction) => _linkedCell[direction] == cell;
 
-        public void InitializeCellData(int row, int column, int number)
+        public void InitializeCellData(int row, int column, int num)
         {
-            Number = number;
-            rowCoordinate = row;
-            columnCoordinate = column;
+            Number = num;
+            _rowCoordinate = row;
+            _columnCoordinate = column;
 
-            linksCounts = new()
+            _linksCounts = new()
         {
             { RIGHT_DIRECTION_ID, 0 },
             { LEFT_DIRECTION_ID, 0 },
@@ -80,7 +76,7 @@ namespace NumberLink
             { BOTTOM_DIRECTION_ID, 0 }
         };
 
-            linkedCell = new()
+            _linkedCell = new()
         {
             { LEFT_DIRECTION_ID, null },
             { TOP_DIRECTION_ID, null },
@@ -88,7 +84,7 @@ namespace NumberLink
             { RIGHT_DIRECTION_ID, null }
         };
 
-            links = new Dictionary<int, Dictionary<int, GameObject>>
+            _links = new Dictionary<int, Dictionary<int, GameObject>>
         {
             { RIGHT_DIRECTION_ID, new Dictionary<int, GameObject> { { ONE_LINK, rightOneLink }, { TWO_LINKS, rightTwoLinks } } },
             { TOP_DIRECTION_ID, new Dictionary<int, GameObject> { { ONE_LINK, topOneLink }, { TWO_LINKS, topTwoLinks } } },
@@ -101,15 +97,15 @@ namespace NumberLink
         {
             for (int i = 0; i < LINK_DIRECTIONS; i++)
             {
-                linkedCell[i] = GameManager.Instance.GetLinkedCell(rowCoordinate, columnCoordinate, i);
-                if (linkedCell[i] == null) continue;
+                _linkedCell[i] = GameManager.Instance.GetLinkedCell(_rowCoordinate, _columnCoordinate, i);
+                if (_linkedCell[i] == null) continue;
 
-                Vector2Int linkOffset = new Vector2Int(linkedCell[i].rowCoordinate - rowCoordinate, linkedCell[i].columnCoordinate - columnCoordinate);
+                Vector2Int linkOffset = new Vector2Int(_linkedCell[i]._rowCoordinate - _rowCoordinate, _linkedCell[i]._columnCoordinate - _columnCoordinate);
                 float linkSize = Mathf.Abs(linkOffset.x) > Mathf.Abs(linkOffset.y) ? Mathf.Abs(linkOffset.x) : Mathf.Abs(linkOffset.y);
                 linkSize *= GameManager.Instance.EdgeSize;
 
-                SpriteRenderer singleLink = links[i][ONE_LINK].GetComponentInChildren<SpriteRenderer>();
-                SpriteRenderer[] doubleLinks = links[i][TWO_LINKS].GetComponentsInChildren<SpriteRenderer>();
+                SpriteRenderer singleLink = _links[i][ONE_LINK].GetComponentInChildren<SpriteRenderer>();
+                SpriteRenderer[] doubleLinks = _links[i][TWO_LINKS].GetComponentsInChildren<SpriteRenderer>();
 
                 ChangeSpriteSize(singleLink, linkSize);
                 foreach (var item in doubleLinks)
@@ -130,24 +126,24 @@ namespace NumberLink
 
         public void AddLink(int direction)
         {
-            if (linkedCell[direction] == null) return;
+            if (_linkedCell[direction] == null) return;
 
-            if (linksCounts[direction] == THREE_LINKS)
+            if (_linksCounts[direction] == THREE_LINKS)
             {
                 RemoveLink(direction);
                 return;
             }
 
-            linksCounts[direction]++;
+            _linksCounts[direction]++;
             Number--;
 
-            DisplayLinks(direction, linksCounts[direction]);
+            DisplayLinks(direction, _linksCounts[direction]);
         }
 
         private void ToggleLinksDisplay(int direction, bool isActive)
         {
-            links[direction][TWO_LINKS].SetActive(isActive);
-            links[direction][ONE_LINK].SetActive(isActive);
+            _links[direction][TWO_LINKS].SetActive(isActive);
+            _links[direction][ONE_LINK].SetActive(isActive);
         }
 
         private void DisplayLinks(int direction, int displayingLinksCount)
@@ -158,7 +154,7 @@ namespace NumberLink
             {
                 case ONE_LINK:
                 case TWO_LINKS:
-                    links[direction][displayingLinksCount].SetActive(true);
+                    _links[direction][displayingLinksCount].SetActive(true);
                     break;
                 case THREE_LINKS:
                     ToggleLinksDisplay(direction, true);
@@ -168,12 +164,12 @@ namespace NumberLink
 
         public void RemoveLink(int direction)
         {
-            if (linkedCell[direction] == null || linksCounts[direction] == ZERO_LINKS) return;
+            if (_linkedCell[direction] == null || _linksCounts[direction] == ZERO_LINKS) return;
 
-            linksCounts[direction]--;
+            _linksCounts[direction]--;
             Number++;
 
-            DisplayLinks(direction, linksCounts[direction]);
+            DisplayLinks(direction, _linksCounts[direction]);
         }
 
         public void RemoveAllLinks()
@@ -181,7 +177,7 @@ namespace NumberLink
             for (int i = 0; i < LINK_DIRECTIONS; i++)
             {
                 // Удаляем все соединения на текущем направлении
-                while (linksCounts[i] > ZERO_LINKS)
+                while (_linksCounts[i] > ZERO_LINKS)
                 {
                     RemoveLink(i);
                 }
@@ -190,20 +186,18 @@ namespace NumberLink
             }
         }
 
-        public void RemoveLinkFromLinkedCells(int linkedCellID)
+        private void RemoveLinkFromLinkedCells(int linkedCellID)
         {
-            if (linkedCell[linkedCellID] != null)
+            if (_linkedCell[linkedCellID] != null)
             {
                 int oppositeDirection = OppositeDirections[linkedCellID]; // Противоположное направление
-                while (linkedCell[linkedCellID].linksCounts[oppositeDirection] > ZERO_LINKS)
+                while (_linkedCell[linkedCellID]._linksCounts[oppositeDirection] > ZERO_LINKS)
                 {
-                    linkedCell[linkedCellID].RemoveLink(oppositeDirection);
+                    _linkedCell[linkedCellID].RemoveLink(oppositeDirection);
                 }
             }
         }
 
         private void ChangeSpriteSize(SpriteRenderer sprite, float size) => sprite.size = new Vector2(sprite.size.x, size);
-
-        public bool IsValidCell(Cell cell, int direction) => linkedCell[direction] == cell;
     }
 }

@@ -262,8 +262,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2122757324}
-        m_TargetAssemblyTypeName: UnityEngine.MonoBehaviour, UnityEngine
-        m_MethodName: StopAllCoroutines
+        m_TargetAssemblyTypeName: Fill.LevelSpawner, Assembly-CSharp
+        m_MethodName: SpawnLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -297,7 +297,7 @@ Transform:
   m_GameObject: {fileID: 2122757318}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.26423794, y: -0.6953288, z: 0.09533851}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -341,6 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d666fcf77af9b8246935482c93412a8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: {fileID: 11400000, guid: 848ee0c62948302438e2a9c9de1bf7f3, type: 2}
   OnLevelSpawned:
     m_PersistentCalls:
       m_Calls:
@@ -356,10 +357,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  level: {fileID: 11400000, guid: 848ee0c62948302438e2a9c9de1bf7f3, type: 2}
   cellPrefab: {fileID: 6416468728290654270, guid: 3933166f55afa574cb128921a1385344, type: 3}
-  cellPrefabPreloadCount: 16
   edgePrefab: {fileID: 8761982436765348363, guid: 2961868edb3500941979dbb1955af6bd, type: 3}
+  cellPrefabPreloadCount: 16
   edgePrefabPreloadCount: 8
 --- !u!114 &2122757325
 MonoBehaviour:
