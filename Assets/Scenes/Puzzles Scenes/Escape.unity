@@ -306,6 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13ade1a45dfdd2b4a87170cf26ffa435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: {fileID: 11400000, guid: 8e5c18e758ea4744b98f679243669d72, type: 2}
   OnLevelSpawned:
     m_PersistentCalls:
       m_Calls:
@@ -321,10 +322,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  level: {fileID: 11400000, guid: 8e5c18e758ea4744b98f679243669d72, type: 2}
   backgroundPrefab: {fileID: 7478364067053654497, guid: 1b1abe0eb93453245b169137062b4703, type: 3}
   blockPiecePrefab: {fileID: 1301280438395545718, guid: 7cfa2bb892aacdb42918fe360e2679e2, type: 3}
-  mainPiecePrefab: {fileID: 244288958732518090, guid: 506100ec6b7592b45a6c980b6dc138da, type: 3}
+  mainPiecePrefab: {fileID: 7213857250694553568, guid: d129f9dbf03da9445b03d3ec18d33232, type: 3}
+  offsetPosition: 0.5
 --- !u!1 &1771441659
 GameObject:
   m_ObjectHideFlags: 0

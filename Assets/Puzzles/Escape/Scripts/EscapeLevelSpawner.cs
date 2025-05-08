@@ -5,50 +5,50 @@ namespace Escape
 {
     public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
-        private GamePiece winPiece;
         [SerializeField] private SpriteRenderer backgroundPrefab;
-        [SerializeField] private GamePiece blockPiecePrefab;
-        [SerializeField] private GamePiece mainPiecePrefab;
-        private List<GamePiece> gamePieces;
+        [SerializeField] private GamePiece blockPiecePrefab, winPiecePrefab;
         [SerializeField] private float offsetPosition = 0.5f;
+        
+        private GamePiece _winPiece;
+        private List<GamePiece> _gamePieces;
 
         public override void SpawnLevel()
         {
             SpawnBackground();
 
-            gamePieces = new List<GamePiece>();
+            _gamePieces = new List<GamePiece>();
             SpawnWinPiece();
             SpawnAllPieces();
 
-            GameManager.Instance.Initialize(level, winPiece, gamePieces);
+            GameManager.Instance.Initialize(level, _winPiece, _gamePieces);
             OnLevelSpawned?.Invoke();
         }
 
         private void SpawnBackground()
         {
             SpriteRenderer bg = Instantiate(backgroundPrefab);
-            bg.size = new Vector2(level.Columns, level.Rows);
-            bg.transform.position = new Vector2(level.Columns, level.Rows) * offsetPosition;
+            bg.size = new Vector2(level.columns, level.rows);
+            bg.transform.position = new Vector2(level.columns, level.rows) * offsetPosition;
         }
 
         private void SpawnWinPiece()
         {
-            winPiece = Instantiate(mainPiecePrefab);
-            Vector2 spawnPos = new Vector2(level.WinPiece.Start.y + winPiece.offsetPosition, level.WinPiece.Start.x + winPiece.offsetPosition);
-            winPiece.transform.position = spawnPos;
-            winPiece.Init(level.WinPiece);
-            gamePieces.Add(winPiece);
+            _winPiece = Instantiate(winPiecePrefab);
+            Vector2 spawnPos = new Vector2(level.winPiece.start.y + _winPiece.offsetPosition, level.winPiece.start.x + _winPiece.offsetPosition);
+            _winPiece.transform.position = spawnPos;
+            _winPiece.Init(level.winPiece);
+            _gamePieces.Add(_winPiece);
         }
 
         private void SpawnAllPieces()
         {
-            foreach (var piece in level.Pieces)
+            foreach (var piece in level.pieces)
             {
                 GamePiece temp = Instantiate(blockPiecePrefab);
-                Vector2 spawnPos = new Vector2(piece.Start.y + temp.offsetPosition, piece.Start.x + temp.offsetPosition);
+                Vector2 spawnPos = new Vector2(piece.start.y + temp.offsetPosition, piece.start.x + temp.offsetPosition);
                 temp.transform.position = spawnPos;
                 temp.Init(piece);
-                gamePieces.Add(temp);
+                _gamePieces.Add(temp);
             }
         }
     }

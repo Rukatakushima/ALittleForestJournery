@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Escape
@@ -6,90 +7,91 @@ namespace Escape
     public class GameManager : BaseGameManager
     {
         public static GameManager Instance;
-        public LevelData level { get; private set; }
+        
+        [SerializeField] private LevelData level;
+        [SerializeField] private GamePiece winPiece;
 
-        private List<GamePiece> gamePieces;
-        public GamePiece winPiece { get; private set; }
-        private GamePiece currentPiece;
-        private Vector2 currentPosition, previousPosition;
-        private List<Vector2> offsets;
-        private bool[,] pieceCollision;
-
+        private List<GamePiece> _gamePieces;
+        private GamePiece _currentPiece;
+        private Vector2 _currentPosition, _previousPosition;
+        private List<Vector2> _offsets;
+        private bool[,] _pieceCollision;
+        
         protected override void Awake()
         {
             Instance = this;
             base.Awake();
         }
 
-        public void Initialize(LevelData level, GamePiece winPiece, List<GamePiece> gamePieces)
+        public void Initialize(LevelData levelData, GamePiece win, List<GamePiece> pieces)
         {
-            this.level = level;
-            this.winPiece = winPiece;
-            this.gamePieces = gamePieces;
+            level = levelData;
+            winPiece = win;
+            _gamePieces = pieces;
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
         {
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
-            if (!hit || !hit.collider.transform.parent.TryGetComponent(out currentPiece)) return;
+            if (!hit || !hit.collider.transform.parent.TryGetComponent(out _currentPiece)) return;
 
-            currentPosition = mousePosition;
-            previousPosition = currentPosition;
+            _currentPosition = mousePosition;
+            _previousPosition = _currentPosition;
 
             CalculateCollision();
 
-            offsets = new List<Vector2>();
+            _offsets = new List<Vector2>();
         }
 
         protected override void HandleInputUpdate(Vector2 mousePosition)
         {
-            if (currentPiece == null) return;
+            if (_currentPiece == null) return;
             {
-                currentPosition = mousePosition;
-                Vector2 offset = currentPosition - previousPosition;
-                offsets.Add(offset);
+                _currentPosition = mousePosition;
+                Vector2 offset = _currentPosition - _previousPosition;
+                _offsets.Add(offset);
 
-                if (currentPiece.IsVertical)
+                if (_currentPiece.IsVertical)
                 {
-                    Vector2 piecePos = currentPiece.CurrentPos;
+                    Vector2 piecePos = _currentPiece.CurrentPos;
                     piecePos.y += (IsMovingOpposite() ? -0.5f : 0.5f);
                     Vector2Int pieceGridPos = new Vector2Int(
                         Mathf.FloorToInt(piecePos.y),
                         Mathf.FloorToInt(piecePos.x)
                         );
                     if (!CanMovePiece(pieceGridPos)) return;
-                    currentPiece.CurrentGridPos = pieceGridPos;
-                    currentPiece.UpdatePos(offset.y);
+                    _currentPiece.CurrentGridPos = pieceGridPos;
+                    _currentPiece.UpdatePos(offset.y);
                 }
                 else
                 {
-                    Vector2 piecePos = currentPiece.CurrentPos;
+                    Vector2 piecePos = _currentPiece.CurrentPos;
                     piecePos.x += (IsMovingOpposite() ? -0.5f : 0.5f);
                     Vector2Int pieceGridPos = new Vector2Int(
                         Mathf.FloorToInt(piecePos.y),
                         Mathf.FloorToInt(piecePos.x)
                         );
                     if (!CanMovePiece(pieceGridPos)) return;
-                    currentPiece.CurrentGridPos = pieceGridPos;
-                    currentPiece.UpdatePos(offset.x);
+                    _currentPiece.CurrentGridPos = pieceGridPos;
+                    _currentPiece.UpdatePos(offset.x);
                 }
 
-                previousPosition = currentPosition;
+                _previousPosition = _currentPosition;
             }
         }
 
         protected override void HandleInputEnd()
         {
-            if (currentPiece == null) return;
+            if (_currentPiece == null) return;
             {
-                currentPiece.transform.position = new Vector3(
-                    currentPiece.CurrentGridPos.y + 0.5f,
-                    currentPiece.CurrentGridPos.x + 0.5f,
+                _currentPiece.transform.position = new Vector3(
+                    _currentPiece.CurrentGridPos.y + 0.5f,
+                    _currentPiece.CurrentGridPos.x + 0.5f,
                     0);
-                currentPiece = null;
-                currentPosition = Vector2.zero;
-                previousPosition = Vector2.zero;
+                _currentPiece = null;
+                _currentPosition = Vector2.zero;
+                _previousPosition = Vector2.zero;
 
                 CheckWinCondition();
             }
@@ -97,31 +99,31 @@ namespace Escape
 
         private void CalculateCollision()
         {
-            pieceCollision = new bool[level.Rows, level.Columns];
-            for (int i = 0; i < level.Rows; i++)
+            _pieceCollision = new bool[level.rows, level.columns];
+            for (int i = 0; i < level.rows; i++)
             {
-                for (int j = 0; j < level.Columns; j++)
+                for (int j = 0; j < level.columns; j++)
                 {
-                    pieceCollision[i, j] = false;
+                    _pieceCollision[i, j] = false;
                 }
             }
 
-            foreach (var piece in gamePieces)
+            foreach (var piece in _gamePieces)
             {
                 for (int i = 0; i < piece.Size; i++)
                 {
-                    pieceCollision[
+                    _pieceCollision[
                         piece.CurrentGridPos.x + (piece.IsVertical ? i : 0),
                         piece.CurrentGridPos.y + (piece.IsVertical ? 0 : i)
                         ] = true;
                 }
             }
 
-            for (int i = 0; i < currentPiece.Size; i++)
+            for (int i = 0; i < _currentPiece.Size; i++)
             {
-                pieceCollision[
-                    currentPiece.CurrentGridPos.x + (currentPiece.IsVertical ? i : 0),
-                    currentPiece.CurrentGridPos.y + (currentPiece.IsVertical ? 0 : i)
+                _pieceCollision[
+                    _currentPiece.CurrentGridPos.x + (_currentPiece.IsVertical ? i : 0),
+                    _currentPiece.CurrentGridPos.y + (_currentPiece.IsVertical ? 0 : i)
                     ] = false;
 
             }
@@ -130,41 +132,35 @@ namespace Escape
         private bool CanMovePiece(Vector2Int pieceGridPos)
         {
             List<Vector2Int> piecePos = new List<Vector2Int>();
-            for (int i = 0; i < currentPiece.Size; i++)
+            for (int i = 0; i < _currentPiece.Size; i++)
             {
                 piecePos.Add(pieceGridPos +
-                    (currentPiece.IsVertical ? Vector2Int.right : Vector2Int.up) * i);
+                    (_currentPiece.IsVertical ? Vector2Int.right : Vector2Int.up) * i);
             }
 
-            foreach (var pos in piecePos)
-            {
-                if (!IsValidPos(pos) || pieceCollision[pos.x, pos.y])
-                    return false;
-            }
-
-            return true;
+            return piecePos.All(pos => IsValidPos(pos) && !_pieceCollision[pos.x, pos.y]);
         }
 
         private bool IsMovingOpposite()
         {
             Vector2 result = Vector2.zero;
-            for (int i = Mathf.Max(0, offsets.Count - 20); i < offsets.Count; i++)
+            for (int i = Mathf.Max(0, _offsets.Count - 20); i < _offsets.Count; i++)
             {
-                result += offsets[i];
+                result += _offsets[i];
             }
 
-            float val = currentPiece.IsVertical ? result.y : result.x;
+            float val = _currentPiece.IsVertical ? result.y : result.x;
             if (Mathf.Abs(val) > 0.2f)
                 return val < 0;
 
             return true;
         }
 
-        private bool IsValidPos(Vector2Int pos) => pos.x >= 0 && pos.y >= 0 && pos.x < level.Rows && pos.y < level.Columns;
+        private bool IsValidPos(Vector2Int pos) => pos is { x: >= 0, y: >= 0 } && pos.x < level.rows && pos.y < level.columns;
 
         public override void CheckWinCondition()
         {
-            if (winPiece.CurrentGridPos.y + winPiece.Size < level.Columns)
+            if (winPiece.CurrentGridPos.y + winPiece.Size < level.columns)
                 return;
 
             OnWin?.Invoke();

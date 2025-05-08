@@ -31,15 +31,15 @@ namespace Escape
 
         private void CreateLevel()
         {
-            if (_row == _level.Rows && _col == _level.Columns)
+            if (_row == _level.rows && _col == _level.columns)
             {
                 return;
             }
 
-            _level.Rows = _row;
-            _level.Columns = _col;
-            _level.Pieces = new List<Piece>();
-            _level.WinPiece = new Piece();
+            _level.rows = _row;
+            _level.columns = _col;
+            _level.pieces = new List<Piece>();
+            _level.winPiece = new Piece();
             EditorUtility.SetDirty(_level);
         }
 
@@ -47,20 +47,20 @@ namespace Escape
         {
             //Set Up BG
             SpriteRenderer bg = Instantiate(_bgPrefab);
-            bg.size = new Vector2(_level.Columns, _level.Rows);
-            bg.transform.position = new Vector3(_level.Columns, _level.Rows, 0) * 0.5f;
+            bg.size = new Vector2(_level.columns, _level.rows);
+            bg.transform.position = new Vector3(_level.columns, _level.rows, 0) * 0.5f;
 
             SpawnWinPiece();
 
             //Spawn All Pieces
-            for (int i = 0; i < _level.Pieces.Count; i++)
+            for (int i = 0; i < _level.pieces.Count; i++)
             {
-                Piece piece = _level.Pieces[i];
-                piece.Id = PieceId++;
-                _level.Pieces[i] = piece;
+                Piece piece = _level.pieces[i];
+                piece.id = PieceId++;
+                _level.pieces[i] = piece;
                 Vector3 spawnPos = new Vector3(
-                    piece.Start.y + 0.5f,
-                    piece.Start.x + 0.5f, 0f
+                    piece.start.y + 0.5f,
+                    piece.start.x + 0.5f, 0f
                     );
                 LevelPiece temp = Instantiate(_piecePrefab);
                 temp.transform.position = spawnPos;
@@ -68,10 +68,10 @@ namespace Escape
             }
 
             //Set Up Camera
-            Camera.main.orthographicSize = Mathf.Max(_level.Columns, _level.Rows) * 1.2f + 2f;
+            Camera.main.orthographicSize = Mathf.Max(_level.columns, _level.rows) * 1.2f + 2f;
             Vector3 camPos = Camera.main.transform.position;
-            camPos.x = _level.Columns * 0.5f;
-            camPos.y = _level.Rows * 0.5f;
+            camPos.x = _level.columns * 0.5f;
+            camPos.y = _level.rows * 0.5f;
             Camera.main.transform.position = camPos;
         }
 
@@ -79,12 +79,12 @@ namespace Escape
         {
             winPiece = Instantiate(_winPrefab);
             Vector3 spawnPos = new Vector3(
-                _level.WinPiece.Start.y + 0.5f,
-                _level.WinPiece.Start.x + 0.5f, 0
+                _level.winPiece.start.y + 0.5f,
+                _level.winPiece.start.x + 0.5f, 0
                 );
             winPiece.transform.position = spawnPos;
-            _level.WinPiece.Id = 0;
-            winPiece.Init(_level.WinPiece);
+            _level.winPiece.id = 0;
+            winPiece.Init(_level.winPiece);
         }
 
         private void Update()
@@ -123,12 +123,12 @@ namespace Escape
                     Destroy(winPiece.gameObject);
                 }
 
-                _level.WinPiece = new Piece()
+                _level.winPiece = new Piece()
                 {
-                    Id = 0,
-                    IsVertical = false,
-                    Size = 1,
-                    Start = mouseGrid,
+                    id = 0,
+                    isVertical = false,
+                    size = 1,
+                    start = mouseGrid,
                 };
 
                 EditorUtility.SetDirty(_level);
@@ -143,7 +143,7 @@ namespace Escape
                     winPiece = null;
                 }
 
-                _level.WinPiece = new Piece();
+                _level.winPiece = new Piece();
                 EditorUtility.SetDirty(_level);
             }
 
@@ -155,7 +155,7 @@ namespace Escape
                 }
 
                 Destroy(winPiece.gameObject);
-                _level.WinPiece.Size++;
+                _level.winPiece.size++;
                 SpawnWinPiece();
                 EditorUtility.SetDirty(_level);
             }
@@ -168,10 +168,10 @@ namespace Escape
                 }
 
                 Destroy(winPiece.gameObject);
-                _level.WinPiece.Size--;
-                if (_level.WinPiece.Size == 0)
+                _level.winPiece.size--;
+                if (_level.winPiece.size == 0)
                 {
-                    _level.WinPiece.Size = 1;
+                    _level.winPiece.size = 1;
                 }
 
                 SpawnWinPiece();
@@ -223,9 +223,9 @@ namespace Escape
 
                 int removeId = -1;
 
-                for (int i = 0; i < _level.Pieces.Count; i++)
+                for (int i = 0; i < _level.pieces.Count; i++)
                 {
-                    if (_level.Pieces[i].Id == curPiece.Id)
+                    if (_level.pieces[i].id == curPiece.Id)
                     {
                         removeId = i;
                         break;
@@ -235,7 +235,7 @@ namespace Escape
                 Debug.Log(removeId);
                 if (removeId != -1)
                 {
-                    _level.Pieces.RemoveAt(removeId);
+                    _level.pieces.RemoveAt(removeId);
                 }
 
                 if (curPiece != null)
@@ -254,13 +254,13 @@ namespace Escape
                     return;
                 }
 
-                for (int i = 0; i < _level.Pieces.Count; i++)
+                for (int i = 0; i < _level.pieces.Count; i++)
                 {
-                    Piece piece = _level.Pieces[i];
-                    if (piece.Id == curPiece.Id)
+                    Piece piece = _level.pieces[i];
+                    if (piece.id == curPiece.Id)
                     {
-                        piece.Size++;
-                        _level.Pieces[i] = piece;
+                        piece.size++;
+                        _level.pieces[i] = piece;
                         curPiece.Init(piece);
                         break;
                     }
@@ -276,17 +276,17 @@ namespace Escape
                     return;
                 }
 
-                for (int i = 0; i < _level.Pieces.Count; i++)
+                for (int i = 0; i < _level.pieces.Count; i++)
                 {
-                    Piece piece = _level.Pieces[i];
-                    if (piece.Id == curPiece.Id)
+                    Piece piece = _level.pieces[i];
+                    if (piece.id == curPiece.Id)
                     {
-                        piece.Size--;
-                        if (piece.Size == 0)
+                        piece.size--;
+                        if (piece.size == 0)
                         {
-                            piece.Size = 1;
+                            piece.size = 1;
                         }
-                        _level.Pieces[i] = piece;
+                        _level.pieces[i] = piece;
                         curPiece.Init(piece);
                         break;
                     }
@@ -304,11 +304,11 @@ namespace Escape
                     Mathf.FloorToInt(mousePos.x)
                     );
             Piece spawnPiece = new Piece();
-            spawnPiece.Id = PieceId++;
-            spawnPiece.IsVertical = vertical;
-            spawnPiece.Start = mouseGrid;
-            spawnPiece.Size = 1;
-            _level.Pieces.Add(spawnPiece);
+            spawnPiece.id = PieceId++;
+            spawnPiece.isVertical = vertical;
+            spawnPiece.start = mouseGrid;
+            spawnPiece.size = 1;
+            _level.pieces.Add(spawnPiece);
             SpawnGamePiece(spawnPiece);
             EditorUtility.SetDirty(_level);
         }
@@ -316,8 +316,8 @@ namespace Escape
         private void SpawnGamePiece(Piece piece)
         {
             Vector3 spawnPos = new Vector3(
-                piece.Start.y + 0.5f,
-                piece.Start.x + 0.5f, 0f
+                piece.start.y + 0.5f,
+                piece.start.x + 0.5f, 0f
                 );
             LevelPiece temp = Instantiate(_piecePrefab);
             temp.transform.position = spawnPos;

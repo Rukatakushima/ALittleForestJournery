@@ -156,7 +156,7 @@ Transform:
   m_GameObject: {fileID: 8649940097490082825}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.16008317}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -175,8 +175,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0112c93acc631664ea2b2342af62d0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pieceRenderer: {fileID: 7245632848777021424}
-  _pieceCollider: {fileID: 5191136155442866239}
+  pieceRenderer: {fileID: 7245632848777021424}
+  pieceCollider: {fileID: 5191136155442866239}
+  offsetPosition: 0.5
   IsVertical: 0
   Size: 0
   CurrentGridPos: {x: 0, y: 0}

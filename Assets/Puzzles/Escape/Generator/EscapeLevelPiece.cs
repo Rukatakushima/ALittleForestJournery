@@ -14,12 +14,12 @@ namespace Escape
 
         public void Init(Piece piece)
         {
-            Id = piece.Id;
-            CurrentGridPos = piece.Start;
-            IsVertical = piece.IsVertical;
-            Size = piece.Size;
+            Id = piece.id;
+            CurrentGridPos = piece.start;
+            IsVertical = piece.isVertical;
+            Size = piece.size;
 
-            if (piece.IsVertical)
+            if (piece.isVertical)
             {
                 _pieceRenderer.transform.localPosition = new Vector3(0, Size - 1, 0) * 0.5f;
                 _pieceRenderer.size = new Vector2(1, Size);
