@@ -97,9 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4589d086b682eb43b465305815ea0e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsFilled: 0
-  PipeType: 0
-  _pipePrefabs:
+  pipePrefabs:
   - {fileID: 8075343151408440242, guid: 60fbd7be289c83a4ab52bc582594c409, type: 3}
   - {fileID: 8075343151408440242, guid: e5254228c0b0364468862ab000d433ed, type: 3}
   - {fileID: 8075343151408440242, guid: 9da1275e02e184f4f80ee5773191c8fa, type: 3}
@@ -107,3 +105,5 @@ MonoBehaviour:
   - {fileID: 8075343151408440242, guid: 9274e3ab6abc1fe41a74737a122ad421, type: 3}
   - {fileID: 8075343151408440242, guid: 8eb1ced86e138e449b08cef266410e13, type: 3}
   - {fileID: 8075343151408440242, guid: a675950a986546a438a8c1e6f24d65ac, type: 3}
+  isFilled: 0
+  pipeType: 0

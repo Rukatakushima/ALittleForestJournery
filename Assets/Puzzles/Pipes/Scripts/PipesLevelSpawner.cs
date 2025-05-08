@@ -6,30 +6,30 @@ namespace Pipes
     public class LevelSpawner : BaseLevelSpawner<LevelData>
     {
         [SerializeField] private Pipe cellPrefab;
-        private Pipe[,] pipes;
+        private Pipe[,] _pipes;
 
         public override void SpawnLevel()
         {
-            pipes = new Pipe[level.Row, level.Col];
+            _pipes = new Pipe[level.row, level.col];
             List<Pipe> startPipes = new List<Pipe>();
 
-            for (int i = 0; i < level.Row; i++)
+            for (int i = 0; i < level.row; i++)
             {
-                for (int j = 0; j < level.Col; j++)
+                for (int j = 0; j < level.col; j++)
                 {
                     Vector2 spawnPos = new Vector2(j + 0.5f, i + 0.5f);
                     Pipe tempPipe = Instantiate(cellPrefab);
                     tempPipe.transform.position = spawnPos;
-                    tempPipe.Init(level.Data[i * level.Col + j]);
-                    pipes[i, j] = tempPipe;
-                    if (tempPipe.PipeType == 1)
+                    tempPipe.Init(level.data[i * level.col + j]);
+                    _pipes[i, j] = tempPipe;
+                    if (tempPipe.pipeType == 1)
                     {
                         startPipes.Add(tempPipe);
                     }
                 }
             }
 
-            GameManager.Instance.Initialize(level, startPipes, pipes);
+            GameManager.Instance.Initialize(level, startPipes, _pipes);
             OnLevelSpawned?.Invoke();
         }
     }

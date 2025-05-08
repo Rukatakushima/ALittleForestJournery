@@ -7,10 +7,10 @@ namespace Pipes
     public class GameManager : BaseGameManager
     {
         public static GameManager Instance;
-        public LevelData level { get; private set; }
-
-        public Pipe[,] pipes { get; private set; }
-        private FillChecker fillChecker;
+        
+        private LevelData _level;
+        private Pipe[,] _pipes;
+        private FillChecker _fillChecker;
 
         protected override void Awake()
         {
@@ -19,11 +19,11 @@ namespace Pipes
             StartCoroutine(ShowHint());
         }
 
-        public void Initialize(LevelData level, List<Pipe> startPipes, Pipe[,] pipes)
+        public void Initialize(LevelData levelData, List<Pipe> startPipes, Pipe[,] pipes)
         {
-            this.level = level;
-            fillChecker = new FillChecker(pipes, startPipes);
-            this.pipes = pipes;
+            _level = levelData;
+            _fillChecker = new FillChecker(pipes, startPipes);
+            _pipes = pipes;
         }
 
         protected override void HandleInputStart(Vector2 mousePosition)
@@ -31,10 +31,10 @@ namespace Pipes
             int row = Mathf.FloorToInt(mousePosition.y);
             int col = Mathf.FloorToInt(mousePosition.x);
             if (row < 0 || col < 0) return;
-            if (row >= level.Row) return;
-            if (col >= level.Col) return;
+            if (row >= _level.row) return;
+            if (col >= _level.col) return;
 
-            pipes[row, col].RotatePipe();
+            _pipes[row, col].RotatePipe();
             StartCoroutine(ShowHint());
         }
 
@@ -45,17 +45,17 @@ namespace Pipes
         private IEnumerator ShowHint()
         {
             yield return new WaitForSeconds(0.1f);
-            fillChecker.CheckFill();
+            _fillChecker.CheckFill();
             CheckWinCondition();
         }
 
         public override void CheckWinCondition()
         {
-            for (int i = 0; i < level.Row; i++)
+            for (int i = 0; i < _level.row; i++)
             {
-                for (int j = 0; j < level.Col; j++)
+                for (int j = 0; j < _level.col; j++)
                 {
-                    if (!pipes[i, j].IsFilled)
+                    if (!_pipes[i, j].isFilled)
                         return;
                 }
             }

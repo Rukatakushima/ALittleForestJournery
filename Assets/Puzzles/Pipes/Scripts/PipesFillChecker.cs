@@ -1,33 +1,34 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pipes
 {
     public class FillChecker
     {
-        private Pipe[,] pipes;
-        private List<Pipe> startPipes;
+        private readonly Pipe[,] _pipes;
+        private readonly List<Pipe> _startPipes;
 
         public FillChecker(Pipe[,] pipes, List<Pipe> startPipes)
         {
-            this.pipes = pipes;
-            this.startPipes = startPipes;
+            _pipes = pipes;
+            _startPipes = startPipes;
         }
 
         public void CheckFill()
         {
-            for (int i = 0; i < pipes.GetLength(0); i++)
+            for (int i = 0; i < _pipes.GetLength(0); i++)
             {
-                for (int j = 0; j < pipes.GetLength(1); j++)
+                for (int j = 0; j < _pipes.GetLength(1); j++)
                 {
-                    Pipe tempPipe = pipes[i, j];
-                    if (tempPipe.PipeType != 0)
-                        tempPipe.IsFilled = false;
+                    Pipe tempPipe = _pipes[i, j];
+                    if (tempPipe.pipeType != 0)
+                        tempPipe.isFilled = false;
                 }
             }
 
             Queue<Pipe> check = new Queue<Pipe>();
             HashSet<Pipe> finished = new HashSet<Pipe>();
-            foreach (var pipe in startPipes)
+            foreach (var pipe in _startPipes)
             {
                 check.Enqueue(pipe);
             }
@@ -37,23 +38,22 @@ namespace Pipes
                 Pipe pipe = check.Dequeue();
                 finished.Add(pipe);
                 List<Pipe> connected = pipe.ConnectedPipes();
-                foreach (var connectedPipe in connected)
+                foreach (var connectedPipe in connected.Where(connectedPipe => !finished.Contains(connectedPipe)))
                 {
-                    if (!finished.Contains(connectedPipe))
-                        check.Enqueue(connectedPipe);
+                    check.Enqueue(connectedPipe);
                 }
             }
 
             foreach (var filled in finished)
             {
-                filled.IsFilled = true;
+                filled.isFilled = true;
             }
 
-            for (int i = 0; i < pipes.GetLength(0); i++)
+            for (int i = 0; i < _pipes.GetLength(0); i++)
             {
-                for (int j = 0; j < pipes.GetLength(1); j++)
+                for (int j = 0; j < _pipes.GetLength(1); j++)
                 {
-                    Pipe tempPipe = pipes[i, j];
+                    Pipe tempPipe = _pipes[i, j];
                     tempPipe.UpdateFillState();
                 }
             }

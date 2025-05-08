@@ -6,21 +6,20 @@ namespace Pipes
     [CreateAssetMenu(fileName = "PipesLevel", menuName = "Levels/PipesLevel")]
     public class LevelData : ScriptableObject
     {
-        public int Row;
-        public int Col;
-        public List<int> Data = new List<int>();
+        public int row, col;
+        public List<int> data = new ();
+        
         private void OnValidate()
         {
-            int newSize = Row * Col;
-            if (Data.Count != newSize)
+            int newSize = row * col;
+            if (data.Count == newSize) return;
+            
+            while (data.Count < newSize)
             {
-                while (Data.Count < newSize)
-                {
-                    Data.Add(0);
-                }
-
-                if (Data.Count > newSize) Data.RemoveRange(newSize, Data.Count - newSize);
+                data.Add(0);
             }
+
+            if (data.Count > newSize) data.RemoveRange(newSize, data.Count - newSize);
         }
     }
 }
