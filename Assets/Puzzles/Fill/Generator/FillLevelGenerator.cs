@@ -31,17 +31,17 @@ namespace Fill
         private void SpawnLevel()
         {
             Vector3 camPos = Camera.main.transform.position;
-            camPos.x = _level.Columns * 0.5f;
-            camPos.y = _level.Rows * 0.5f;
+            camPos.x = _level.columns * 0.5f;
+            camPos.y = _level.rows * 0.5f;
             Camera.main.transform.position = camPos;
-            Camera.main.orthographicSize = Mathf.Max(_level.Rows, _level.Columns) + 2f;
+            Camera.main.orthographicSize = Mathf.Max(_level.rows, _level.columns) + 2f;
 
-            for (int i = 0; i < _level.Rows; i++)
+            for (int i = 0; i < _level.rows; i++)
             {
-                for (int j = 0; j < _level.Columns; j++)
+                for (int j = 0; j < _level.columns; j++)
                 {
                     cells[i, j] = Instantiate(_cellPrefab);
-                    cells[i, j].Init(_level.Data[i * _level.Columns + j]);
+                    cells[i, j].Init(_level.data[i * _level.columns + j]);
                     cells[i, j].transform.position = new Vector3(j + 0.5f, i + 0.5f);
                 }
             }
@@ -53,11 +53,11 @@ namespace Fill
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 startPos = new Vector2Int(Mathf.FloorToInt(mousePos.y), Mathf.FloorToInt(mousePos.x));
                 if (!IsValid(startPos)) return;
-                bool isBlocked = cells[startPos.x, startPos.y].Blocked;
-                bool isFilled = cells[startPos.x, startPos.y].Filled;
+                bool isBlocked = cells[startPos.x, startPos.y].blocked;
+                bool isFilled = cells[startPos.x, startPos.y].filled;
                 if (!isBlocked && isFilled) return;
                 cells[startPos.x, startPos.y].ChangeState();
-                _level.Data[startPos.x * _col + startPos.y] = isBlocked ? 0 : 1;
+                _level.data[startPos.x * _col + startPos.y] = isBlocked ? 0 : 1;
                 EditorUtility.SetDirty(_level);
             }
             if (Input.GetMouseButtonDown(0))
@@ -107,17 +107,17 @@ namespace Fill
         }
         private void CreateLevel()
         {
-            if (_level.Rows == _row && _level.Columns == _col) return;
+            if (_level.rows == _row && _level.columns == _col) return;
 
-            _level.Rows = _row;
-            _level.Columns = _col;
-            _level.Data = new List<int>();
+            _level.rows = _row;
+            _level.columns = _col;
+            _level.data = new List<int>();
 
             for (int i = 0; i < _row; i++)
             {
                 for (int j = 0; j < _col; j++)
                 {
-                    _level.Data.Add(0);
+                    _level.data.Add(0);
                 }
             }
             EditorUtility.SetDirty(_level);
@@ -128,12 +128,12 @@ namespace Fill
         }
         private bool IsValid(Vector2Int pos)
         {
-            return pos.x >= 0 && pos.y >= 0 && pos.x < _level.Rows && pos.y < _level.Columns;
+            return pos.x >= 0 && pos.y >= 0 && pos.x < _level.rows && pos.y < _level.columns;
         }
         private bool toAddEmpty()
         {
             if (edges.Count > 0) return false;
-            if (cells[startPos.x, startPos.y].Filled) return false;
+            if (cells[startPos.x, startPos.y].filled) return false;
             if (IsFilled(endPos)) return false;
             return true;
         }
@@ -158,7 +158,7 @@ namespace Fill
         }
         private bool IsFilled(Vector2Int curPos) //endPos
         {
-            return cells[curPos.x, curPos.y].Filled;
+            return cells[curPos.x, curPos.y].filled;
         }
         private bool toRemoveFromEnd()
         {

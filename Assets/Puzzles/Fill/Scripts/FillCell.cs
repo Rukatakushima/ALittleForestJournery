@@ -4,35 +4,35 @@ namespace Fill
 {
     public class Cell : MonoBehaviour
     {
-        [HideInInspector] public bool Blocked;
-        [HideInInspector] public bool Filled;
-        [SerializeField] private Color _blockedColor;
-        [SerializeField] private Color _emptyColor;
-        [SerializeField] private Color _filledColor;
-        [SerializeField] private SpriteRenderer _cellRender;
+        [SerializeField] private SpriteRenderer cellRender;
+        [SerializeField] private Color blockedColor, emptyColor, filledColor;
+        
+        [HideInInspector] public bool blocked, filled;
 
         public void Init(int fill)
         {
-            Blocked = fill == 1;
-            Filled = Blocked;
-            _cellRender.color = Blocked ? _blockedColor : _emptyColor;
+            blocked = fill == 1;
+            filled = blocked;
+            cellRender.color = blocked ? blockedColor : emptyColor;
         }
 
         public void Add()
         {
-            Filled = true;
-            _cellRender.color = _filledColor;
+            filled = true;
+            cellRender.color = filledColor;
         }
+        
         public void Remove()
         {
-            Filled = false;
-            _cellRender.color = _emptyColor;
+            filled = false;
+            cellRender.color = emptyColor;
         }
+        
         public void ChangeState()
         {
-            Blocked = !Blocked;
-            Filled = Blocked;
-            _cellRender.color = Blocked ? _blockedColor : _emptyColor;
+            blocked = !blocked;
+            filled = blocked;
+            cellRender.color = blocked ? blockedColor : emptyColor;
         }
     }
 }

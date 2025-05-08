@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34718cf1e5174a64590692b650423b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Blocked: 0
-  Filled: 0
-  _blockedColor: {r: 0.31764707, g: 0.36078432, b: 0.44705886, a: 1}
-  _emptyColor: {r: 0.8862746, g: 0.854902, b: 0.86666673, a: 1}
-  _filledColor: {r: 0.89019614, g: 0.5882353, b: 0.54509807, a: 1}
-  _cellRender: {fileID: 4634584950586991335}
+  cellRender: {fileID: 4634584950586991335}
+  blockedColor: {r: 0.18794917, g: 0.06541475, b: 0.2830189, a: 1}
+  emptyColor: {r: 0.6737133, g: 0.54427737, b: 0.764151, a: 1}
+  filledColor: {r: 0.9622642, g: 0.87052673, b: 0.46751517, a: 1}
+  blocked: 0
+  filled: 0

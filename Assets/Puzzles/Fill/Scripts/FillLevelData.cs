@@ -6,23 +6,21 @@ namespace Fill
     [CreateAssetMenu(fileName = "FillLevel", menuName = "Levels/FillLevel")]
     public class LevelData : ScriptableObject
     {
-        public int Rows;
-        public int Columns;
-        public List<int> Data = new List<int>();
+        public int rows, columns;
+        public List<int> data = new ();
 
         private void OnValidate()
         {
-            int newSize = Rows * Columns;
-            if (Data.Count != newSize)
+            int newSize = rows * columns;
+            if (data.Count == newSize) return;
+            
+            while (data.Count < newSize)
             {
-                while (Data.Count < newSize)
-                {
-                    Data.Add(0);
-                }
-
-                if (Data.Count > newSize)
-                    Data.RemoveRange(newSize, Data.Count - newSize);
+                data.Add(0);
             }
+
+            if (data.Count > newSize)
+                data.RemoveRange(newSize, data.Count - newSize);
         }
     }
 }
